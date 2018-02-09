@@ -1,0 +1,67 @@
+{
+  "name": "project",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "status": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "existingProduct": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "technologiesUsed": {
+      "type": "string"
+    },
+    "goal": {
+      "type": "string",
+      "required": true
+    },
+    "keyFeatures": {
+      "type": "string",
+      "required": true
+    },
+    "exampleProducts": {
+      "type": "string"
+    },
+    "comments": {
+      "type": "array"
+    },
+    "fileUpload": {
+      "type": "string"
+    },
+    "complete": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    }
+  },
+  "validations": [],
+  "relations": {
+    "projects": {
+      "type": "hasMany",
+      "model": "comment",
+      "foreignKey": "projectId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

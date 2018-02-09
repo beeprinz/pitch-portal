@@ -19,8 +19,6 @@
     "json-loader": "^0.5.4",
     "lodash": "^4.15.0",
     "lodash-webpack-plugin": "^0.10.2",
-    "loopback": "^3.18.2",
-    "loopback-connector-mongodb": "^3.4.1",
     "mdbootstrap": "^4.4.4",
     "morgan": "^1.8.1",
     "nightmare": "^2.10.0",

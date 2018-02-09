@@ -13,26 +13,42 @@
       "./mixins"
     ]
   },
-  "User": {
-    "dataSource": "db"
-  },
   "AccessToken": {
-    "dataSource": "db",
-    "public": false
+    "dataSource": "MongoDB",
+    "public": false,
+    "relations": {
+      "user": {
+        "type": "belongsTo",
+        "model": "user",
+        "foreignKey": "userId"
+      }
+    }
   },
   "ACL": {
-    "dataSource": "db",
+    "dataSource": "MongoDB",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "db",
+    "dataSource": "MongoDB",
     "public": false,
     "options": {
       "strictObjectIDCoercion": true
     }
   },
   "Role": {
-    "dataSource": "db",
+    "dataSource": "MongoDB",
     "public": false
+  },
+  "user": {
+    "dataSource": "MongoDB",
+    "public": true
+  },
+  "project": {
+    "dataSource": "MongoDB",
+    "public": true
+  },
+  "comment": {
+    "dataSource": "MongoDB",
+    "public": true
   }
 }

@@ -1,0 +1,37 @@
+{
+  "name": "comment",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "author": {
+      "type": "string",
+      "required": true
+    },
+    "text": {
+      "type": "string",
+      "required": true
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "user": {
+      "type": "belongsTo",
+      "model": "user",
+      "foreignKey": "commentId"
+    },
+    "project": {
+      "type": "belongsTo",
+      "model": "project",
+      "foreignKey": "commentId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

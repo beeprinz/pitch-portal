@@ -1,0 +1,12 @@
+{
+  "MongoDB": {
+    "host": "ds225028.mlab.com",
+    "port": 25028,
+    "url": "mongodb://master:pancakejellyfish@ds225028.mlab.com:25028/pitch-portal",
+    "database": "pitch-portal",
+    "password": "pancakejellyfish",
+    "name": "MongoDB",
+    "user": "master",
+    "connector": "mongodb"
+  }
+}
