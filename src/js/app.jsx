@@ -5,6 +5,7 @@ import SignUp from './containers/SignUp/SignUp';
 import ThankYou from './components/ThankYou';
 import PageNotFound from './components/PageNotFound';
 import NavBar from './containers/NavBar/NavBar';
+import Footer from './containers/Footer/Footer';
 import CompanyDash from './containers/CompanyDash/CompanyDash';
 import AdminDash from './containers/AdminDash/AdminDash';
 import PitchForm from './containers/PitchForm/PitchForm';
@@ -29,6 +30,7 @@ export default class App extends Component {
             <Route path='/admin/dashboard' component={AdminDash} />
             <Route component={PageNotFound} />
           </Switch>
+          <Route component={Footer} />
         </div>
       </Router>
     );
