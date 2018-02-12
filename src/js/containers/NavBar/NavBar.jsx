@@ -15,12 +15,15 @@ export default class Navbar extends Component {
         </button>
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav">
-            <a className="nav-item nav-link active" href="#">Home <span className="sr-only">(current)</span></a>
-            <a className="nav-item nav-link" href="#">Dashboard</a>
-            <a className="nav-item nav-link" href="#">Projects</a>
+            {/* Recommend Test if logged in to take you to the sign up/log in page or Dashboard page, consider making a News feed pages for clients to read on other projects or student feedbacks */}
+            <Link to="/" className="nav-item nav-link active" href="#">Home <span className="sr-only">(current)</span></Link>
+            {/* Test if it is an Admin account or Company account to link to the correct 'Dashboard' */}
+            <Link to="/company/:companyname/dashboard" className="nav-item nav-link" href="#">Dashboard</Link>
+            {/* Link to submit a new pitch/project */}
+            <Link to="/company/:companyname/pitchform" className="nav-item nav-link" href="#">Pitch</Link>
           </div>
         </div>
-        <a href="http://google.com" id="settings"><i className="fas fa-cog fa-1x"></i></a>
+        <Link to="/company/:companyname/accountsettings" id="settings"><i className="fas fa-cog fa-1x"></i></Link>
         </div>
 
       </nav>
