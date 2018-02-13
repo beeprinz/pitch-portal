@@ -6,7 +6,7 @@ import ThankYou from './components/ThankYou';
 import PageNotFound from './components/PageNotFound';
 import NavBar from './containers/NavBar/NavBar';
 import Footer from './containers/Footer/Footer';
-import CompanyDash from './containers/CompanyDash/CompanyDash';
+import CompanyDash from './containers/CompanyDash';
 import AdminDash from './containers/AdminDash/AdminDash';
 import PitchForm from './containers/PitchForm/PitchForm';
 import PitchDetail from './containers/PitchDetail/PitchDetail';
@@ -18,7 +18,7 @@ export default class App extends Component {
     return (
       <Router>
         <div>
-          <Route component={NavBar} />
+          {/* <Route component={NavBar} /> */}
           <Switch>
             <Route exact path='/' component={Login} />
             <Route path='/signup' component={SignUp} />
