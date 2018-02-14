@@ -24,8 +24,8 @@
       "default": 0
     },
     "existingProduct": {
-      "type": "boolean",
-      "required": true,
+      "type": "string",
+      "required": false,
       "default": false
     },
     "technologiesUsed": {

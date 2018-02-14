@@ -1,5 +1,5 @@
 'use strict';
 
-module.exports = function(Userr) {
+module.exports = function(User) {
 
 };
