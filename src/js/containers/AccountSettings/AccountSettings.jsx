@@ -8,7 +8,8 @@ export default class AccountSettings extends Component {
   render() {
     return (
       <div>
-        <h1>Hello World - AccountSettings</h1>
+        <h1 className="display-4">Account Settings</h1>
+        
       </div>
     );
   }
