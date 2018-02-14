@@ -50,5 +50,9 @@
   "comment": {
     "dataSource": "MongoDB",
     "public": true
+  },
+  "container": {
+    "dataSource": "aws",
+    "public":true
   }
 }

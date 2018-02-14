@@ -22,6 +22,7 @@ app.use(morgan('dev'));
 app.use(express.static(dist));
 app.use(express.static(public));
 
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(public, 'index.html'));
 });

@@ -8,5 +8,13 @@
     "name": "MongoDB",
     "user": "master",
     "connector": "mongodb"
+  },
+  "aws": {
+    "name": "aws",
+    "connector": "loopback-component-storage",
+    "region": "us-west-1",
+    "provider": "amazon",
+    "key": "JP+P36YHc/WLH7MVkXGKNqdabu9d3CXrjduke5nb",
+    "keyId": "AKIAI4MSWDJNNOSSMRRA"
   }
 }
