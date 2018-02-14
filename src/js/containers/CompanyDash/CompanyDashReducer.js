@@ -1,26 +1,28 @@
-import { types } from './CompanyDashActions';
+
 
 const initialState = {
     projectId:'',
     projectName:''
+  
 
 }
 
 export default function CompanyDashReducer(state = initialState, action) {
     const { type, payload } = action;
-    console.log('Reducers payload', payload)
+    
     switch (type) {
 
-        case types.GET_PROJECT_DETAIL_FULLFILLED: {
-           
+        case 'GET_PROJECT_DETAIL_FULFILLED': {
+            console.log('Reducers payload',payload)
             return {
                 ...state,
-                projectId: payload.projectId,
-                projectName: payload.projectName       
+                
+                projectId: payload.id,
+                projectName: payload.name       
             };
             
         }
-
+       
 
         default: {
             return state;

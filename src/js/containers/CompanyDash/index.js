@@ -3,9 +3,10 @@ import CompanyDash from './CompanyDash'
 
      
 function mapStoreToProps(store){
+    console.log('Store',store)
     return{
-
-//    projectId: store.projectId
+projectId:store.companyDash.projectId,
+   projectName:store.companyDash.projectName
        
     };
 }
