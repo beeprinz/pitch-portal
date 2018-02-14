@@ -5,7 +5,8 @@ import PitchFormReducer from './containers/PitchForm/PitchFormReducer'
 const rootReducer = combineReducers({
 // add reducers
   form: formReducer,
-  pitchform: PitchFormReducer
+  pitchform: PitchFormReducer,
+  signup: SignUpReducer
 });
 
 export default rootReducer;
