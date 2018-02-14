@@ -8,7 +8,25 @@ export default class Navbar extends Component {
 
   render() {
     return (
-      <div>Hello World - NavBar</div>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div className="container">
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div className="navbar-nav">
+            {/* Recommend Test if logged in to take you to the sign up/log in page or Dashboard page, consider making a News feed pages for clients to read on other projects or student feedbacks */}
+            <Link to="/" className="nav-item nav-link active" href="#">Home <span className="sr-only">(current)</span></Link>
+            {/* Test if it is an Admin account or Company account to link to the correct 'Dashboard' */}
+            <Link to="/company/:companyname/dashboard" className="nav-item nav-link" href="#">Dashboard</Link>
+            {/* Link to submit a new pitch/project */}
+            <Link to="/company/:companyname/pitchform" className="nav-item nav-link" href="#">Pitch</Link>
+          </div>
+        </div>
+        <Link to="/company/:companyname/accountsettings" id="settings"><i className="fas fa-cog fa-1x"></i></Link>
+        </div>
+
+      </nav>
     );
   }
 };
