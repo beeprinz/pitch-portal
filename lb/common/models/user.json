@@ -17,6 +17,9 @@
     "position": {
       "type": "string"
     },
+    "company": {
+      "type": "string"
+    },
     "email": {
       "type": "string",
       "required": true
@@ -31,7 +34,8 @@
       "type": "string"
     },
     "type": {
-      "type": "number"
+      "type": "number",
+      "default": 0
     }
   },
   "validations": [],
