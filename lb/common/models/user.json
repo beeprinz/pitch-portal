@@ -58,7 +58,5 @@
       "model": "project",
       "foreignKey": "userId"
     }
-  },
-  "acls": [],
-  "methods": {}
+  }
 }

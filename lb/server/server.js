@@ -18,6 +18,20 @@ app.start = function() {
   });
 };
 
+
+// app.get('/getprojects/:userId', (req,res)){
+//   let Project = app.models.projects
+  
+//   Project.find({where: {userId: req.params.userId} }, function(err, projects) {
+//     if (err){
+//       res.send('error')
+//     } else{
+//       res.send(projects)
+//       // { projects
+//     }
+
+//   });
+// }
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
 boot(app, __dirname, function(err) {
