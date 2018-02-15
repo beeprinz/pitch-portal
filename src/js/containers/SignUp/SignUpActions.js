@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const USER = '/users';
-const ROOT_URL = 'localhost:8080';
+const ROOT_URL = 'http://localhost:8080';
 
 export const NEW_USER_SIGNUP = 'NEW_USER_SIGNUP';
 export const SIGNUP_STARTED = 'SIGNUP_STARTED';
