@@ -23,7 +23,7 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         pending: false,
-        response
+        payload
       };
       break;
     case SIGNUP_ERROR:

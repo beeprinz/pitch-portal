@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import SignUpFirstPage from './SignUpFirstPage';
 import SignUpSecondPage from './SignUpSecondPage';
 import SignUpThirdPage from './SignUpThirdPage';
+import { signUpNewUser } from './SignUpActions';
 
 
-export default class SignUp extends Component {
+class SignUp extends Component {
   constructor(props) {
     super(props);
     this.nextPage = this.nextPage.bind(this);
@@ -22,8 +25,10 @@ export default class SignUp extends Component {
     this.setState({ page: this.state.page - 1 });
   }
 
-  onSubmit(values) {
-    console.log('Values from SignUp.jsx', values);
+  onSubmit(event, values) {
+    event.preventDefault();
+    console.log('Values from onSubmit in SignUp.jsx', values);
+    signUpNewUser(values);
   }
 
   render() {    
@@ -39,10 +44,19 @@ export default class SignUp extends Component {
         {page === 3 &&
           <SignUpThirdPage
             previousPage={this.previousPage}
-            onSubmit={this.onSubmit}
+            signUpNewUser={signUpNewUser}
+            onSubmit={values => this.props.handleSearchSubmit(values)}
           />}
       </div>
     );
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  handleSearchSubmit: values => dispatch({type: 'SIGNUP_FULFILLED', payload: values})
+})
+
+function mapStateToProps({ signup }) {
+  return { signup };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

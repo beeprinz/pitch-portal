@@ -52,6 +52,11 @@
       "type": "hasMany",
       "model": "comment",
       "foreignKey": "userId"
+    },
+    "projects": {
+      "type": "hasMany",
+      "model": "project",
+      "foreignKey": "userId"
     }
   },
   "acls": [],

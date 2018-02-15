@@ -2,11 +2,13 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import validate from './validate';
 import { renderTextField, renderTextAreaField } from './renderField';
+// import { signUpNewUser } from './SignUpActions';
+
 
 
 const SignUpThirdPage = props => {
-  const { handleSubmit, pristine, previousPage, submitting } = props;
-
+  const { handleSubmit, pristine, previousPage, submitting, signUpNewUser, value } = props;
+  console.log('props on page three', props)
   return (
     <form onSubmit={handleSubmit}>
       <Field name='email' type='email' component={renderTextField} label='Email' />
