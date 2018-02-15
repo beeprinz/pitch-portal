@@ -4,8 +4,7 @@ import Login from './Login';
 
 function mapStoreToProps(store){
     return{
-
-        information: store.information
+        login: store.login
     };
 }
 

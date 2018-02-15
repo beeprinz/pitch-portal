@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Login from './containers/Login/Login';
+import Login from './containers/Login';
 import SignUp from './containers/SignUp/SignUp';
 import ThankYou from './components/ThankYou';
 import PageNotFound from './components/PageNotFound';
@@ -20,6 +20,7 @@ export default class App extends Component {
         <div>
           <NavBar />
           <Switch>
+            
             <Route exact path='/' component={Login} />
             <Route path='/signup' component={SignUp} />
             <Route path='/thanks' component={ThankYou} />

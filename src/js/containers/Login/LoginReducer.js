@@ -1,8 +1,10 @@
 import { types } from './LoginActions';
+import Cookies from 'cookies-js';
 
 const initialState = {
     LogIn: false,
     information:'',
+    // token: Cookie.get('token') ? Cookie.get('token') : null
 };
 
 export default function LoginReducer(state = initialState, action) {
@@ -13,7 +15,8 @@ export default function LoginReducer(state = initialState, action) {
         case `${types.LOG_USER_IN}_FULFILLED`: {
             return {
                 ...state,
-                information: payload.id,
+                // information: payload.id,
+                information: payload,
                 LogIn: true
             };
         }

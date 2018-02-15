@@ -2,8 +2,13 @@
 
 var loopback = require('loopback');
 var boot = require('loopback-boot');
+var bodyParser = require('body-parser');
 
 var app = module.exports = loopback();
+
+
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 app.start = function() {
   // start the web server
@@ -18,6 +23,19 @@ app.start = function() {
   });
 };
 
+app.post('/login', (req,res) =>{
+  let User = app.models.User;
+
+  let userInfo = req.body
+
+  User.login({email: userInfo.email, password: userInfo.password}, function (err, token) {
+    if (err){
+      res.send ('there was error ')
+    }else {
+      res.send(token)
+    }
+  })
+})
 
 // app.get('/getprojects/:userId', (req,res)){
 //   let Project = app.models.projects
