@@ -6,7 +6,7 @@ export default class Footer extends Component {
     super(props);
   }
 
-  render() {    
+  render() {
       return (
         <footer className="clearfix card-footer text-muted">
             <div className="container">

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Cookies from 'cookies-js'
 
  export const types = {
     LOG_USER_IN: 'LOG_USER_IN',
@@ -12,10 +13,9 @@ import axios from 'axios'
           payload: axios
           .post('http://localhost:3000/login', values)
           .then(response => {
-            console.log(response.data)
-              return response.data //Token
-
-              
+            Cookies.set('userId', response.data.userId);
+            Cookies.set('token', response.data.id);
+              return response
         })
           .catch(err => {
             console.log('error',err);

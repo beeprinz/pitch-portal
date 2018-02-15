@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { getProjectDetail, getStatus, getUsersProjects } from './CompanyDashActions'
 import axios from 'axios';
+import Cookies from 'cookies-js'
 
 export default class CompanyDash extends Component {
   constructor(props) {
     super(props);
-  
 
     // this.handleDetail = this.handleDetail.bind(this)
     this.handleStatus = this.handleStatus.bind(this)
@@ -59,7 +59,7 @@ export default class CompanyDash extends Component {
 
 //   dispatch(getProjectDetail(response.data))
 // })
-// } 
+// }
 
 
 
@@ -74,7 +74,7 @@ export default class CompanyDash extends Component {
     }else if (projectStatus == 2 ) {
       var status = 'Denied';
     }
-  
+
 
     return (
       <div className="container">
@@ -90,9 +90,9 @@ export default class CompanyDash extends Component {
             </tr>
           </thead>
           <tbody>
-            
-              {!!projects && projects.map(project => { 
-                 return (    
+
+              {!!projects && projects.map(project => {
+                 return (
             <tr key={project.id} className="text-center">
               <th scope="row">{project.id}</th>
               <td>{project.name}</td>
@@ -103,11 +103,11 @@ export default class CompanyDash extends Component {
                 <button type="button" className="btn btn-outline-danger" style={{ marginLeft: 10 + "px" }}> <a href="#">Delete</a> </button>
               </td>
             </tr>
-                 )   
+                 )
               })}
-              
-              
-            
+
+
+
             <tr className="text-center">
               <th scope="row">3</th>
               <td>Pitch Portal</td>
@@ -145,7 +145,7 @@ export default class CompanyDash extends Component {
       <button type="button" className="btn btn-warning" style={{ marginLeft: 10 + "px" }} value ={0} onClick={this.handleStatus} >Still Pending</button>
       <button type="button" className="btn btn-danger" style={{ marginLeft: 10 + "px" }} value={2} onClick={this.handleStatus} >Denied</button>
       <hr/>
-    
+
     </blockquote>
   </div>
 </div>
