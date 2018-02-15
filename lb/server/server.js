@@ -37,9 +37,17 @@ app.post('/login', (req,res) =>{
   })
 })
 
+  User.login({email: userInfo.email, password: userInfo.password}, function (err, token) {
+    if (err){
+     res.send(err)
+    }else {
+     res.send(token)
+    }
+  })
+})
 // app.get('/getprojects/:userId', (req,res)){
 //   let Project = app.models.projects
-  
+
 //   Project.find({where: {userId: req.params.userId} }, function(err, projects) {
 //     if (err){
 //       res.send('error')
@@ -59,3 +67,4 @@ boot(app, __dirname, function(err) {
   if (require.main === module)
     app.start();
 });
+

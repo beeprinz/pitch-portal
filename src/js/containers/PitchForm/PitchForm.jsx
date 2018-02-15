@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-// import Dropzone from 'react-dropzone'
-// import ReactS3 from 'react-s3';
 import axios from 'axios';
 import { getInfo } from './PitchFormActions'
 import SimpleReactFileUpload from './fileupload';
@@ -10,17 +8,56 @@ class PitchForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      accepted: [],
-      rejected: [],
+      files: []
     };
     this.onSubmit = this.onSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.fileUpload = this.fileUpload.bind(this);
   }
 
   onSubmit(values){
     const { dispatch } = this.props;
     // Dispatch that connects to the store.
     // dispatch(getInfo(values));
+    console.log(this.state.files)
+    const files = this.state.files;
+    console.log(files)
+    files.forEach((file) => {
+      this.fileUpload(file)
+      .then((response) => {
+        console.log('Response Data', response.data);
+      });
+    });
   }
+  // File Upload Sys
+
+
+  onChange(e) {
+    console.log(e.target.files[0])
+    const fileStack = this.state.files
+    fileStack.push(e.target.files[0])
+    this.setState({
+      files: fileStack
+    });
+  }
+
+  fileUpload(file){
+    const url = 'http://localhost:3000/api/containers/originpitchportal/upload';
+    const formData = new FormData();
+
+    formData.append('file', file);
+
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    };
+
+    return axios.post(url, formData, config);
+  }
+
+
+
 
   renderTextBox(field) {
     const { meta: { touched, error } } = field;
@@ -47,6 +84,7 @@ class PitchForm extends Component {
         </div>
         <div className ="text-danger">
           {touched ? error : ''}
+
         </div>
       </div>
     );
@@ -65,7 +103,7 @@ class PitchForm extends Component {
             <h1 className="text-center p-2"> Project Request Form </h1>
             <ul className="nav nav-tabs" id="myTab" role="tablist">
               <li className="nav-item">
-                <a className="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Information</a>
+                <a className="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Information </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" id="goals-tab" data-toggle="tab" href="#goals" role="tab" aria-controls="goals" aria-selected="false">Goals and Key Features</a>
@@ -132,31 +170,31 @@ class PitchForm extends Component {
                 {/* File Input */}
                 <div className = 'tab-pane fade p-3' id="file" role="tabpanel" aria-labelledby="file-tab">
                   <h1 className = "text-center"> Upload A file (.pptx, .doc, .docx) </h1>
-                  <div className = "card">
-                    <div className = "card-body text-center ">
-                      <div className="text-center">
-                        {/* <Dropzone
-                          accept="image/jpeg, image/png, text/plain, video/mp4, audio/mpeg, application/pdf, application/vnd.mspowerpoint "
-                          onDrop={(accepted, rejected) => { this.setState({ accepted: [...this.state.accepted, ...accepted], rejected }); }}
-                        >
-                          <p className="text-center"> Drop Here </p>
-                        </Dropzone > */}
+                  <div className = "card p-3">
+                    <div className = "card-body text-center p-3">
+                      <div className="text-center p-3">
+                      <div className="custom-file">
+                        <input type="file" onChange={this.onChange} className="custom-file-input" id="customFile" />
+                        <label className="custom-file-label" htmlFor="customFile">Choose file</label>
                       </div>
-                      <h2>Accepted files</h2>
-                      <ul>
-                        {
-                          this.state.accepted.map(f => <li key={f.name}>{f.name} - {f.size} bytes</li>)
-                        }
-                      </ul>
+                      <h4 className="p-3" > Files Uploaded </h4>
+                        <ul className="list-group list-group-flush">
+                          {
+                            this.state.files.map(f => <li className="list-group-item" key={f.name}>{f.name} - {f.size} bytes</li>)
+                          }
+                        </ul>
+                      </div>
                     </div>
-                    <SimpleReactFileUpload />
+
                   </div>
+                  <div className="p-3">
                   <Field
                     name ="urlLink"
                     label = 'Link to video on youtube or other streaming services'
                     component = {this.renderTextBox}
                     placeholder = 'e.g https://www.youtube.com/watch?v=jNQXAC9IVRw'
                   />
+                  </div>
                 </div>
                 <div className = 'tab-pane fade p-3' id = "submit" role="tabpanel" aria-labelledby="submit-tab">
                   <Field

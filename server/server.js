@@ -19,6 +19,9 @@ const allowCrossDomain = (req, res, next) => {
   res.header('Access-Control-Allow-Credentials', 'true');
   next();
 };
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
 
 app.use(allowCrossDomain);
 app.use(morgan('dev'));
@@ -38,9 +41,5 @@ app.post('/login', function(req, res) {
   });
 });
 
-
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(public, 'index.html'));
-// });
 
 module.exports = app;

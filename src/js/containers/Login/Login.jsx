@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import { Link } from 'react-router-dom';
 import { LogUserIn, userError } from './LoginActions';
+import Cookies from 'cookies-js'
 import { Redirect } from "react-router";
 
 
@@ -63,11 +64,13 @@ class Login extends Component {
 
   }
   //if there is the prop userid redirect user to dashboard page
-  //look up insure login function for loopback to kick people out of the dashboard if they're not logged in 
+  //look up insure login function for loopback to kick people out of the dashboard if they're not logged in
 
   render() {
-    // if (this.props.login.LogIn) return <Redirect to="/thanks" />
-    //if this.props.login.LogIn is set to true redirect, 
+    const temp = Cookies.get('token')
+    console.log(temp, 'token')
+     // if (this.props.login.LogIn) return <Redirect to="/thanks" />
+    //if this.props.login.LogIn is set to true redirect,
     const { handleSubmit } = this.props;
     return <div className="container">
         {/* get rid of container, row and col-5 to remove size styling */}
@@ -113,7 +116,7 @@ function validate(values){
   }
   return errors;
 }
-// values is an object with all the values that were enetered in a form 
+// values is an object with all the values that were enetered in a form
 
 export default reduxForm({
   validate: validate,

@@ -20,7 +20,7 @@ export default class Navbar extends Component {
             {/* Test if it is an Admin account or Company account to link to the correct 'Dashboard' */}
             <Link to="/company/:companyname/dashboard" className="nav-item nav-link" href="#">Dashboard</Link>
             {/* Link to submit a new pitch/project */}
-            <Link to="/company/:companyname/pitchform" className="nav-item nav-link" href="#">Pitch</Link>
+            <Link to="/company/:companyname/pitchform" className="nav-item nav-link" href="#">Submit a Pitch</Link>
           </div>
         </div>
         <div className="btn-group">
