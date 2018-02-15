@@ -23,7 +23,13 @@ export default class Navbar extends Component {
             <Link to="/company/:companyname/pitchform" className="nav-item nav-link" href="#">Pitch</Link>
           </div>
         </div>
-        <Link to="/company/:companyname/accountsettings" id="settings"><i className="fas fa-cog fa-1x"></i></Link>
+        <div className="btn-group">
+          <i  className="fas fa-bars fa-1x" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+          <div className="dropdown-menu dropdown-menu-right">
+            <button className="dropdown-item" type="button">Settings</button>
+            <button className="dropdown-item" type="button">Sign Out</button>
+          </div>
+        </div>
         </div>
 
       </nav>

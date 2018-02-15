@@ -18,7 +18,7 @@ export default class App extends Component {
     return (
       <Router>
         <div>
-          {/* <Route component={NavBar} /> */}
+          <NavBar />
           <Switch>
             <Route exact path='/' component={Login} />
             <Route path='/signup' component={SignUp} />
@@ -30,7 +30,7 @@ export default class App extends Component {
             <Route path='/admin/dashboard' component={AdminDash} />
             <Route component={PageNotFound} />
           </Switch>
-          <Route component={Footer} />
+          <Footer />
         </div>
       </Router>
     );

@@ -8,7 +8,7 @@ const rootReducer = combineReducers({
 // add reducers
   form: formReducer,
   pitchform: PitchFormReducer,
-  signup: SignUpReducer,
+  // signup: SignUpReducer,
   companyDash: CompanyDashReducer,
   login: LoginReducer
 });

@@ -8,7 +8,7 @@ export default class Footer extends Component {
 
   render() {    
       return (
-        <div className="fixed-bottom card-footer text-muted">
+        <footer className="clearfix card-footer text-muted">
             <div className="container">
                 <div className="row">
                 <ul className="col col-md-5 offset-md-10">
@@ -30,7 +30,7 @@ export default class Footer extends Component {
                     <div className="col col-md-5">© Copyright 2017 - Origin Code Academy</div>
                 </div>
             </div>
-        </div>
+        </footer>
 
     );
   }
