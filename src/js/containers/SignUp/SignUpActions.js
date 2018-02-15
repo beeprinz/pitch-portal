@@ -8,9 +8,12 @@ export const SIGNUP_STARTED = 'SIGNUP_STARTED';
 export const SIGNUP_FULFILLED = 'SIGNUP_FULFILLED';
 export const SIGNUP_ERROR = 'SIGNUP_ERROR';
 
-const signUpNewUserStarted = () => ({
-  type: SIGNUP_STARTED
-});
+const signUpNewUserStarted = () => {
+  debugger;
+  return {
+    type: SIGNUP_STARTED
+  }
+};
 const signUpNewUserFulfilled = response => ({
   type: SIGNUP_FULFILLED,
   payload: response
@@ -23,7 +26,9 @@ const signupError = error => ({
 export function signUpNewUser(values) {
   const url = `${ROOT_URL}${USER}`;
   delete values.password2;
-  return dispatch => {
+  console.log('Values inside signUpNewUser', values)
+ 
+  return dispatch => {    
     dispatch(signUpNewUserStarted());
     axios
       .post(url, values)
