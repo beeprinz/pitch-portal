@@ -12,18 +12,17 @@ import Cookies from 'cookies-js'
           type: types.LOG_USER_IN,
           payload: axios
           .post('http://localhost:3000/login', values)
-          .then(response => {
-            Cookies.set('userId', response.data.userId);
-            Cookies.set('token', response.data.id);
-              return response
-        })
-          .catch(err => {
-            console.log('error',err);
-          }),
+            .then(response => {
+              Cookies.set('userId', response.data.userId);
+              Cookies.set('token', response.data.id);
+                return response
+            })
+            .catch(err => {
+              console.log('error',err);
+            }),
       }
 }
  export function userError(values){
-
      return{
          type: types.LOG_USER_IN_FAILED,
          payload: values

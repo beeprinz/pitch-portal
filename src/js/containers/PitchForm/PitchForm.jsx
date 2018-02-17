@@ -2,63 +2,94 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import axios from 'axios';
 import { getInfo } from './PitchFormActions'
-import SimpleReactFileUpload from './fileupload';
+import Cookies from 'cookies-js';
 
 class PitchForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      files: []
+      files: [],
+      activeSlide: false,
+      lastSlide:false,
+      filesUploaded: [],
+      fileSuccess: false
     };
+    // Binding Directory
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.handleSlide = this.handleSlide.bind(this)
     this.fileUpload = this.fileUpload.bind(this);
+    // this.handleLastSlide = this.handleLastSlide.bind(this)
   }
 
+  // Submission of A Project (Run file upload function, Dispatch to Actions and Submit Form)
   onSubmit(values){
     const { dispatch } = this.props;
-    // Dispatch that connects to the store.
-    // dispatch(getInfo(values));
-    console.log(this.state.files)
+    // Retrieving Cookie for Pitch Form in Database
+    values.userId = Cookies.get('userId')
+    // File Upload on Submit (Creating Conditional Submission depending if File was uploaded)
     const files = this.state.files;
-    console.log(files)
-    files.forEach((file) => {
-      this.fileUpload(file)
-      .then((response) => {
-        console.log('Response Data', response.data);
+    if(files) {
+      files.forEach((file) => {
+        this.fileUpload(file)
+        .then((response) => {
+          const fileLocation =  response.data.result.files.file[0].providerResponse.location
+            this.setState({filesUploaded: [...this.state, fileLocation], fileSuccess: true}, () => {
+              const fileState = this.state.fileSuccess
+              if(fileState) {
+                const fileSystem = this.state.filesUploaded
+                  values.filelinks = fileSystem
+                  // dispatch(createPitch(values))
+              }
+            })
+        });
       });
-    });
+    } else {
+      // Adding Date to Pitch Form
+    const dateNow = Date()
+    values.date = dateNow;
+    // Dispatch that connects to the store.
+    // dispatch(createPitch(values));
+    }
+
   }
-  // File Upload Sys
+  // File Upload System
 
-
+  // Handles On Change for File Stack
   onChange(e) {
-    console.log(e.target.files[0])
     const fileStack = this.state.files
-    fileStack.push(e.target.files[0])
-    this.setState({
-      files: fileStack
-    });
+      fileStack.push(e.target.files[0])
+        this.setState({
+          files: fileStack
+        });
   }
 
+  // File Upload to Amazon AWS (Client => Aws)
   fileUpload(file){
     const url = 'http://localhost:3000/api/containers/originpitchportal/upload';
     const formData = new FormData();
-
-    formData.append('file', file);
-
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data'
-      }
-    };
-
+      formData.append('file', file);
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      };
     return axios.post(url, formData, config);
   }
 
+  // Disables the first control so user cannot go to submission page by accident
+  handleSlide(e){
+    this.setState({activeSlide: true})
+    console.log(e.target.classList)
+      if(e.target.classList.contains('lastSlide')){
+        console.log('submmited')
+      }
+  }
+  // handleLastSlide(e){
 
+  // }
 
-
+  // Redux Forms Render Fields
   renderTextBox(field) {
     const { meta: { touched, error } } = field;
     return (
@@ -84,142 +115,164 @@ class PitchForm extends Component {
         </div>
         <div className ="text-danger">
           {touched ? error : ''}
-
         </div>
       </div>
     );
   }
 
   render() {
-
+    // const lastSlide = this.state.lastSlide
+    const activeSlide = this.state.activeSlide
     const { handleSubmit } = this.props;
-    const date = Date()
 
     console.log('State Of PitchForm', this.state);
     return (
       <div className='PitchForm'>
-        {/* NavBar goes here */}
           <div className='container'>
             <h1 className="text-center p-2"> Project Request Form </h1>
-            <ul className="nav nav-tabs" id="myTab" role="tablist">
-              <li className="nav-item">
-                <a className="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Information </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" id="goals-tab" data-toggle="tab" href="#goals" role="tab" aria-controls="goals" aria-selected="false">Goals and Key Features</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" id="tech-tab" data-toggle="tab" href="#tech" role="tab" aria-controls="tech" aria-selected="false">Existing Technologies</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" id="file-tab" data-toggle="tab" href="#file" role="tab" aria-controls="tech" aria-selected="false">Upload a File or Video</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" id="submit-tab" data-toggle="tab" href="#submit" role="tab" aria-controls="tech" aria-selected="false">Submit</a>
-              </li>
-            </ul>
-            <form onSubmit={ handleSubmit(this.onSubmit) }>
-              <div className="tab-content" id="myTabContent">
-                <div className="tab-pane fade show active p-3" id="basic" role="tabpanel" aria-labelledby="basic-tab">
-                  <Field
-                    label = 'Project Name (Required)'
-                    name = "name"
-                    component = {this.renderTextBox}
-                    placeholder = 'e.g Facebook Messenger, Google Plus, Youtube Red"'
-                  />
-                  <Field
-                    name ="description"
-                    label = 'Give a detailed description of the project. (Required)'
-                    component = {this.renderTextArea}
-                    placeholder = 'e.g This project is made for this target base, to help with this issue.'
-                    rows='4'
-                  />
-
-                </div>
-                <div className="tab-pane fade p-3" id="goals" role="tabpanel" aria-labelledby="goals-tab">
-                  <Field
-                    name ="goal"
-                    label = 'What is the goal/purpose of this project or application of the software? (Required)'
-                    component = {this.renderTextArea}
-                    placeholder = 'e.g The goal of this project is to help users find diffrent jobs or work.'
-                    rows = '3'
-                  />
-                  <Field
-                    name ="keyFeatures"
-                    label = 'What are some key features to have within this project? (Required)'
-                    component = {this.renderTextArea}
-                    placeholder = ' e.g User(s) can edit files, User(s) can create diffrent instances of files through database.'
-                    rows='2'
-                  />
-                </div>
-                <div className="tab-pane fade p-3" id="tech" role="tabpanel" aria-labelledby="tech-tab">
-                  <Field
-                    name ="exampleProducts"
-                    label = 'Are there any programs or software that you are currently using in place of this project? (Optional)'
-                    component = {this.renderTextArea}
-                    placeholder = 'e.g We have a currently outdated software that needs a upgrade or want the same software rebuilt.'
-                  />
-                  <Field
-                    name ="otherTech"
-                    label = 'Are there other technologies that could be used as refrenced? (Optional)'
-                    component = {this.renderTextArea}
-                    placeholder = 'e.g Microsoft Word, Github File System, Facebook messenger'
-                    rows='1'
-                  />
-                </div>
-                {/* File Input */}
-                <div className = 'tab-pane fade p-3' id="file" role="tabpanel" aria-labelledby="file-tab">
-                  <h1 className = "text-center"> Upload A file (.pptx, .doc, .docx) </h1>
-                  <div className = "card p-3">
-                    <div className = "card-body text-center p-3">
-                      <div className="text-center p-3">
-                      <div className="custom-file">
-                        <input type="file" onChange={this.onChange} className="custom-file-input" id="customFile" />
-                        <label className="custom-file-label" htmlFor="customFile">Choose file</label>
+              <form onSubmit={ handleSubmit(this.onSubmit) }>
+                <div id="carouselExampleControls"  className="carousel slide"  data-interval="false" data-ride="carousel">
+                    <div className="carousel-inner">
+                      <div className="carousel-item active">
+                          <div className="jumbotron jumbotron-fluid">
+                              <div className="container">
+                              <h1 className ="text-center"> Basic Info </h1>
+                               <hr />
+                              <Field
+                                label = 'Project Name (Required)'
+                                name = "name"
+                                component = {this.renderTextBox}
+                                placeholder = 'e.g Facebook Messenger, Google Plus, Youtube Red"'
+                              />
+                              <Field
+                                name ="description"
+                                label = 'Give a detailed description of the project. (Required)'
+                                component = {this.renderTextArea}
+                                placeholder = 'e.g This project is made for this target base, to help with this issue.'
+                                rows='4'
+                              />
+                              </div>
+                            </div>
                       </div>
-                      <h4 className="p-3" > Files Uploaded </h4>
-                        <ul className="list-group list-group-flush">
-                          {
-                            this.state.files.map(f => <li className="list-group-item" key={f.name}>{f.name} - {f.size} bytes</li>)
-                          }
-                        </ul>
+                      <div className="carousel-item">
+                              <div className="jumbotron jumbotron-fluid">
+                              <div className="container">
+                              <h1 className ="text-center"> Goals and Key Features </h1>
+                              <hr />
+                              <Field
+                                  name ="goal"
+                                  label = 'What is the goal/purpose of this project or application of the software? (Required)'
+                                  component = {this.renderTextArea}
+                                  placeholder = 'e.g The goal of this project is to help users find diffrent jobs or work.'
+                                  rows = '3'
+                                />
+                                <Field
+                                  name ="keyFeatures"
+                                  label = 'What are some key features to have within this project? (Required)'
+                                  component = {this.renderTextArea}
+                                  placeholder = ' e.g User(s) can edit files, User(s) can create diffrent instances of files through database.'
+                                  rows='2'
+                                />
+                              </div>
+                            </div>
+                      </div>
+                      <div className="carousel-item">
+                              <div className="jumbotron jumbotron-fluid">
+                              <div className="container">
+                              <h1 className = "text-center"> Existing Technologies </h1>
+                              <hr />
+                              <Field
+                                  name ="exampleProducts"
+                                  label = 'Are there any programs or software that you are currently using in place of this project? (Optional)'
+                                  component = {this.renderTextArea}
+                                  placeholder = 'e.g We have a currently outdated software that needs a upgrade or want the same software rebuilt.'
+                                />
+                                <Field
+                                  name ="otherTech"
+                                  label = 'Are there other technologies that could be used as refrenced? (Optional)'
+                                  component = {this.renderTextArea}
+                                  placeholder = 'e.g Microsoft Word, Github File System, Facebook messenger'
+                                  rows='1'
+                                />
+                              </div>
+                            </div>
+                      </div>
+                      <div className="carousel-item">
+                              <div className="jumbotron jumbotron-fluid">
+                              <div className="container">
+                              <h1 className ="text-center"> File And Uploading </h1>
+                              <hr />
+                              <h4 className = "text-center"> Upload A file (.pptx, .doc, .docx) </h4>
+                                <div className = "card p-3">
+                                  <div className = "card-body text-center ">
+                                    <div className="text-center ">
+                                    <div className="custom-file">
+                                      <input type="file" onChange={this.onChange} className="custom-file-input" id="customFile" />
+                                      <label className="custom-file-label" htmlFor="customFile">Choose file</label>
+                                    </div>
+                                    <h4 className="p-3" > Files Uploaded </h4>
+                                      <ul className="list-group list-group-flush">
+                                        {
+                                          this.state.files.map(f => <li className="list-group-item" key={f.name}>{f.name} - {f.size} bytes</li>)
+                                        }
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="p-3">
+                                <Field
+                                  name ="urlLink"
+                                  label = 'Link to video on youtube or other streaming services'
+                                  component = {this.renderTextBox}
+                                  placeholder = 'e.g https://www.youtube.com/watch?v=jNQXAC9IVRw'
+                                />
+                                </div>
+                              </div>
+                            </div>
+                      </div>
+                      <div className="carousel-item lastSlide">
+                                <div className="jumbotron jumbotron-fluid">
+                              <div className="container">
+                              <h1 className ="text-center"> Submission </h1>
+                                <hr />
+                              <Field
+                                  name ="additionalComments"
+                                  label = 'Additional Comments or Concerns? (Optional)'
+                                  component = {this.renderTextArea}
+                                  placeholder= 'e.g Please Contact after 5pm or feel free to contact before 8pm'
+                                  rows='3'
+                                />
+                                <div className='text-center'>
+                                <button type ="submit" className = "btn-lg btn-primary text-center"> Submit </button>
+                                </div>
+                              </div>
+                            </div>
+                        {/* </form> */}
                       </div>
                     </div>
+                  </div>
 
-                  </div>
-                  <div className="p-3">
-                  <Field
-                    name ="urlLink"
-                    label = 'Link to video on youtube or other streaming services'
-                    component = {this.renderTextBox}
-                    placeholder = 'e.g https://www.youtube.com/watch?v=jNQXAC9IVRw'
-                  />
-                  </div>
-                </div>
-                <div className = 'tab-pane fade p-3' id = "submit" role="tabpanel" aria-labelledby="submit-tab">
-                  <Field
-                    name ="additionalComments"
-                    label = 'Additional Comments or Concerns? (Optional)'
-                    component = {this.renderTextArea}
-                    placeholder= 'e.g Please Contact after 5pm or feel free to contact before 8pm'
-                    rows='3'
-                  />
-                  <div className='text-center'>
-                  <button type ="submit" className = "btn-lg btn-primary text-center"> Submit </button>
-                  </div>
-                </div>
-              </div>
-            </form>
+                  {activeSlide ? <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                        <div style={{fontSize: 100 +'px', color: 'blue'}}>
+                        <i className="fas fa-arrow-circle-left"></i>
+                        </div>
+                  </a> :''}
+
+                      <a onClick ={this.handleSlide}  className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                      <div style={{fontSize: 100 +'px', color: 'blue'}}>
+                        <i className="fas fa-arrow-circle-right"></i>
+                        </div>
+                      </a>
+                </form>
           </div>
-        {/* footer goes here */}
       </div>
     );
   }
 }
+// Validation (Client-Side)
 function validate(values) {
   const errors = {};
 
-  // Validation
   if (!values.name) {
     errors.name = 'Please Enter A Project Name';
   }
@@ -238,7 +291,7 @@ function validate(values) {
 }
 
 
-
+// Exporting Redux Reducer (forms)
 export default reduxForm({
   validate,
   form: 'PitchForm'
