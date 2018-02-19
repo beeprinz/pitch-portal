@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import axios from 'axios';
-import { getInfo } from './PitchFormActions'
+import { createProject } from './PitchFormActions'
 import Cookies from 'cookies-js';
+import { Redirect } from "react-router";
 
 class PitchForm extends Component {
   constructor(props) {
@@ -25,31 +26,31 @@ class PitchForm extends Component {
   // Submission of A Project (Run file upload function, Dispatch to Actions and Submit Form)
   onSubmit(values){
     const { dispatch } = this.props;
-    // Retrieving Cookie for Pitch Form in Database
+    // Retrieving Cookie for Pitch Form in Database & adding date and status
+    const dateNow = Date()
     values.userId = Cookies.get('userId')
+    values.date = dateNow;
+  
     // File Upload on Submit (Creating Conditional Submission depending if File was uploaded)
     const files = this.state.files;
-    if(files) {
+    if(!files || files.length > 1  ) {
       files.forEach((file) => {
         this.fileUpload(file)
         .then((response) => {
           const fileLocation =  response.data.result.files.file[0].providerResponse.location
-            this.setState({filesUploaded: [...this.state, fileLocation], fileSuccess: true}, () => {
+            this.setState({filesUploaded: [...this.state.filesUploaded, fileLocation], fileSuccess: true}, () => {
               const fileState = this.state.fileSuccess
               if(fileState) {
                 const fileSystem = this.state.filesUploaded
-                  values.filelinks = fileSystem
-                  // dispatch(createPitch(values))
+                  values.fileLinks = fileSystem
+                  dispatch(createProject(values))
               }
             })
         });
       });
     } else {
-      // Adding Date to Pitch Form
-    const dateNow = Date()
-    values.date = dateNow;
     // Dispatch that connects to the store.
-    // dispatch(createPitch(values));
+    dispatch(createProject(values));
     }
 
   }
@@ -124,11 +125,13 @@ class PitchForm extends Component {
     // const lastSlide = this.state.lastSlide
     const activeSlide = this.state.activeSlide
     const { handleSubmit } = this.props;
-
-    console.log('State Of PitchForm', this.state);
+    // Adding Store to see if redirection is true
+    const { projectSubmitted } = this.props.pitchform;
+    console.log(projectSubmitted);
     return (
       <div className='PitchForm'>
           <div className='container'>
+          {projectSubmitted ? <Redirect to='/company/:companyname/dashboard' /> : ''}
             <h1 className="text-center p-2"> Project Request Form </h1>
               <form onSubmit={ handleSubmit(this.onSubmit) }>
                 <div id="carouselExampleControls"  className="carousel slide"  data-interval="false" data-ride="carousel">

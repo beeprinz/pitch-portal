@@ -3,6 +3,7 @@ import Login from './Login';
 
 
 function mapStoreToProps(store){
+    console.log(store)
     return{
         login: store.login
     };

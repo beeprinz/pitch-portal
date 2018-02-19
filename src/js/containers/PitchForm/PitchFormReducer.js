@@ -1,7 +1,8 @@
 import { types } from './PitchFormActions';
 
 const initialState = {
-        info: ''
+    projectSubmitted: false,
+    responseObj: ''
 };
 
 
@@ -9,10 +10,17 @@ export default function PitchFormReducer(state = initialState, action) {
     const { type, payload } = action;
 
     switch (type) {
-        case types.GET_INFO: {
+        case `${types.CREATE_PROJECT}_FULFILLED`: {
             return {
               ...state,
-              info: payload
+                projectSubmitted: true,
+                responseObj: payload
+            };
+        }
+        case types.CREATE_PROJECT_FULLFILLED: {
+            return {
+                ...state,
+                projectSubmitted: true
             };
         }
         default: {

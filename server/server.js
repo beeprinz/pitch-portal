@@ -28,18 +28,6 @@ app.use(morgan('dev'));
 app.use(express.static(dist));
 app.use(express.static(public));
 
-// app.post('/login', function(req, res) {
-//   user.login({
-//     email: req.body.email,
-//     password: req.body.password
-//   }, 'user', function(err, token) {
-//     if (err) {
-//      console.log(err)
-//     } else {
-//       console.log(token)
-//     }
-//   });
-// });
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(public, 'index.html'));

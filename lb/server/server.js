@@ -23,7 +23,7 @@ app.start = function() {
   });
 };
 
-app.post('/login', (req,res) =>{
+app.post('/login', (req,res) => {
   // User Model Defined
   let User = app.models.User;
   let userInfo = req.body
@@ -48,6 +48,22 @@ app.post('/login', (req,res) =>{
 //       res.send(projects)
 //       // { projects
 //     }
+
+app.post('/form', (req,res) => {
+  // console.log(req.body)
+  // Projects Defined Model
+  let Project = app.models.project;
+  let newProject = req.body
+  Project.create(newProject, (err,project) => {
+    if (err) {
+      res.send(err)
+    } else {
+      console.log(project)
+      res.send(project)
+    }
+  })
+
+})
 
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.

@@ -8,7 +8,7 @@ import NavBar from './containers/NavBar/NavBar';
 import Footer from './containers/Footer/Footer';
 import CompanyDash from './containers/CompanyDash';
 import AdminDash from './containers/AdminDash/AdminDash';
-import PitchForm from './containers/PitchForm/PitchForm';
+import PitchForm from './containers/PitchForm';
 import PitchDetail from './containers/PitchDetail/PitchDetail';
 import AccountSettings from './containers/AccountSettings/AccountSettings';
 import Comments from './containers/Comments';
