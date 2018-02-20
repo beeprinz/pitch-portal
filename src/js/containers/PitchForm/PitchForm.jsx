@@ -4,7 +4,7 @@ import axios from 'axios';
 import { createProject } from './PitchFormActions'
 import Cookies from 'cookies-js';
 import { Redirect } from "react-router";
-
+import validate from './validate';
 class PitchForm extends Component {
   constructor(props) {
     super(props);
@@ -13,14 +13,18 @@ class PitchForm extends Component {
       activeSlide: false,
       lastSlide:false,
       filesUploaded: [],
-      fileSuccess: false
+      fileSuccess: false,
+      slideCount:0,
+      firstSlide: true,
+      lastSlide: false
+    
     };
     // Binding Directory
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.handleSlide = this.handleSlide.bind(this)
+    this.handleRightSlide = this.handleRightSlide.bind(this);
     this.fileUpload = this.fileUpload.bind(this);
-    // this.handleLastSlide = this.handleLastSlide.bind(this)
+    this.handleLeftSlide = this.handleLeftSlide.bind(this);
   }
 
   // Submission of A Project (Run file upload function, Dispatch to Actions and Submit Form)
@@ -79,20 +83,33 @@ class PitchForm extends Component {
   }
 
   // Disables the first control so user cannot go to submission page by accident
-  handleSlide(e){
-    this.setState({activeSlide: true})
-    console.log(e.target.classList)
-      if(e.target.classList.contains('lastSlide')){
-        console.log('submmited')
+  handleLeftSlide(e){
+      const clickCount = this.state.slideCount - 1
+
+      if (this.state.slideCount == 0){
+        this.setState({firstSlide: true})
+      } else {
+        this.setState({slideCount: clickCount, lastSlide: false, firstSlide: false})
       }
+    //   this.setState({lastSlide:true, slideCount: 4})
+    console.log(this.state.slideCount, "Left Side ")
+    // }
   }
-  // handleLastSlide(e){
-
-  // }
-
+  handleRightSlide(e){
+     const slideCountOnRight = this.state.slideCount  + 1
+     
+     if (this.state.slideCount == 3) {
+       this.setState({lastSlide: true})
+     } else {
+      this.setState({slideCount:slideCountOnRight, lastSlide:false, firstSlide: false})
+     }
+    console.log(this.state.slideCount, "Right side  ")
+  }
   // Redux Forms Render Fields
   renderTextBox(field) {
+   
     const { meta: { touched, error } } = field;
+   
     return (
       <div>
         <div className= "form-group text-center">
@@ -108,6 +125,7 @@ class PitchForm extends Component {
 
   renderTextArea(field) {
     const { meta: { touched, error } } = field;
+    
     return (
       <div>
         <div className="form-group text-center">
@@ -122,26 +140,27 @@ class PitchForm extends Component {
   }
 
   render() {
-    // const lastSlide = this.state.lastSlide
-    const activeSlide = this.state.activeSlide
+    const lastSlide = this.state.lastSlide
+    const firstSlide = this.state.firstSlide
     const { handleSubmit } = this.props;
     // Adding Store to see if redirection is true
     const { projectSubmitted } = this.props.pitchform;
-    console.log(projectSubmitted);
+    // console.log(projectSubmitted);
     return (
       <div className='PitchForm'>
           <div className='container'>
-          {projectSubmitted ? <Redirect to='/company/:companyname/dashboard' /> : ''}
+          {/* {projectSubmitted ? <Redirect to='/company/:companyname/dashboard' /> : ''} */}
             <h1 className="text-center p-2"> Project Request Form </h1>
               <form onSubmit={ handleSubmit(this.onSubmit) }>
                 <div id="carouselExampleControls"  className="carousel slide"  data-interval="false" data-ride="carousel">
                     <div className="carousel-inner">
-                      <div className="carousel-item active">
+                      <div key={1} className="carousel-item active">
                           <div className="jumbotron jumbotron-fluid">
                               <div className="container">
                               <h1 className ="text-center"> Basic Info </h1>
                                <hr />
                               <Field
+                                key = 'firstSlide'
                                 label = 'Project Name (Required)'
                                 name = "name"
                                 component = {this.renderTextBox}
@@ -163,6 +182,7 @@ class PitchForm extends Component {
                               <h1 className ="text-center"> Goals and Key Features </h1>
                               <hr />
                               <Field
+                                  key = 'goal'
                                   name ="goal"
                                   label = 'What is the goal/purpose of this project or application of the software? (Required)'
                                   component = {this.renderTextArea}
@@ -239,6 +259,7 @@ class PitchForm extends Component {
                               <h1 className ="text-center"> Submission </h1>
                                 <hr />
                               <Field
+                                  key="lastSlide"
                                   name ="additionalComments"
                                   label = 'Additional Comments or Concerns? (Optional)'
                                   component = {this.renderTextArea}
@@ -250,49 +271,27 @@ class PitchForm extends Component {
                                 </div>
                               </div>
                             </div>
-                        {/* </form> */}
                       </div>
                     </div>
                   </div>
 
-                  {activeSlide ? <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+               {firstSlide ? '' : <a onClick = {this.handleLeftSlide} className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
                         <div style={{fontSize: 100 +'px', color: 'blue'}}>
                         <i className="fas fa-arrow-circle-left"></i>
                         </div>
-                  </a> :''}
+                  </a> }
 
-                      <a onClick ={this.handleSlide}  className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                 {lastSlide ? '':  <a onClick ={this.handleRightSlide}  className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
                       <div style={{fontSize: 100 +'px', color: 'blue'}}>
                         <i className="fas fa-arrow-circle-right"></i>
                         </div>
-                      </a>
+                      </a> }
                 </form>
           </div>
       </div>
     );
   }
 }
-// Validation (Client-Side)
-function validate(values) {
-  const errors = {};
-
-  if (!values.name) {
-    errors.name = 'Please Enter A Project Name';
-  }
-  if (!values.description) {
-    errors.description = 'Please Enter A Description';
-  }
-  if (!values.goal) {
-    errors.goal = 'Please Enter the goal of this project';
-  }
-  if (!values.keyFeatures) {
-    errors.keyFeatures = 'Please list some key features for your project';
-  }
-
-  // If 'errors' is empty, the form is fine to submit
-  return errors;
-}
-
 
 // Exporting Redux Reducer (forms)
 export default reduxForm({
