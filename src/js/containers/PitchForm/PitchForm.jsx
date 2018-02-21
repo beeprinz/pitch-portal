@@ -15,6 +15,7 @@ class PitchForm extends Component {
       filesUploaded: [],
       fileSuccess: false,
       slideCount:0,
+      page:1,
       firstSlide: true,
       lastSlide: false
     
@@ -84,26 +85,28 @@ class PitchForm extends Component {
 
   // Disables the first control so user cannot go to submission page by accident
   handleLeftSlide(e){
-      const clickCount = this.state.slideCount - 1
+    const clickCount = this.state.page- 1
+    this.setState({page: clickCount})
 
-      if (this.state.slideCount == 0){
-        this.setState({firstSlide: true})
-      } else {
-        this.setState({slideCount: clickCount, lastSlide: false, firstSlide: false})
-      }
-    //   this.setState({lastSlide:true, slideCount: 4})
-    console.log(this.state.slideCount, "Left Side ")
-    // }
+
+    //   if (this.state.slideCount == 0){
+    //     this.setState({firstSlide: true})
+    //   } else {
+    //     this.setState({slideCount: clickCount, lastSlide: false, firstSlide: false})
+    //   }
+    // //   this.setState({lastSlide:true, slideCount: 4})
+    // console.log(this.state.slideCount, "Left Side ")
+    // // }
   }
   handleRightSlide(e){
-     const slideCountOnRight = this.state.slideCount  + 1
-     
-     if (this.state.slideCount == 3) {
-       this.setState({lastSlide: true})
-     } else {
-      this.setState({slideCount:slideCountOnRight, lastSlide:false, firstSlide: false})
-     }
-    console.log(this.state.slideCount, "Right side  ")
+   const slideCountOnRight = this.state.page  + 1
+     this.setState({page: slideCountOnRight})
+  //    if (this.state.slideCount == 3) {
+  //      this.setState({lastSlide: true})
+  //    } else {
+  //     this.setState({slideCount:slideCountOnRight, lastSlide:false, firstSlide: false})
+  //    }
+  //   console.log(this.state.slideCount, "Right side  ")
   }
   // Redux Forms Render Fields
   renderTextBox(field) {
@@ -154,7 +157,8 @@ class PitchForm extends Component {
               <form onSubmit={ handleSubmit(this.onSubmit) }>
                 <div id="carouselExampleControls"  className="carousel slide"  data-interval="false" data-ride="carousel">
                     <div className="carousel-inner">
-                      <div key={1} className="carousel-item active">
+                    {this.state.page == 1 &&
+                      <div className="carousel-item active">
                           <div className="jumbotron jumbotron-fluid">
                               <div className="container">
                               <h1 className ="text-center"> Basic Info </h1>
@@ -175,8 +179,9 @@ class PitchForm extends Component {
                               />
                               </div>
                             </div>
-                      </div>
-                      <div className="carousel-item">
+                      </div>}
+                      {this.state.page == 2 && 
+                      <div className="carousel-item active">
                               <div className="jumbotron jumbotron-fluid">
                               <div className="container">
                               <h1 className ="text-center"> Goals and Key Features </h1>
@@ -199,7 +204,9 @@ class PitchForm extends Component {
                               </div>
                             </div>
                       </div>
-                      <div className="carousel-item">
+                      }
+                      {this.state.page == 3 && 
+                      <div className="carousel-item active">
                               <div className="jumbotron jumbotron-fluid">
                               <div className="container">
                               <h1 className = "text-center"> Existing Technologies </h1>
@@ -220,7 +227,9 @@ class PitchForm extends Component {
                               </div>
                             </div>
                       </div>
-                      <div className="carousel-item">
+                      }
+                      {this.state.page == 4 &&
+                      <div className="carousel-item active">
                               <div className="jumbotron jumbotron-fluid">
                               <div className="container">
                               <h1 className ="text-center"> File And Uploading </h1>
@@ -253,7 +262,9 @@ class PitchForm extends Component {
                               </div>
                             </div>
                       </div>
-                      <div className="carousel-item lastSlide">
+                      }
+                      {this.state.page == 5 &&
+                      <div className="carousel-item active lastSlide">
                                 <div className="jumbotron jumbotron-fluid">
                               <div className="container">
                               <h1 className ="text-center"> Submission </h1>
@@ -272,20 +283,22 @@ class PitchForm extends Component {
                               </div>
                             </div>
                       </div>
+                      }
                     </div>
+                      
                   </div>
 
-               {firstSlide ? '' : <a onClick = {this.handleLeftSlide} className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+               {this.state.page !== 1 && <a onClick = {this.handleLeftSlide} className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
                         <div style={{fontSize: 100 +'px', color: 'blue'}}>
                         <i className="fas fa-arrow-circle-left"></i>
                         </div>
-                  </a> }
+                    </a> }
 
-                 {lastSlide ? '':  <a onClick ={this.handleRightSlide}  className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                {this.state.page !== 5 &&  <a onClick ={this.handleRightSlide}  className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
                       <div style={{fontSize: 100 +'px', color: 'blue'}}>
                         <i className="fas fa-arrow-circle-right"></i>
                         </div>
-                      </a> }
+                    </a> }
                 </form>
           </div>
       </div>
