@@ -20,8 +20,7 @@ export default class App extends Component {
       <Router>
         <div>
           <NavBar />
-          <Switch>
-            
+          <Switch>            
             <Route exact path='/' component={Login} />
             <Route path='/signup' component={SignUp} />
             <Route path='/thanks' component={ThankYou} />

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const USER = '/users';
-const ROOT_URL = 'http://localhost:8080';
+const ROOT_URL = 'http://localhost:3000/api';
 
 export const NEW_USER_SIGNUP = 'NEW_USER_SIGNUP';
 export const SIGNUP_STARTED = 'SIGNUP_STARTED';
@@ -25,18 +25,16 @@ const signupError = error => ({
 export function signUpNewUser(values) {
   const url = `${ROOT_URL}${USER}`;
   delete values.password2;
-  console.log('Values inside signUpNewUser', values);
   return dispatch => {
     dispatch(signUpNewUserStarted());
     axios
       .post(url, values)
       .then(response => {
-        console.log('axios response inside signUpNewUser: ', response);
         dispatch(signUpNewUserFulfilled(response));
+        console.log(response);
       })
       .catch(error => {
         dispatch(signupError(error));
-        console.log('An error occured: ', error);
       });
   };
 }

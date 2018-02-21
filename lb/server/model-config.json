@@ -41,7 +41,10 @@
   },
   "user": {
     "dataSource": "MongoDB",
-    "public": true
+    "public": true,
+    "options": {
+      "emailVerificationRequired": true
+    }
   },
   "project": {
     "dataSource": "MongoDB",

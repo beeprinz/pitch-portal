@@ -6,10 +6,21 @@ import {
 } from './SignUpActions';
 
 const INITIAL_STATE = {
-  pending: false
+  pending: false,
+  status: '',
+  firstName: '',
+  lastName: '',
+  position: '',
+  company: '',
+  email: '',
+  phone: '',
+  website: '',
+  info: '',
+  type: '',
+  id: ''
 };
 
-export default function(state = INITIAL_STATE, action) {
+export default function SignUpReducer(state = INITIAL_STATE, action) {
   const { type, payload, error } = action;
 
   switch (type) {
@@ -23,7 +34,17 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         pending: false,
-        payload
+        status: payload.status,
+        firstName: payload.data.firstName,
+        lastName: payload.data.lastName,
+        position: payload.data.position,
+        company: payload.data.company,
+        email: payload.data.email,
+        phone: payload.data.phone,
+        website: payload.data.website,
+        info: payload.data.info,
+        type: payload.data.type,
+        id: payload.data.id
       };
       break;
     case SIGNUP_ERROR:
