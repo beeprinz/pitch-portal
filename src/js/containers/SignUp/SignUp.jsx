@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
-import { bindActionCreators } from 'redux';
 import SignUpFirstPage from './SignUpFirstPage';
 import SignUpSecondPage from './SignUpSecondPage';
 import SignUpThirdPage from './SignUpThirdPage';
 import { signUpNewUser } from './SignUpActions';
 
-class SignUp extends Component {
+export default class SignUp extends Component {
   constructor(props) {
     super(props);
     this.nextPage = this.nextPage.bind(this);
@@ -53,11 +50,4 @@ class SignUp extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  handleSearchSubmit: values => dispatch(signUpNewUser(values))
-});
 
-function mapStateToProps({ signup }) {
-  return { signup };
-}
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
