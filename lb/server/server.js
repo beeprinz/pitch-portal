@@ -37,14 +37,6 @@ app.post('/login', (req,res) =>{
   })
 })
 
-  User.login({email: userInfo.email, password: userInfo.password}, function (err, token) {
-    if (err){
-     res.send(err)
-    }else {
-     res.send(token)
-    }
-  })
-})
 // app.get('/getprojects/:userId', (req,res)){
 //   let Project = app.models.projects
 
