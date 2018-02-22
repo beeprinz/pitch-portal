@@ -3,7 +3,7 @@
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 var bodyParser = require('body-parser');
-
+var axios = require('axios');
 var app = module.exports = loopback();
 
 
@@ -23,8 +23,37 @@ app.start = function() {
   });
 };
 
-app.post('/login', (req,res) => {
-  // User Model Defined
+app.get('/fetchprojects/:userId', (req,res) => {
+  let Projects = app.models.project;
+  console.log(req.params.userId)
+
+  Projects.find({where: {userId: req.params.userId}}, function(err, projects) {
+    if(err){
+      res.send(err)
+    }else{
+    res.send(projects)
+    }
+  });
+})
+
+app.get('/allProjects', (req, res) => {
+  let Projects = app.models.project;
+  let Users = app.models.user;
+  Projects.find((err, projects) => {
+    if(err){
+      console.log(err)
+      res.send(err)
+    }else{
+      console.log(projects);
+      axios.get('http://localhost:3000/api/users/')
+        .then(users => {
+          return res.send({ users: users.data, projects})
+        });
+      
+    }
+  });
+})
+app.post('/login', (req,res) =>{
   let User = app.models.User;
   let userInfo = req.body
 
@@ -37,7 +66,6 @@ app.post('/login', (req,res) => {
     }
   })
 })
-
 // app.get('/getprojects/:userId', (req,res)){
 //   let Project = app.models.projects
 

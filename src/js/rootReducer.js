@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import PitchFormReducer from './containers/PitchForm/PitchFormReducer';
+import AdminDashReducer from './containers/AdminDash/AdminDashReducer';
 import CompanyDashReducer from './containers/CompanyDash/CompanyDashReducer';
 import LoginReducer from './containers/Login/LoginReducer';
 import SignUpReducer from './containers/SignUp/SignUpReducer';
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   form: formReducer,
   pitchform: PitchFormReducer,
   // signup: SignUpReducer,
+  adminDash:AdminDashReducer,
   companyDash: CompanyDashReducer,
   login: LoginReducer,
   comment: CommentsReducer
