@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
 // add reducers
   form: formReducer,
   pitchform: PitchFormReducer,
-  // signup: SignUpReducer,
+signup: SignUpReducer,
   adminDash:AdminDashReducer,
   companyDash: CompanyDashReducer,
   login: LoginReducer,

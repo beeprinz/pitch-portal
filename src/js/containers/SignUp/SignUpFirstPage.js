@@ -38,8 +38,8 @@ const SignUpFirstPage = props => {
 };
 
 export default reduxForm({
-  form: 'SignUp', //Form name is same
+  form: 'SignUp',
   destroyOnUnmount: false,
-  forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
+  forceUnregisterOnUnmount: true,
   validate
 })(SignUpFirstPage);

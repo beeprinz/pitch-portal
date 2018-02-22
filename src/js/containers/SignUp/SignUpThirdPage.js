@@ -1,17 +1,27 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { Link } from 'react-router-dom';
 import validate from './validate';
 import { renderTextField, renderTextAreaField } from './renderField';
-// import { signUpNewUser } from './SignUpActions';
-
-
 
 const SignUpThirdPage = props => {
-  const { handleSubmit, pristine, previousPage, submitting, signUpNewUser, value } = props;
-  console.log('props on page three', props)
+  const {
+    company,
+    handleSubmit,
+    pristine,
+    previousPage,
+    submitting,
+    signUpNewUser,
+    value
+  } = props;
   return (
     <form onSubmit={handleSubmit}>
-      <Field name='email' type='email' component={renderTextField} label='Email' />
+      <Field
+        name='email'
+        type='email'
+        component={renderTextField}
+        label='Email'
+      />
       <Field
         name='password'
         type='password'
@@ -22,7 +32,7 @@ const SignUpThirdPage = props => {
         name='password2'
         type='password'
         component={renderTextField}
-        label='Re-enter Password'
+        label='Confirm Password'
       />
       <Field
         name='phone'

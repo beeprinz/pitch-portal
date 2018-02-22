@@ -1,43 +1,43 @@
 import axios from 'axios';
+import Cookies from 'cookies-js';
 
-const USER = '/users';
-const ROOT_URL = 'localhost:8080';
+const USER = '/customSignUp';
+const ROOT_URL = 'http://localhost:3000';
 
 export const NEW_USER_SIGNUP = 'NEW_USER_SIGNUP';
-export const SIGNUP_STARTED = 'SIGNUP_STARTED';
+export const TOKEN_RECEIVED = 'TOKEN_RECEIVED';
 export const SIGNUP_FULFILLED = 'SIGNUP_FULFILLED';
 export const SIGNUP_ERROR = 'SIGNUP_ERROR';
 
-const signUpNewUserStarted = () => {
-  debugger;
-  return {
-    type: SIGNUP_STARTED
-  }
-};
-const signUpNewUserFulfilled = response => ({
-  type: SIGNUP_FULFILLED,
+const tokenReceived = response => ({
+  type: TOKEN_RECEIVED,
   payload: response
+});
+const signUpData = values => ({
+  type: SIGNUP_FULFILLED,
+  payload: values
 });
 const signupError = error => ({
   type: SIGNUP_ERROR,
-  error
+  payload: error
 });
 
 export function signUpNewUser(values) {
   const url = `${ROOT_URL}${USER}`;
+  //deletes confirmation password from state
   delete values.password2;
-  console.log('Values inside signUpNewUser', values)
- 
-  return dispatch => {    
-    dispatch(signUpNewUserStarted());
+  return dispatch => {
+    //saves signup data to application state
+    dispatch(signUpData(values));
     axios
+      //post call to loopback server to signup new user + log them in
       .post(url, values)
+      // receives access token object and saves it to application state
       .then(response => {
-        dispatch(signUpNewUserFulfilled(response));
+        dispatch(tokenReceived(response.data));
       })
       .catch(error => {
         dispatch(signupError(error));
-        console.log('An error occured: ', error);
       });
   };
-};
+}
