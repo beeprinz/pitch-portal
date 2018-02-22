@@ -24,9 +24,7 @@
       "default": 0
     },
     "existingProduct": {
-      "type": "string",
-      "required": false,
-      "default": false
+      "type": "string"
     },
     "technologiesUsed": {
       "type": "string"
@@ -47,6 +45,9 @@
     },
     "fileUpload": {
       "type": "string"
+    },
+    "fileLinks": {
+      "type":"array"
     },
     "complete": {
       "type": "boolean",

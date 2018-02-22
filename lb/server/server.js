@@ -23,14 +23,15 @@ app.start = function() {
   });
 };
 
-app.post('/login', (req,res) =>{
+app.post('/login', (req,res) => {
+  // User Model Defined
   let User = app.models.User;
-
   let userInfo = req.body
 
+  // User Login Function to LoopBack Api
   User.login({email: userInfo.email, password: userInfo.password}, function (err, token) {
     if (err){
-      res.send ('there was error ')
+      res.send(err)
     }else {
       res.send(token)
     }
@@ -48,8 +49,22 @@ app.post('/login', (req,res) =>{
 //       // { projects
 //     }
 
-//   });
-// }
+app.post('/createproject', (req,res) => {
+  // console.log(req.body)
+  // Projects Defined Model
+  let Project = app.models.project;
+  let newProject = req.body
+  Project.create(newProject, (err,project) => {
+    if (err) {
+      res.send(err)
+    } else {
+      console.log(project)
+      res.send(project)
+    }
+  })
+
+})
+
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
 boot(app, __dirname, function(err) {

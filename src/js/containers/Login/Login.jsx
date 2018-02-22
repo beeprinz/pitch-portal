@@ -9,7 +9,9 @@ import { Redirect } from "react-router";
 class Login extends Component {
   constructor(props) {
     super(props);
-
+        this.state ={
+          error:false
+        }
     this.renderEmailField = this.renderEmailField.bind(this);
     this.renderPasswordField = this.renderPasswordField.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -67,15 +69,24 @@ class Login extends Component {
   //look up insure login function for loopback to kick people out of the dashboard if they're not logged in
 
   render() {
-    const temp = Cookies.get('token')
-    console.log(temp, 'token')
-     // if (this.props.login.LogIn) return <Redirect to="/thanks" />
+    const redirectionCookie = Cookies.get('token')
+
+     if (redirectionCookie){
+      return <Redirect to="/company/:companyname/dashboard" />
+     } else {
+        console.log('error')
+     }
+
     //if this.props.login.LogIn is set to true redirect,
     const { handleSubmit } = this.props;
-    return <div className="container">
+    return (
+    <div className="container">
+    <div id="mydiv">
         {/* get rid of container, row and col-5 to remove size styling */}
-        <div className="row">
+        <div className="row text-center">
+          {/* {error ? <p>'error' </p>: <p>'no Error'</p>} */}
           <form className="form-signin col-5" onSubmit={handleSubmit(this.onSubmit)}>
+          {/* {error ? 'error' : 'no Error'} */}
             <h1 className="h3 my-3 font-weight-normal text-center">
               Please sign in
             </h1>
@@ -102,7 +113,9 @@ class Login extends Component {
             </Link>
           </form>
         </div>
-      </div>;
+      </div>
+      </div>
+    )
   }
 }
 
