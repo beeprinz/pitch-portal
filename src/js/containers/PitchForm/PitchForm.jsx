@@ -87,28 +87,11 @@ class PitchForm extends Component {
   handleLeftSlide(e){
     const clickCount = this.state.page- 1
     this.setState({page: clickCount})
-
-
-    //   if (this.state.slideCount == 0){
-    //     this.setState({firstSlide: true})
-    //   } else {
-    //     this.setState({slideCount: clickCount, lastSlide: false, firstSlide: false})
-    //   }
-    // //   this.setState({lastSlide:true, slideCount: 4})
-    // console.log(this.state.slideCount, "Left Side ")
-    // // }
   }
   handleRightSlide(e){
    const slideCountOnRight = this.state.page  + 1
      this.setState({page: slideCountOnRight})
-  //    if (this.state.slideCount == 3) {
-  //      this.setState({lastSlide: true})
-  //    } else {
-  //     this.setState({slideCount:slideCountOnRight, lastSlide:false, firstSlide: false})
-  //    }
-  //   console.log(this.state.slideCount, "Right side  ")
   }
-  // Redux Forms Render Fields
   renderTextBox(field) {
    
     const { meta: { touched, error } } = field;
@@ -251,7 +234,36 @@ class PitchForm extends Component {
                                     </div>
                                   </div>
                                 </div>
-                                <div className="p-3">
+                                <div className="p-3 text-center">
+                                <h4> For Directions on how to upload your video on a third party site click here</h4>
+                                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                  Launch demo modal
+                                </button>
+                                    <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                      <div className="modal-dialog" role="document">
+                                        <div className="modal-content">
+                                          <div className="modal-header">
+                                            <h5 className="modal-title" id="exampleModalLabel">Uploading Directions</h5>
+                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                          <div className="modal-body">
+                                            <ul className="list-group list-group-flush">
+                                              <li className="list-group-item">Cras justo odio</li>
+                                              <li className="list-group-item">Dapibus ac facilisis in</li>
+                                              <li className="list-group-item">Morbi leo risus</li>
+                                              <li className="list-group-item">Porta ac consectetur ac</li>
+                                              <li className="list-group-item">Vestibulum at eros</li>
+                                            </ul>
+                                          </div>
+                                          <div className="modal-footer">
+                                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" className="btn btn-primary">Save changes</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
                                 <Field
                                   name ="urlLink"
                                   label = 'Link to video on youtube or other streaming services'

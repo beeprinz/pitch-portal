@@ -7,7 +7,7 @@ export function createProject(values) {
   return {
     type: types.CREATE_PROJECT,
     payload: axios
-            .post('http://localhost:3000/form',values)
+            .post('http://localhost:3000/createproject',values)
              .then( response => {
                 return response;
              })
