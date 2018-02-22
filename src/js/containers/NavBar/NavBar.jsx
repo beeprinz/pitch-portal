@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import Cookies from 'cookies-js'
+import { Redirect } from "react-router";
+import axios from 'axios';
 
 export default class Navbar extends Component {
   constructor(props) {
     super(props);
-    this.handleLogOut = this.handleLogOut.bind(this)
+    this.handleLogout = this.handleLogout.bind(this);
+    
+  }
+  handleLogout(e){
+   const logoutId = Cookies.get('userId');
+   const accessToken = Cookies.get('token')
+   Cookies.expire('userId');
+   Cookies.expire('token');
+    axios.delete ('http://localhost:3000/api/users/'+logoutId+'/accessTokens')
+   //need to redirect back to the login homepage after cookies are deleted
+   //need to set a loopback user logout function to actually log the user out of loopback
   }
 
   handleLogOut (event){
@@ -15,6 +27,7 @@ export default class Navbar extends Component {
   }
   render() {
     return (
+   
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,20 +39,21 @@ export default class Navbar extends Component {
             <Link to="/" className="nav-item nav-link active" href="#">Pitch Portal <span className="sr-only">(current)</span></Link>
             {/* Test if it is an Admin account or Company account to link to the correct 'Dashboard' */}
             <Link to="/company/:companyname/dashboard" className="nav-item nav-link" href="#">Dashboard</Link>
-            {/* Link to submit a new pitch/project */}
+            {/* Link to submit a new aaapitch/project */}
             <Link to="/company/:companyname/pitchform" className="nav-item nav-link" href="#">Submit a Pitch</Link>
           </div>
         </div>
         <div className="btn-group">
           <i  className="fas fa-bars fa-1x" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
           <div className="dropdown-menu dropdown-menu-right">
-            <button className="dropdown-item" type="button">Settings</button>
-            <button className="dropdown-item" onClick = {this.handleLogOut} type="button">Sign Out</button>
+            <button className="dropdown-item" type="button" >Settings</button>
+            <button className="dropdown-item" type="button"  onClick={ this.handleLogout }><Link className="btn btn-danger btn-md" to="/">Sign Out</Link></button>
           </div>
         </div>
         </div>
 
-      </nav>
+      </nav> 
+    
     );
   }
 };

@@ -6,7 +6,7 @@ import CompanyDashReducer from './containers/CompanyDash/CompanyDashReducer';
 import LoginReducer from './containers/Login/LoginReducer';
 import SignUpReducer from './containers/SignUp/SignUpReducer';
 import CommentsReducer from './containers/Comments/CommentsReducer';
-
+import AccountSettingsReducer from './containers/AccountSettings/AccountSettingsReducer';
 
 const rootReducer = combineReducers({
 // add reducers
@@ -16,7 +16,8 @@ signup: SignUpReducer,
   adminDash:AdminDashReducer,
   companyDash: CompanyDashReducer,
   login: LoginReducer,
-  comment: CommentsReducer
+  comment: CommentsReducer,
+  accountSettings: AccountSettingsReducer
 });
 
 export default rootReducer;

@@ -10,7 +10,7 @@ import CompanyDash from './containers/CompanyDash';
 import AdminDash from './containers/AdminDash';
 import PitchForm from './containers/PitchForm';
 import PitchDetail from './containers/PitchDetail/PitchDetail';
-import AccountSettings from './containers/AccountSettings/AccountSettings';
+import AccountSettings from './containers/AccountSettings';
 import Comments from './containers/Comments';
 
 
