@@ -24,12 +24,12 @@
     "user": {
       "type": "belongsTo",
       "model": "user",
-      "foreignKey": "commentId"
+      "foreignKey": "id"
     },
     "project": {
       "type": "belongsTo",
       "model": "project",
-      "foreignKey": "commentId"
+      "foreignKey": "id"
     }
   },
   "acls": [],

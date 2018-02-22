@@ -17,7 +17,7 @@ export default class CompanyDash extends Component {
     const { dispatch } = this.props;
     const userId = Cookies.get('userId')
     //users id
-    axios.get('http://localhost:8080/getprojects/:userId', {
+    axios.get('http://localhost:3000/getprojects/:userId', {
     }).then(function (response) {
       console.log(" THIS IS RESPONSE DATA " , response.data)
       dispatch(getUsersProjects(response.data))
@@ -39,7 +39,7 @@ export default class CompanyDash extends Component {
     const { dispatch , project} = this.props;
     const { value } = event.target
     const projectId = '5a7e1db0101ad832bc251a08'
-    axios.patch('http://localhost:8080/api/projects/' + projectId , {
+    axios.patch('http://localhost:3000/api/projects/' + projectId , {
     }).then(function (response) {
       console.log(" THIS IS STATUS DATA " , response.data)
       dispatch(getStatus(value))

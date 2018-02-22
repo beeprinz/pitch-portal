@@ -4,6 +4,8 @@ import PitchFormReducer from './containers/PitchForm/PitchFormReducer';
 import CompanyDashReducer from './containers/CompanyDash/CompanyDashReducer';
 import LoginReducer from './containers/Login/LoginReducer';
 import SignUpReducer from './containers/SignUp/SignUpReducer';
+import CommentsReducer from './containers/Comments/CommentsReducer';
+
 
 const rootReducer = combineReducers({
 // add reducers
@@ -11,7 +13,8 @@ const rootReducer = combineReducers({
   pitchform: PitchFormReducer,
   // signup: SignUpReducer,
   companyDash: CompanyDashReducer,
-  login: LoginReducer
+  login: LoginReducer,
+  comment: CommentsReducer
 });
 
 export default rootReducer;

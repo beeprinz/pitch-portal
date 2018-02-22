@@ -11,6 +11,7 @@ import AdminDash from './containers/AdminDash/AdminDash';
 import PitchForm from './containers/PitchForm/PitchForm';
 import PitchDetail from './containers/PitchDetail/PitchDetail';
 import AccountSettings from './containers/AccountSettings/AccountSettings';
+import Comments from './containers/Comments';
 
 
 export default class App extends Component {
@@ -29,6 +30,7 @@ export default class App extends Component {
             <Route path='/company/:companyname/pitchdetail/:id' component={PitchDetail} />
             <Route path='/company/:companyname/accountsettings' component={AccountSettings} />
             <Route path='/admin/dashboard' component={AdminDash} />
+            <Route path='/comments' component={Comments} />
             <Route component={PageNotFound} />
           </Switch>
           <Footer />

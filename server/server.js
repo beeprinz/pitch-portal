@@ -41,5 +41,8 @@ app.post('/login', function(req, res) {
   });
 });
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(public, 'index.html'));
+});
 
 module.exports = app;
