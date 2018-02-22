@@ -4,21 +4,18 @@ import axios from 'axios';
 import { createProject } from './PitchFormActions'
 import Cookies from 'cookies-js';
 import { Redirect } from "react-router";
-import validate from './validate';
+
 class PitchForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       files: [],
-      activeSlide: false,
-      lastSlide:false,
       filesUploaded: [],
       fileSuccess: false,
-      slideCount:0,
       page:1,
       firstSlide: true,
-      lastSlide: false
-    
+      lastSlide: false,  
+      formValid: true,
     };
     // Binding Directory
     this.onSubmit = this.onSubmit.bind(this);
@@ -27,6 +24,7 @@ class PitchForm extends Component {
     this.fileUpload = this.fileUpload.bind(this);
     this.handleLeftSlide = this.handleLeftSlide.bind(this);
   }
+
 
   // Submission of A Project (Run file upload function, Dispatch to Actions and Submit Form)
   onSubmit(values){
@@ -38,25 +36,26 @@ class PitchForm extends Component {
   
     // File Upload on Submit (Creating Conditional Submission depending if File was uploaded)
     const files = this.state.files;
-    if(!files || files.length > 1  ) {
-      files.forEach((file) => {
-        this.fileUpload(file)
-        .then((response) => {
-          const fileLocation =  response.data.result.files.file[0].providerResponse.location
-            this.setState({filesUploaded: [...this.state.filesUploaded, fileLocation], fileSuccess: true}, () => {
-              const fileState = this.state.fileSuccess
-              if(fileState) {
-                const fileSystem = this.state.filesUploaded
-                  values.fileLinks = fileSystem
-                  dispatch(createProject(values))
-              }
-            })
+      if(files.length > 0  ) {
+        files.forEach((file) => {
+          this.fileUpload(file)
+          .then((response) => {
+            const fileLocation =  response.data.result.files.file[0].providerResponse.location
+              this.setState({filesUploaded: [...this.state.filesUploaded, fileLocation], fileSuccess: true}, () => {
+                const fileState = this.state.fileSuccess
+                if(fileState) {
+                  const fileSystem = this.state.filesUploaded
+                  // Adding Refrence for other containers in Database
+                    values.fileLinks = fileSystem
+                    dispatch(createProject(values))
+                }
+              })
+          });
         });
-      });
-    } else {
-    // Dispatch that connects to the store.
-    dispatch(createProject(values));
-    }
+      } else {
+      // Dispatch that connects to the store.
+      dispatch(createProject(values));
+      }
 
   }
   // File Upload System
@@ -70,7 +69,7 @@ class PitchForm extends Component {
         });
   }
 
-  // File Upload to Amazon AWS (Client => Aws)
+  // File Upload to Amazon AWS (Client => Aws); Using loopback-storage component.
   fileUpload(file){
     const url = 'http://localhost:3000/api/containers/originpitchportal/upload';
     const formData = new FormData();
@@ -88,10 +87,17 @@ class PitchForm extends Component {
     const clickCount = this.state.page- 1
     this.setState({page: clickCount})
   }
+  // Disables last control (Wizard form)
   handleRightSlide(e){
-   const slideCountOnRight = this.state.page  + 1
-     this.setState({page: slideCountOnRight})
+    const { valid } = this.props
+    this.setState({formValid: valid})
+    // If statement that doesnt let you progress unless you complete form correctly
+    if(valid){
+      const slideCountOnRight = this.state.page  + 1
+      this.setState({page: slideCountOnRight, formValid: valid})
+    }
   }
+  // Redux Form Renders
   renderTextBox(field) {
    
     const { meta: { touched, error } } = field;
@@ -109,6 +115,7 @@ class PitchForm extends Component {
     );
   }
 
+  // Redux Form Renders
   renderTextArea(field) {
     const { meta: { touched, error } } = field;
     
@@ -129,16 +136,22 @@ class PitchForm extends Component {
     const lastSlide = this.state.lastSlide
     const firstSlide = this.state.firstSlide
     const { handleSubmit } = this.props;
+    const valid = this.state.formValid
+ 
     // Adding Store to see if redirection is true
     const { projectSubmitted } = this.props.pitchform;
-    // console.log(projectSubmitted);
     return (
       <div className='PitchForm'>
           <div className='container'>
-          {/* {projectSubmitted ? <Redirect to='/company/:companyname/dashboard' /> : ''} */}
+          {/* Redirection back to dashboard if submission is cleared by the database */}
+           {projectSubmitted ? <Redirect to='/company/:companyname/dashboard' /> : ''} 
             <h1 className="text-center p-2"> Project Request Form </h1>
               <form onSubmit={ handleSubmit(this.onSubmit) }>
                 <div id="carouselExampleControls"  className="carousel slide"  data-interval="false" data-ride="carousel">
+                {valid ? '' :
+                <div className="alert alert-danger" role="alert">
+                    <strong> Before Progressing </strong> Please fill out the required forms
+                  </div> }
                     <div className="carousel-inner">
                     {this.state.page == 1 &&
                       <div className="carousel-item active">
@@ -146,6 +159,7 @@ class PitchForm extends Component {
                               <div className="container">
                               <h1 className ="text-center"> Basic Info </h1>
                                <hr />
+                              
                               <Field
                                 key = 'firstSlide'
                                 label = 'Project Name (Required)'
@@ -169,6 +183,7 @@ class PitchForm extends Component {
                               <div className="container">
                               <h1 className ="text-center"> Goals and Key Features </h1>
                               <hr />
+                             
                               <Field
                                   key = 'goal'
                                   name ="goal"
@@ -290,7 +305,7 @@ class PitchForm extends Component {
                                   rows='3'
                                 />
                                 <div className='text-center'>
-                                <button type ="submit" className = "btn-lg btn-primary text-center"> Submit </button>
+                                  <button type ="submit" className = "btn-lg btn-primary text-center" > Submit </button> 
                                 </div>
                               </div>
                             </div>
@@ -305,21 +320,44 @@ class PitchForm extends Component {
                         <i className="fas fa-arrow-circle-left"></i>
                         </div>
                     </a> }
-
-                {this.state.page !== 5 &&  <a onClick ={this.handleRightSlide}  className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+  
+                {this.state.page !== 5 && <a onClick ={this.handleRightSlide}  className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
                       <div style={{fontSize: 100 +'px', color: 'blue'}}>
                         <i className="fas fa-arrow-circle-right"></i>
                         </div>
                     </a> }
+                  
+
+
                 </form>
           </div>
       </div>
     );
   }
 }
+function validate(values) {
+  const errors = {};
 
+  if (!values.name) {
+    errors.name = 'Please Enter A Project Name';
+  }
+  if (!values.description) {
+    errors.description = 'Please Enter A Description';
+  }
+  if (!values.goal) {
+    errors.goal = 'Please Enter the goal of this project';
+  }
+  if (!values.keyFeatures) {
+    errors.keyFeatures = 'Please list some key features for your project';
+  }
+
+  // If 'errors' is empty, the form is fine to submit
+  return errors;
+}
 // Exporting Redux Reducer (forms)
 export default reduxForm({
   validate,
+  destroyOnUnmount: false, // <------ preserve form data
+  forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
   form: 'PitchForm'
 })(PitchForm);
