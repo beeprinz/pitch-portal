@@ -4,6 +4,8 @@ module.exports = {
   devtool: 'cheap-eval-source-map',
   context: path.join(__dirname, '/src'),
 
+  devtool: "source-map",
+
   entry: {
     javascript: './js/index'
   },

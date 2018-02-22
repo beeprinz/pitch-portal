@@ -1,5 +1,6 @@
 'use strict';
-
+// import Cookies from 'cookies-js'
+// threw syntax error
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 var bodyParser = require('body-parser');
@@ -33,7 +34,6 @@ app.get('/fetchprojects/:userId', (req,res) => {
     }else{
     res.send(projects)
     }
-  });
 })
 
 app.get('/allProjects', (req, res) => {
@@ -88,16 +88,11 @@ app.post('/login', (req, res) => {
   // User Model Defined
   let User = app.models.User;
   let userInfo = req.body;
-
-  // User Login Function to LoopBack Api
-  User.login({ email: userInfo.email, password: userInfo.password }, function(
-    err,
-    token
-  ) {
-    if (err) {
-      res.send(err);
-    } else {
-      res.send(token);
+  User.login({email: userInfo.email, password: userInfo.password}, function (err, token) {
+    if (err){
+      res.status(404).send('404')
+    }else {
+      res.send(token)
     }
   });
 });
@@ -108,13 +103,6 @@ app.post('/login', (req, res) => {
 // app.get('/getprojects/:userId', (req,res)){
 //   let Project = app.models.projects
 
-//   Project.find({where: {userId: req.params.userId} }, function(err, projects) {
-//     if (err){
-//       res.send('error')
-//     } else{
-//       res.send(projects)
-//       // { projects
-//     }
 
 app.post('/createproject', (req,res) => {
   // console.log(req.body)

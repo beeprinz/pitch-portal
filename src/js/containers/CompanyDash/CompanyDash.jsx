@@ -4,6 +4,7 @@ import { getDetail, getUsersProjects } from './CompanyDashActions'
 import axios from 'axios';
 import Cookies from 'cookies-js'
 import Moment from 'react-moment';
+import { Redirect } from "react-router";
 
 
 export default class CompanyDash extends Component {
@@ -58,9 +59,21 @@ export default class CompanyDash extends Component {
   }
 
 
-
   render() {
-    const { projects } = this.props
+    // projectName , time,
+    const { projectStatus , projects } = this.props
+      console.log('projects ID' ,projects)
+    if (projectStatus == 0 ) {
+      var status = 'Pending'
+    } else if(projectStatus == 1 ) {
+      var status = 'Approved';
+    }else if (projectStatus == 2 ) {
+      var status = 'Denied';
+    }
+    const redirectionCookie = Cookies.get('token')
+    if (!redirectionCookie){
+      return <Redirect to='/'/>
+    } 
 
     return (
       <div className="container">

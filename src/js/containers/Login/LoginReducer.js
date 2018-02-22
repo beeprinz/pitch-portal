@@ -13,6 +13,12 @@ export default function LoginReducer(state = initialState, action) {
     switch (type) {
 
         case `${types.LOG_USER_IN}_FULFILLED`: {
+            if (payload.error) {
+                return { 
+                   ...state,
+                   errors: payload.error.message || 'Incorrect username or password, please try again' 
+                }
+            }
             return {
                 ...state,
                 // information: payload.id,
