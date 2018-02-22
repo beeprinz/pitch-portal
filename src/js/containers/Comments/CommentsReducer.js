@@ -6,7 +6,6 @@ const initialState = {
 
 export default function CommentsReducer(state = initialState, action) {
     const { type, payload } = action;
-    console.log(payload)
     
     switch (type) {
 
