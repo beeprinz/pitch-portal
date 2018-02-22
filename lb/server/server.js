@@ -103,22 +103,11 @@ app.post('/login', (req, res) => {
   // User Model Defined
   let User = app.models.User;
   let userInfo = req.body;
-<<<<<<< HEAD
-  User.login({ email: userInfo.email, password: userInfo.password }, function(
-    err,
-    token
-  ) {
-    if (err) {
-      res.status(404).send('404');
-    } else {
-      res.send(token);
-=======
   User.login({email: userInfo.email, password: userInfo.password}, function (err, token) {
     if (err){
       res.status(404).send('404')
     } else {
       res.send(token)
->>>>>>> trying to get updates to save
     }
   });
 });
@@ -126,22 +115,7 @@ app.post('/login', (req, res) => {
 
 // app.put('/changeUserInfo', (req, res) => {
 
-<<<<<<< HEAD
 app.post('/createproject', (req, res) => {
-=======
-//   axios.put({firstName: userInfo.firstName, lastName: userInfo.lastName, }, function (err, token) {
-//     if (err){
-//       res.status(404).send('404')
-//     } else {
-//       res.send(token)
-//     }
-//   });
-// });
-
-
-
-app.post('/createproject', (req,res) => {
->>>>>>> trying to get updates to save
   // console.log(req.body)
   // Projects Defined Model
   let Project = app.models.project;
@@ -158,7 +132,7 @@ app.post('/createproject', (req,res) => {
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
 boot(app, __dirname, function(err) {
-  if (err) throw err;
+  if (err){} throw err;
 
   // start the server if `$ node server.js`
   if (require.main === module) app.start();
