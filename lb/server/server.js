@@ -3,9 +3,9 @@
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 var bodyParser = require('body-parser');
+var axios = require('axios');
 
-var app = module.exports = loopback();
-
+var app = (module.exports = loopback());
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -23,20 +23,57 @@ app.start = function() {
   });
 };
 
-app.post('/login', (req,res) => {
+app.post('/customSignUp', (req, res, next) => {
+  let loginInfo = {
+    email: req.body.email,
+    password: req.body.password
+  };
+  let User = app.models.User;
+
+  User.create(
+    {
+      email: req.body.email,
+      password: req.body.password,
+      phone: req.body.phone,
+      company: req.body.company,
+      website: req.body.website,
+      info: req.body.info,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      position: req.body.position
+    },
+    (err, userInstance) => {
+      if (err) {
+        console.log('Error in User.create: ', err);
+      } else {
+        axios
+          .post('http://localhost:3000/api/users/login', loginInfo)
+          .then(response => res.send(response.data));
+      }
+    }
+  );
+});
+
+app.post('/login', (req, res) => {
   // User Model Defined
   let User = app.models.User;
-  let userInfo = req.body
+  let userInfo = req.body;
 
   // User Login Function to LoopBack Api
-  User.login({email: userInfo.email, password: userInfo.password}, function (err, token) {
-    if (err){
-      res.send(err)
-    }else {
-      res.send(token)
+  User.login({ email: userInfo.email, password: userInfo.password }, function(
+    err,
+    token
+  ) {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(token);
     }
-  })
-})
+  });
+});
+
+
+
 
 // app.get('/getprojects/:userId', (req,res)){
 //   let Project = app.models.projects
@@ -71,7 +108,5 @@ boot(app, __dirname, function(err) {
   if (err) throw err;
 
   // start the server if `$ node server.js`
-  if (require.main === module)
-    app.start();
+  if (require.main === module) app.start();
 });
-
