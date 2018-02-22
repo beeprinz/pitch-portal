@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import SignUpFirstPage from './SignUpFirstPage';
 import SignUpSecondPage from './SignUpSecondPage';
@@ -11,16 +12,21 @@ class SignUp extends Component {
     super(props);
     this.nextPage = this.nextPage.bind(this);
     this.previousPage = this.previousPage.bind(this);
-    this.state = {
-      page: 1
-    };
+    this.state = { page: 1 };
   }
   nextPage() {
     this.setState({ page: this.state.page + 1 });
   }
-
   previousPage() {
     this.setState({ page: this.state.page - 1 });
+  }
+  //This will send user to company dashboard when signup and login is complete.
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.signup.redirect === true) {
+      this.props.history.push(
+        `/company/${this.props.signup.company}/dashboard`
+      );
+    }
   }
 
   render() {
@@ -38,6 +44,7 @@ class SignUp extends Component {
           <SignUpThirdPage
             previousPage={this.previousPage}
             signUpNewUser={signUpNewUser}
+            company={this.props.signup.company}
             onSubmit={values => this.props.handleSearchSubmit(values)}
           />
         )}

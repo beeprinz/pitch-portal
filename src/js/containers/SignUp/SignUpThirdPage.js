@@ -3,10 +3,10 @@ import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import validate from './validate';
 import { renderTextField, renderTextAreaField } from './renderField';
-// import { signUpNewUser } from './SignUpActions';
 
 const SignUpThirdPage = props => {
   const {
+    company,
     handleSubmit,
     pristine,
     previousPage,
@@ -47,7 +47,7 @@ const SignUpThirdPage = props => {
           Previous
         </button>
         <button type='submit' disabled={pristine || submitting}>
-          Submit 
+          Submit
         </button>
       </div>
     </form>

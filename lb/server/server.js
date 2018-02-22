@@ -3,6 +3,7 @@
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 var bodyParser = require('body-parser');
+var axios = require('axios');
 
 var app = (module.exports = loopback());
 
@@ -22,7 +23,36 @@ app.start = function() {
   });
 };
 
+app.post('/customSignUp', (req, res, next) => {
+  let loginInfo = {
+    email: req.body.email,
+    password: req.body.password
+  };
+  let User = app.models.User;
 
+  User.create(
+    {
+      email: req.body.email,
+      password: req.body.password,
+      phone: req.body.phone,
+      company: req.body.company,
+      website: req.body.website,
+      info: req.body.info,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      position: req.body.position
+    },
+    (err, userInstance) => {
+      if (err) {
+        console.log('Error in User.create: ', err);
+      } else {
+        axios
+          .post('http://localhost:3000/api/users/login', loginInfo)
+          .then(response => res.send(response.data));
+      }
+    }
+  );
+});
 
 app.post('/login', (req, res) => {
   // User Model Defined

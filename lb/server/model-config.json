@@ -43,7 +43,7 @@
     "dataSource": "MongoDB",
     "public": true,
     "options": {
-      "emailVerificationRequired": true
+      "emailVerificationRequired": false
     }
   },
   "project": {
@@ -56,6 +56,6 @@
   },
   "container": {
     "dataSource": "aws",
-    "public":true
+    "public": true
   }
 }
