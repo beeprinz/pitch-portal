@@ -18,7 +18,6 @@ const INITIAL_STATE = {
   type: '',
   id: '',
   redirect: false
-
 };
 
 export default function SignUpReducer(state = INITIAL_STATE, action) {
@@ -50,7 +49,7 @@ export default function SignUpReducer(state = INITIAL_STATE, action) {
     case SIGNUP_ERROR:
       return {
         ...state,
-        error: error,
+        error: error
       };
       break;
     default:

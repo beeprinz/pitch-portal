@@ -24,35 +24,37 @@ app.start = function() {
   });
 };
 
-app.get('/fetchprojects/:userId', (req,res) => {
+app.get('/fetchprojects/:userId', (req, res) => {
   let Projects = app.models.project;
-  console.log(req.params.userId)
+  console.log(req.params.userId);
 
-  Projects.find({where: {userId: req.params.userId}}, function(err, projects) {
-    if(err){
-      res.send(err)
-    }else{
-    res.send(projects)
+  Projects.find({ where: { userId: req.params.userId } }, function(
+    err,
+    projects
+  ) {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(projects);
     }
-})
+  });
+});
 
 app.get('/allProjects', (req, res) => {
   let Projects = app.models.project;
   let Users = app.models.user;
   Projects.find((err, projects) => {
-    if(err){
-      console.log(err)
-      res.send(err)
-    }else{
+    if (err) {
+      console.log(err);
+      res.send(err);
+    } else {
       console.log(projects);
-      axios.get('http://localhost:3000/api/users/')
-        .then(users => {
-          return res.send({ users: users.data, projects})
-        });
-      
+      axios.get('http://localhost:3000/api/users/').then(users => {
+        return res.send({ users: users.data, projects });
+      });
     }
   });
-})
+});
 app.post('/customSignUp', (req, res, next) => {
   let loginInfo = {
     email: req.body.email,
@@ -88,37 +90,35 @@ app.post('/login', (req, res) => {
   // User Model Defined
   let User = app.models.User;
   let userInfo = req.body;
-  User.login({email: userInfo.email, password: userInfo.password}, function (err, token) {
-    if (err){
-      res.status(404).send('404')
-    }else {
-      res.send(token)
+  User.login({ email: userInfo.email, password: userInfo.password }, function(
+    err,
+    token
+  ) {
+    if (err) {
+      res.status(404).send('404');
+    } else {
+      res.send(token);
     }
   });
 });
 
-
-
-
 // app.get('/getprojects/:userId', (req,res)){
 //   let Project = app.models.projects
 
-
-app.post('/createproject', (req,res) => {
+app.post('/createproject', (req, res) => {
   // console.log(req.body)
   // Projects Defined Model
   let Project = app.models.project;
-  let newProject = req.body
-  Project.create(newProject, (err,project) => {
+  let newProject = req.body;
+  Project.create(newProject, (err, project) => {
     if (err) {
-      res.send(err)
+      res.send(err);
     } else {
-      console.log(project)
-      res.send(project)
+      console.log(project);
+      res.send(project);
     }
-  })
-
-})
+  });
+});
 
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.

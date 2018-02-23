@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export function updateCommentArea(comment){
-    console.log(comment,'updateCommentArea actions')
     return {
         type: 'UPDATE_COMMENT',
         payload: comment
@@ -9,7 +8,6 @@ export function updateCommentArea(comment){
 }
 
 export function postComment(comment){
-    console.log(comment,'postComment')
     axios.post('http://localhost:3000/api/comments',{
         "author": "TESTICALS",
         "text": "adding more content",
@@ -17,10 +15,8 @@ export function postComment(comment){
         "userId": "5a81ea9b270f8f13fc08adef"
       })
     .then(function(res,req){
-        console.log(res,'res')
     })
     .catch(function(err){
-        console.log(err)
     })
     return {
         type:'POST_COMMENT',

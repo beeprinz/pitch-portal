@@ -48,10 +48,15 @@
         "disableInclude": true
       }
     },
+    "projects": {
+      "type": "hasMany",
+      "model": "project",
+      "foreignKey": "userId"
+    },
     "comments": {
       "type": "hasMany",
       "model": "comment",
-      "foreignKey": "userId"
+      "foreignKey": ""
     }
   },
   "acls": [],

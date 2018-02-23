@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  devtool: 'cheap-eval-source-map',
+  devtool: 'cheap-module-eval-source-map',
   context: path.join(__dirname, '/src'),
 
   devtool: "source-map",
