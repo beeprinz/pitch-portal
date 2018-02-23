@@ -40,14 +40,11 @@
     "exampleProducts": {
       "type": "string"
     },
-    "comments": {
-      "type": "array"
-    },
     "fileUpload": {
       "type": "string"
     },
     "fileLinks": {
-      "type":"array"
+      "type": "array"
     },
     "complete": {
       "type": "boolean",
@@ -60,6 +57,11 @@
     "user": {
       "type": "hasOne",
       "model": "user",
+      "foreignKey": "projectId"
+    },
+    "comment": {
+      "type": "hasMany",
+      "model": "comment",
       "foreignKey": "projectId"
     }
   },

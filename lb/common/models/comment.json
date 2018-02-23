@@ -6,10 +6,6 @@
     "validateUpsert": true
   },
   "properties": {
-    "author": {
-      "type": "string",
-      "required": true
-    },
     "text": {
       "type": "string",
       "required": true
@@ -21,15 +17,15 @@
   },
   "validations": [],
   "relations": {
-    "user": {
-      "type": "belongsTo",
-      "model": "user",
-      "foreignKey": "id"
-    },
     "project": {
       "type": "belongsTo",
       "model": "project",
-      "foreignKey": "id"
+      "foreignKey": ""
+    },
+    "user": {
+      "type": "belongsTo",
+      "model": "user",
+      "foreignKey": ""
     }
   },
   "acls": [],
