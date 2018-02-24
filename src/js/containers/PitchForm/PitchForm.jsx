@@ -16,10 +16,13 @@ class PitchForm extends Component {
       firstSlide: true,
       lastSlide: false,  
       formValid: true,
+      loading:false,
+      
     };
     // Binding Directory
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onChangeDocs = this.onChangeDocs.bind(this);
     this.handleRightSlide = this.handleRightSlide.bind(this);
     this.fileUpload = this.fileUpload.bind(this);
     this.handleLeftSlide = this.handleLeftSlide.bind(this);
@@ -29,25 +32,31 @@ class PitchForm extends Component {
   // Submission of A Project (Run file upload function, Dispatch to Actions and Submit Form)
   onSubmit(values){
     const { dispatch } = this.props;
+    const files = this.state.files;
+    const fileLength = files.length;
     // Retrieving Cookie for Pitch Form in Database & adding date and status
     const dateNow = Date()
-    values.userId = Cookies.get('userId')
+    values.userId = Cookies.get('userId');
     values.date = dateNow;
-  
+    this.setState({loading:true})
     // File Upload on Submit (Creating Conditional Submission depending if File was uploaded)
-    const files = this.state.files;
-      if(files.length > 0  ) {
+    
+      if(fileLength > 0  ) {
         files.forEach((file) => {
           this.fileUpload(file)
           .then((response) => {
-            const fileLocation =  response.data.result.files.file[0].providerResponse.location
-              this.setState({filesUploaded: [...this.state.filesUploaded, fileLocation], fileSuccess: true}, () => {
-                const fileState = this.state.fileSuccess
+            const fileLocation = response.data.result.files.file[0].providerResponse.location;
+            const fileTempUpload = this.state.filesUploaded.length + 1;
+              if(fileLength == fileTempUpload){
+                this.setState({fileSuccess:true, loading:false});
+              }
+              this.setState({filesUploaded: [...this.state.filesUploaded, fileLocation]}, () => {
+                const fileState = this.state.fileSuccess;
                 if(fileState) {
-                  const fileSystem = this.state.filesUploaded
+                  const fileSystem = this.state.filesUploaded;
                   // Adding Refrence for other containers in Database
-                    values.fileLinks = fileSystem
-                    dispatch(createProject(values))
+                    values.fileLinks = fileSystem;
+                    dispatch(createProject(values));
                 }
               })
           });
@@ -68,6 +77,13 @@ class PitchForm extends Component {
           files: fileStack
         });
   }
+  onChangeDocs(e) {
+    const fileStack = this.state.files
+      fileStack.push(e.target.files[0])
+        this.setState({
+          files: fileStack
+        });
+  }
 
   // File Upload to Amazon AWS (Client => Aws); Using loopback-storage component.
   fileUpload(file){
@@ -79,7 +95,7 @@ class PitchForm extends Component {
           'content-type': 'multipart/form-data'
         }
       };
-    return axios.post(url, formData, config);
+    return axios.post(url, formData, config)                   
   }
 
   // Disables the first control so user cannot go to submission page by accident
@@ -137,6 +153,7 @@ class PitchForm extends Component {
     const firstSlide = this.state.firstSlide
     const { handleSubmit } = this.props;
     const valid = this.state.formValid
+    const loading = this.state.loading
     const redirectionCookie = Cookies.get('token')
     if (!redirectionCookie){
       return <Redirect to='/'/>
@@ -236,53 +253,35 @@ class PitchForm extends Component {
                               <div className="container">
                               <h1 className ="text-center"> File And Uploading </h1>
                               <hr />
-                              <h4 className = "text-center"> Upload A file (.pptx, .doc, .docx) </h4>
+                              <h4 className = "text-center"> Upload A Video (.mp4, .m4v, .mov) </h4>
                                 <div className = "card p-3">
                                   <div className = "card-body text-center ">
                                     <div className="text-center ">
                                     <div className="custom-file">
-                                      <input type="file" onChange={this.onChange} className="custom-file-input" id="customFile" />
+                                      <input accept="video/mp4,video/x-m4v,video/*" type="file" onChange={this.onChange} className="custom-file-input" id="customFile" />
                                       <label className="custom-file-label" htmlFor="customFile">Choose file</label>
                                     </div>
-                                    <h4 className="p-3" > Files Uploaded </h4>
-                                      <ul className="list-group list-group-flush">
-                                        {
-                                          this.state.files.map(f => <li className="list-group-item" key={f.name}>{f.name} - {f.size} bytes</li>)
-                                        }
-                                      </ul>
                                     </div>
                                   </div>
                                 </div>
                                 <div className="p-3 text-center">
-                                <h4> For Directions on how to upload your video on a third party site click here</h4>
-                                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                  Launch demo modal
-                                </button>
-                                    <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                      <div className="modal-dialog" role="document">
-                                        <div className="modal-content">
-                                          <div className="modal-header">
-                                            <h5 className="modal-title" id="exampleModalLabel">Uploading Directions</h5>
-                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                              <span aria-hidden="true">&times;</span>
-                                            </button>
-                                          </div>
-                                          <div className="modal-body">
-                                            <ul className="list-group list-group-flush">
-                                              <li className="list-group-item">Cras justo odio</li>
-                                              <li className="list-group-item">Dapibus ac facilisis in</li>
-                                              <li className="list-group-item">Morbi leo risus</li>
-                                              <li className="list-group-item">Porta ac consectetur ac</li>
-                                              <li className="list-group-item">Vestibulum at eros</li>
-                                            </ul>
-                                          </div>
-                                          <div className="modal-footer">
-                                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="button" className="btn btn-primary">Save changes</button>
-                                          </div>
-                                        </div>
-                                      </div>
+                                <h4 className = "text-center"> Upload A file (.pptx, .doc, .docx) </h4>
+                                <div className = "card p-3">
+                                  <div className = "card-body text-center ">
+                                    <div className="text-center ">
+                                    <div className="custom-file">
+                                      <input type="file" onChange={this.onChangeDocs} className="custom-file-input" id="customFile" />
+                                      <label className="custom-file-label" htmlFor="customFile">Choose file</label>
                                     </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <h2> Files Staged For Upload </h2>
+                                <ul className="list-group list-group-flush">
+                                        {
+                                          this.state.files.map(f => <li className="list-group-item" key={f.name}>{f.name} - {f.size} bytes</li>)
+                                        }
+                                </ul>
                                 <Field
                                   name ="urlLink"
                                   label = 'Link to video on youtube or other streaming services'
@@ -309,7 +308,8 @@ class PitchForm extends Component {
                                   rows='3'
                                 />
                                 <div className='text-center'>
-                                  <button type ="submit" className = "btn-lg btn-primary text-center" > Submit </button> 
+   
+                                {loading ?  <div> Uploading Video(s) or Document(s) (Est. 4-5 minutes) <i className="fas fa-spinner fa-pulse"></i> </div> : <button type ="submit" className = "btn-lg btn-primary text-center" > Submit </button>} 
                                 </div>
                               </div>
                             </div>

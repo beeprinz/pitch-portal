@@ -11,7 +11,8 @@ export default function CompanyDashReducer(state = initialState, action) {
 
             return {
                 ...state,
-                projects: payload
+                projects: payload,
+                projectSubmitted: false
             };
         }
         case 'GET_PROJECT_DETAIL_FULFILLED': {
