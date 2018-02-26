@@ -47,11 +47,13 @@ export default class CompanyDash extends Component {
   }
 
   handleDelete(event) {
-    const { dispatch } = this.props;
-    const { value } = event.target;
-    axios
-      .delete('http://localhost:3000/api/projects/' + value, {})
-      .then(function(response) {});
+  const { dispatch} = this.props;
+  const { value } = event.target;
+  console.log('value for project', value)
+  axios.delete('http://localhost:3000/api/projects/' + value , {
+  }).then(function (response) {
+    console.log(" THIS IS RESPONSE DATA " , response.data)
+  })
   }
 
   render() {

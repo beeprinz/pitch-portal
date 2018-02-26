@@ -24,14 +24,31 @@ app.start = function() {
 
 app.get('/fetchprojects/:userId', (req, res) => {
   let Projects = app.models.project;
-  Projects.find({ where: { userId: req.params.userId } }, function(
-    err,
-    projects
-  ) {
-    if (err) {
-      res.send(err);
-    } else {
-      res.send(projects);
+  console.log(req.params.userId)
+
+  Projects.find({where: {userId: req.params.userId}}, function(err, projects) {
+    if(err){
+      res.send(err)
+    }else{
+    res.send(projects)
+    }
+  })
+})
+
+app.get('/allProjects', (req, res) => {
+  let Projects = app.models.project;
+  let Users = app.models.user;
+  Projects.find((err, projects) => {
+    if(err){
+      console.log(err)
+      res.send(err)
+    }else{
+      console.log(projects);
+      axios.get('http://localhost:3000/api/users/')
+        .then(users => {
+          return res.send({ users: users.data, projects})
+        });
+      
     }
   });
 });
@@ -86,6 +103,7 @@ app.post('/login', (req, res) => {
   // User Model Defined
   let User = app.models.User;
   let userInfo = req.body;
+<<<<<<< HEAD
   User.login({ email: userInfo.email, password: userInfo.password }, function(
     err,
     token
@@ -94,13 +112,36 @@ app.post('/login', (req, res) => {
       res.status(404).send('404');
     } else {
       res.send(token);
+=======
+  User.login({email: userInfo.email, password: userInfo.password}, function (err, token) {
+    if (err){
+      res.status(404).send('404')
+    } else {
+      res.send(token)
+>>>>>>> trying to get updates to save
     }
   });
 });
 
 
+// app.put('/changeUserInfo', (req, res) => {
 
+<<<<<<< HEAD
 app.post('/createproject', (req, res) => {
+=======
+//   axios.put({firstName: userInfo.firstName, lastName: userInfo.lastName, }, function (err, token) {
+//     if (err){
+//       res.status(404).send('404')
+//     } else {
+//       res.send(token)
+//     }
+//   });
+// });
+
+
+
+app.post('/createproject', (req,res) => {
+>>>>>>> trying to get updates to save
   // console.log(req.body)
   // Projects Defined Model
   let Project = app.models.project;
@@ -121,4 +162,6 @@ boot(app, __dirname, function(err) {
 
   // start the server if `$ node server.js`
   if (require.main === module) app.start();
+
+
 });
