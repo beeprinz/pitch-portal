@@ -10,11 +10,18 @@ export default function CommentsReducer(state = initialState, action) {
     switch (type) {
 
         case 'UPDATE_COMMENT': {
-            console.log('Reducers payload',payload)
+            // console.log('Reducers payload',payload)
             return {
                 ...state,   
                 comment: payload
             };   
+        }
+        case 'POST_COMMENT':{
+            // console.log('Post Comment Reducer', payload)
+            return {
+                ...state,
+                comment: ''
+            }
         }
         default: {
             return state;
