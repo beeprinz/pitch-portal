@@ -17,10 +17,10 @@ export default function PitchFormReducer(state = initialState, action) {
                 responseObj: payload
             };
         }
-        case types.CREATE_PROJECT_FULLFILLED: {
+        case types.CHANGE_STATUS : {
             return {
                 ...state,
-                projectSubmitted: true
+                projectSubmitted: false
             };
         }
         default: {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import axios from 'axios';
-import { createProject } from './PitchFormActions'
+import { createProject, changeStatus } from './PitchFormActions'
 import Cookies from 'cookies-js';
 import { Redirect } from "react-router";
 
@@ -20,6 +20,7 @@ class PitchForm extends Component {
       totalSize: 0,
       fileMsg: '',
       RestrictedLimit: false,
+      projectRedirect:false
     };
     // Binding Directory
     this.onSubmit = this.onSubmit.bind(this);
@@ -31,7 +32,16 @@ class PitchForm extends Component {
     this.convertToMega = this.convertToMega.bind(this);
     // this.addArray = this.addArray.bind(this);
   }
-
+  componentWillReceiveProps(nextProps){
+    const {dispatch} = this.props;
+    const { projectSubmitted } = this.props;
+    console.log('nextprops', nextProps)
+    console.log('test', this.props.pitchform.projectSubmitted )
+    if ( this.props.pitchform.projectSubmitted != nextProps.pitchform.projectSubmitted){
+      this.setState({projectRedirect:true})
+      dispatch(changeStatus())
+    }
+  }
 
   // Submission of A Project (Run file upload function, Dispatch to Actions and Submit Form)
   onSubmit(values){
@@ -79,6 +89,7 @@ class PitchForm extends Component {
         });
       } else {
       // Dispatch that connects to the store.
+      this.setState({loading:false})
       dispatch(createProject(values));
       }
 
@@ -192,14 +203,12 @@ class PitchForm extends Component {
       return <Redirect to='/'/>
     } 
     const sizeLimit = this.state.RestrictedLimit
-   
-    // Adding Store to see if redirection is true
-    const { projectSubmitted } = this.props.pitchform;
+   const projectRedirect = this.state.projectRedirect
     return (
       <div className='PitchForm'>
           <div className='container'>
           {/* Redirection back to dashboard if submission is cleared by the database */}
-           {projectSubmitted ? <Redirect to='/company/:companyname/dashboard' /> : ''} 
+           {projectRedirect ? <Redirect to='/company/:companyname/dashboard' /> : ''} 
             <h1 className="text-center p-2"> Project Request Form </h1>
               <form onSubmit={ handleSubmit(this.onSubmit) }>
                 <div id="carouselExampleControls"  className="carousel slide"  data-interval="false" data-ride="carousel">
