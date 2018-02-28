@@ -7,22 +7,18 @@ export function updateCommentArea(comment){
     }
 }
 
-export function postComment(comment){
-    axios.post('http://localhost:3000/api/comments',{
-        "author": "TESTICALS",
-        "text": "adding more content",
-        "date": "2018-02-22T01:48:20.692Z",
-        "userId": "5a81ea9b270f8f13fc08adef"
-      })
-    .then(function(res,req){
-    })
-    .catch(function(err){
-    })
+export function postComment(){
     return {
         type:'POST_COMMENT',
         payload:''
     }
+}
 
+export function intitialRender(){
+    return{
+        type:'INITIAL_RENDER',
+        payload: ''
+    }
 }
 
 
