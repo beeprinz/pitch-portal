@@ -4,14 +4,12 @@ import { Link } from 'react-router-dom';
 import { LogUserIn } from './LoginActions';
 import { Redirect } from 'react-router';
 import { renderEmailField, renderPasswordField } from './renderForm';
+import validate from './validate';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
-    this.state = {
-      redirection: false
-    };
   }
 
   onSubmit(values) {
@@ -21,9 +19,7 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.login.company !== nextProps.login.company) {
-      this.props.history.push(
-        `/company/${nextProps.login.company}/dashboard`
-      );
+      this.props.history.push(`/company/${nextProps.login.company}/dashboard`);
     }
   }
 
@@ -97,17 +93,6 @@ class Login extends Component {
       </div>
     );
   }
-}
-
-function validate(values) {
-  const errors = {};
-  if (!values.email) {
-    errors.email = 'Enter an email';
-  }
-  if (!values.password) {
-    errors.password = 'Enter a password';
-  }
-  return errors;
 }
 
 export default reduxForm({
