@@ -4,6 +4,11 @@ import Cookies from 'cookies-js';
 import { Redirect } from 'react-router';
 import axios from 'axios';
 
+const token = sessionStorage.getItem('token');
+const authAxios = axios.create({
+  headers: { Authorization: token }
+});
+
 export default class Navbar extends Component {
   constructor(props) {
     super(props);
@@ -14,18 +19,11 @@ export default class Navbar extends Component {
     const accessToken = Cookies.get('token');
     Cookies.expire('userId');
     Cookies.expire('token');
-    axios.delete(
-      'http://localhost:3000/api/users/' + logoutId + '/accessTokens'
+    authAxios.delete(
+      `http://localhost:3000/api/users/${logoutId}/accessTokens`
     );
-    //need to redirect back to the login homepage after cookies are deleted
-    //need to set a loopback user logout function to actually log the user out of loopback
   }
 
-  handleLogOut(event) {
-    const logOutId = Cookies.get('userId');
-    Cookies.expire('userId');
-    Cookies.expire('token');
-  }
   render() {
     return (
       <nav className='navbar navbar-expand-lg navbar-light bg-light'>

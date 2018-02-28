@@ -1,28 +1,25 @@
 const initialState = {
-    details: '',
-    projects: null
-
-}
+  details: '',
+  projects: null
+};
 export default function CompanyDashReducer(state = initialState, action) {
-    const { type, payload } = action;
+  const { type, payload } = action;
 
-    switch (type) {
-        case 'GET_USERS_PROJECTS': {
-
-            return {
-                ...state,
-                projects: payload
-            };
-        }
-        case 'GET_DETAIL_FULFILLED': {
-
-            return {
-                ...state,
-                details: payload,
-            };
-        }
-        default: {
-            return state;
-        }
+  switch (type) {
+    case 'GET_USERS_PROJECTS': {
+      return {
+        ...state,
+        projects: payload
+      };
     }
+    case 'GET_DETAIL_FULFILLED': {
+      return {
+        ...state,
+        details: payload
+      };
+    }
+    default: {
+      return state;
+    }
+  }
 }

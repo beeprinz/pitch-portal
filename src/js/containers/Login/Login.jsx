@@ -1,82 +1,17 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
-import { LogUserIn, userError } from './LoginActions';
-import Cookies from 'cookies-js';
+import { LogUserIn } from './LoginActions';
 import { Redirect } from 'react-router';
+import { renderEmailField, renderPasswordField } from './renderForm';
 
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isAdmin: false
-    };
-    this.handleLogin = this.handleLogin.bind(this);
-    this.renderEmailField = this.renderEmailField.bind(this);
-    this.renderPasswordField = this.renderPasswordField.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.handleAdmin = this.handleAdmin.bind(this);
-    this.handleClient = this.handleClient.bind(this);
-  }
-
-  handleLogin(e) {
-    const redirectionCookie = Cookies.get('token');
-  }
-
-  handleAdmin() {
-    this.setState({ isAdmin: true });
-  }
-
-  handleClient() {
-    this.setState({ isAdmin: false });
-  }
-
-  renderEmailField(field) {
-    const inputBoxError = `form-control mb-2 ${field.meta.touched &&
-    field.meta.error
-      ? 'is-invalid'
-      : ''}`;
-    return (
-      <div>
-        <label htmlFor='inputEmail' className='sr-only'>
-          Email address
-        </label>
-        <input
-          {...field.input}
-          type='email'
-          id='inputEmail'
-          className={inputBoxError}
-          placeholder='Email address'
-        />
-        <div className='text-danger mb-2'>
-          {field.meta.touched ? field.meta.error : ''}
-        </div>
-      </div>
-    );
-  }
-
-  renderPasswordField(field) {
-    const inputBoxError = `form-control mb-2 ${field.meta.touched &&
-    field.meta.error
-      ? 'is-invalid'
-      : ''}`;
-    return (
-      <div>
-        <label htmlFor='inputPassword' className='sr-only'>
-          Password
-        </label>
-        <input
-          {...field.input}
-          type='password'
-          id='inputPassword'
-          className={inputBoxError}
-          placeholder='Password'
-        />
-        <div className='text-danger mb-2'>
-          {field.meta.touched ? field.meta.error : ''}
-        </div>
-      </div>
-    );
+    this.state = {
+      redirection: false
+    };
   }
 
   onSubmit(values) {
@@ -84,17 +19,18 @@ class Login extends Component {
     dispatch(LogUserIn(values));
   }
 
-  render() {
-    const redirectionCookie = Cookies.get('token');
-
-    if (redirectionCookie && this.state.isAdmin === false) {
-      return <Redirect to='/company/:companyname/accountsettings' />;
-    } else if (redirectionCookie && this.state.isAdmin === true) {
-      return <Redirect to='/admin/dashboard' />;
-    } else {
+  componentWillReceiveProps(nextProps) {
+    if (this.props.login.company !== nextProps.login.company) {
+      this.props.history.push(
+        `/company/${nextProps.login.company}/dashboard`
+      );
     }
+  }
+
+  render() {
     const { handleSubmit } = this.props;
     const { login } = this.props;
+
     return (
       <div className='container'>
         <div className='row text-center'>
@@ -104,8 +40,8 @@ class Login extends Component {
             <h1 className='h3 my-3 font-weight-normal text-center'>
               Please sign in
             </h1>
-            <Field name='email' component={this.renderEmailField} />
-            <Field name='password' component={this.renderPasswordField} />
+            <Field name='email' component={renderEmailField} />
+            <Field name='password' component={renderPasswordField} />
 
             <div className='custom-control custom-radio custom-control-inline mb-2'>
               <input

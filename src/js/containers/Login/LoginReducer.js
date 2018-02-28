@@ -1,41 +1,50 @@
 import { types } from './LoginActions';
-import Cookies from 'cookies-js';
 
 const initialState = {
-    LogIn: false,
-    information:'',
-    // token: Cookie.get('token') ? Cookie.get('token') : null
+  redirect: false,
+  pending: false,
+  loggedIn: false,
+  token: '',
+  ttl: '',
+  userId: '',
+  created: '',
+  errors: '',
+  company: ''
 };
 
 export default function LoginReducer(state = initialState, action) {
-    const { type, payload } = action;
+  const { type, payload } = action;
 
-    switch (type) {
-
-        case `${types.LOG_USER_IN}_FULFILLED`: {
-            if (payload.error) {
-                return { 
-                   ...state,
-                   errors: payload.error.message || 'Incorrect username or password, please try again' 
-                }
-            }
-            return {
-                ...state,
-                // information: payload.id,
-                information: payload,
-                LogIn: true
-            };
-        }
-         case types.LOG_USER_IN_FAILED: {
-             return {
-                ...state,
-               LogIn: false
-             }
-        }
-
-        default: {
-            return state;
-        }
+  switch (type) {
+    case types.LOG_USER_IN: {
+      return {
+        ...state,
+        loggedIn: true,
+        pending: false,
+        token: payload.id,
+        ttl: payload.ttl,
+        userId: payload.userId,
+        created: payload.created
+      };
     }
-
+    case types.LOG_IN_ERROR: {
+      return {
+        ...state,
+        error: {
+          code: payload.response.status,
+          text: payload.response.statusText
+        }
+      }
+    }
+    case types.COMPANY_REDIRECT: {
+      return {
+        ...state,
+        company: payload,
+        redirect: true
+      }
+    }
+    default: {
+      return state;
+    }
+  }
 }
