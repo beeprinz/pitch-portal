@@ -64,10 +64,7 @@ export default class CompanyDash extends Component {
     } else if (projectStatus == 2) {
       var status = 'Denied';
     }
-    // const redirectionCookie = Cookies.get('token');
-    // if (!redirectionCookie) {
-    //   return <Redirect to='/' />;
-    // }
+
 
     return (
       <div className='container'>

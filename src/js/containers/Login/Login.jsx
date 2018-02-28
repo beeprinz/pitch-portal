@@ -17,6 +17,8 @@ class Login extends Component {
     dispatch(LogUserIn(values));
   }
 
+  // After user is logged in, we make another GET call to receive their company name
+  // When that data is available, we push a new URL with that company name to redirect.
   componentWillReceiveProps(nextProps) {
     if (this.props.login.company !== nextProps.login.company) {
       this.props.history.push(`/company/${nextProps.login.company}/dashboard`);
