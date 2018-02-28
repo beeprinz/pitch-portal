@@ -12,7 +12,13 @@ export function postComment(){
         type:'POST_COMMENT',
         payload:''
     }
+}
 
+export function intitialRender(){
+    return{
+        type:'INITIAL_RENDER',
+        payload: ''
+    }
 }
 
 
