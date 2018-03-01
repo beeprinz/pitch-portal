@@ -20,7 +20,6 @@ class PitchDetail extends Component {
     }
     this.renderProjectStatus = this.renderProjectStatus.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
-    // this.handleSave = this.handleSave.bind(this);
     this.onSubmit = this.onSubmit.bind(this); 
     
   }
@@ -42,10 +41,7 @@ class PitchDetail extends Component {
     dispatch(toggleEdit());
   }
 
-  // handleBackEditButton(){
-  //   const { dispatch } = this.props;
-  //   dispatch(toggleEdit());
-  // }
+  
 
   renderProjectStatus(event) {
     const { projects } = this.props;
@@ -62,7 +58,6 @@ class PitchDetail extends Component {
     const inputBoxError = `form-control mb-2 ${field.meta.touched && field.meta.error ? 'is-invalid':''}`
     return(
       <div className="form-group">
-      {/* <label htmlFor="formGroupExampleInput">Project Description</label> */}
         <textarea {...field.input} type="text"  className="form-control" placeholder="Project Description" />
         <div className='text-danger mb-2'>
         {field.meta.touched ? field.meta.error: ''}
@@ -125,6 +120,17 @@ class PitchDetail extends Component {
     const {dispatch, projectDetail} = this.props;
     dispatch(changeProjectInfo(projectDetail, values));
   }
+
+componentWillMount() {
+    const { dispatch } = this.props;
+    const userId = Cookies.get('userId')
+    console.log(userId, 'PIIIIIITCHDEETAIL')
+    axios.get('http://localhost:3000/fetchprojects/' + userId, {
+    }).then(function (response) {
+      dispatch(projectDetail(response.data))
+    })
+  }
+
 
   render() {
     const{ projectDetail, isEditing } = this.props;

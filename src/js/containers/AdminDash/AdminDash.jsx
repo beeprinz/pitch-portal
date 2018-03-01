@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { getDetail, getUsersProjects } from './AdminDashActions'
+import { getDetail, getUsersProjects, deleteProject } from './AdminDashActions'
 import axios from 'axios';
 import Cookies from 'cookies-js'
 import Moment from 'react-moment';
-
+import { Redirect } from "react-router";
 
 export default class AdminDash extends Component {
   constructor(props) {
@@ -16,11 +15,22 @@ export default class AdminDash extends Component {
 
   }
 
+  // componentWillMount() {
+  //   const { dispatch, projects } = this.props;
+  //   const userId = sessionStorage.getItem('userId')
+  //   axios.get(`http://localhost:3000/api/users/${userId}/projects` , {
+  //   }).then(function (response) {
+  //     console.log("THIS IS RESPONSE DATA", response.data)
+  //     dispatch(getUsersProjects(response.data))
+  //   })
+  // }
+
   componentWillMount() {
-    const { dispatch, projects } = this.props;
-    axios.get('http://localhost:3000/allProjects', {
+    const { dispatch } = this.props;
+    // const userId = Cookies.get('userId')
+    // console.log(userId)
+    axios.get('http://localhost:3000/allProjects/', {
     }).then(function (response) {
-      console.log("THIS IS RESPONSE DATA", response.data)
       dispatch(getUsersProjects(response.data))
     })
   }
@@ -47,14 +57,11 @@ export default class AdminDash extends Component {
   }
 
   handleDelete(event) {
-    const { dispatch } = this.props;
+    const { dispatch, projects } = this.props;
     const { value } = event.target;
-    axios.delete('http://localhost:3000/api/projects/' + value, {
-    }).then(function (response) {
-      console.log(" THIS IS RESPONSE DATA ", response.data)
-    })
-  }
-
+    dispatch(deleteProject(value, projects));
+    }
+  
   render() {
     const { projects } = this.props
 
@@ -82,7 +89,7 @@ export default class AdminDash extends Component {
                   <td>{this.renderProjectStatus(project.status)}</td>
                   <td className="text-center">
                     <button type="button" className="btn btn-outline-success" value={project.id} onClick={this.handleDetail}>Detail</button>
-                    <button type="button" className="btn btn-outline-danger" style={{ marginLeft: 10 + "px" }} value={projects.id} onClick={this.handleDelete}> Delete </button>
+                    <button type="button" className="btn btn-outline-danger" style={{ marginLeft: 10 + "px" }} value={project.id} onClick={this.handleDelete}> Delete </button>
                   </td>
                 </tr>
               )
