@@ -33,6 +33,7 @@ class Login extends Component {
       <div className='container'>
         <div className='row text-center'>
           <form
+            style={{margin: 'auto'}}
             className='form-signin col-5'
             onSubmit={handleSubmit(this.onSubmit)}>
             <h1 className='h3 my-3 font-weight-normal text-center'>
@@ -40,35 +41,6 @@ class Login extends Component {
             </h1>
             <Field name='email' component={renderEmailField} />
             <Field name='password' component={renderPasswordField} />
-
-            <div className='custom-control custom-radio custom-control-inline mb-2'>
-              <input
-                type='radio'
-                id='customRadioInline1'
-                name='customRadioInline1'
-                onClick={this.handleClient}
-                className='custom-control-input'
-              />
-              <label
-                className='custom-control-label'
-                htmlFor='customRadioInline1'>
-                Client
-              </label>
-            </div>
-            <div className='custom-control custom-radio custom-control-inline mb-2'>
-              <input
-                type='radio'
-                id='customRadioInline2'
-                name='customRadioInline1'
-                onClick={this.handleAdmin}
-                className='custom-control-input'
-              />
-              <label
-                className='custom-control-label'
-                htmlFor='customRadioInline2'>
-                Admin
-              </label>
-            </div>
 
             <div>
               {this.props.login.errors && (

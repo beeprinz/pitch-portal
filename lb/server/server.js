@@ -75,7 +75,9 @@ app.post('/customSignUp', (req, res, next) => {
       if (err) {
         console.log('Error in User.create: ', err);
       } else {
-        authAxios
+        // we need to resolve the auth header issue for this to work when
+        // we enableAuth.
+        axios
           .post('http://localhost:3000/api/users/login', loginInfo)
           .then(response => res.send(response.data));
       }
