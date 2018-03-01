@@ -42,6 +42,11 @@ class PitchDetail extends Component {
     dispatch(toggleEdit());
   }
 
+  // handleBackEditButton(){
+  //   const { dispatch } = this.props;
+  //   dispatch(toggleEdit());
+  // }
+
   renderProjectStatus(event) {
     const { projects } = this.props;
     if (event === 0) {
@@ -246,9 +251,12 @@ class PitchDetail extends Component {
                   <Field name='goal' component={this.renderGoalField} />
                   <h6>Key Features:</h6>
                   <Field name='keyFeatures' component={this.renderKeyFeaturesField} />
-                  <button type='submit' className="mb-3 btn btn-primary edit-todo" role="button">
+                  <button type='submit' className="mb-3 mr-3 btn btn-primary edit-todo" role="button">
                     Save
                   </button>
+                  {/* <button onClick={this.handleBackEditButton} className="mb-3 btn btn-primary edit-todo" role="button">
+                    Back
+                  </button> */}
                 </form>
 
               </div>
