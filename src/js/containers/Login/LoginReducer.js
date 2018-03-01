@@ -34,14 +34,14 @@ export default function LoginReducer(state = initialState, action) {
           code: payload.response.status,
           text: payload.response.statusText
         }
-      }
+      };
     }
     case types.COMPANY_REDIRECT: {
       return {
         ...state,
         company: payload,
         redirect: true
-      }
+      };
     }
     default: {
       return state;

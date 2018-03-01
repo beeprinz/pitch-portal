@@ -9,7 +9,6 @@ import SignUpReducer from './containers/SignUp/SignUpReducer';
 import CommentsReducer from './containers/Comments/CommentsReducer';
 import AccountSettingsReducer from './containers/AccountSettings/AccountSettingsReducer';
 
-
 const rootReducer = combineReducers({
 // add reducers
   form: formReducer,

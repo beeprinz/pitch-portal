@@ -197,13 +197,13 @@ class PitchForm extends Component {
     const firstSlide = this.state.firstSlide
     const { handleSubmit } = this.props;
     const valid = this.state.formValid
-    const loading = this.state.loading
-    const redirectionCookie = Cookies.get('token')
-    if (!redirectionCookie){
-      return <Redirect to='/'/>
-    } 
-    const sizeLimit = this.state.RestrictedLimit
-   const projectRedirect = this.state.projectRedirect
+    // const redirectionCookie = Cookies.get('token')
+    // if (!redirectionCookie){
+    //   return <Redirect to='/'/>
+    // } 
+ 
+    // Adding Store to see if redirection is true
+    const { projectSubmitted } = this.props.pitchform;
     return (
       <div className='PitchForm'>
           <div className='container'>
