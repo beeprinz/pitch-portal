@@ -8,7 +8,6 @@ import LoginReducer from './containers/Login/LoginReducer';
 import SignUpReducer from './containers/SignUp/SignUpReducer';
 import CommentsReducer from './containers/Comments/CommentsReducer';
 import AccountSettingsReducer from './containers/AccountSettings/AccountSettingsReducer';
-import PitchDetailReducer from './containers/PitchDetail/PitchDetailReducer';
 
 const rootReducer = combineReducers({
 // add reducers

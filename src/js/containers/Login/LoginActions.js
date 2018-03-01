@@ -29,7 +29,7 @@ function grabCompany(token, userId) {
   return dispatch => {
     // use the newly created axios instance to make calls
     authAxios
-      // this GET call is done so we can get the user's company 
+      // this GET call is done so we can get the user's company
       // and redirect to the correct dashboard
       .get(`http://localhost:3000/api/users/${userId}`)
       .then(response => {
@@ -52,7 +52,7 @@ export function LogUserIn(values) {
       dispatch(userLoggedIn(response.data));
     });
     dispatch(
-      // this function uses the token and userID to make 
+      // this function uses the token and userID to make
       // authenticated requests to api. Check line 24.
       grabCompany(
         sessionStorage.getItem('token'),
