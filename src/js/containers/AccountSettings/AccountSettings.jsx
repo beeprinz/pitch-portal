@@ -3,7 +3,6 @@ import { Field, reduxForm } from 'redux-form'
 import axios from 'axios';
 import Cookies from 'cookies-js'
 import { Redirect } from "react-router";
-
 import {
   getUserInfo,
   changeUserInfo,
@@ -11,7 +10,6 @@ import {
 } from './AccountSettingsActions';
 const bodyParser = require('body-parser');
 // import { LogUserIn, userError } from './LoginActions';
-
 class AccountSettings extends Component {
   constructor(props) {
     super(props);
@@ -25,31 +23,29 @@ class AccountSettings extends Component {
     this.onSubmit = this.onSubmit.bind(this); 
     // this.renderCompanyName = this.renderCompanyName.bind(this);
   }
-  componentDidUpdate(prevProps, prevState){
-    const {isSaved} = this.props;
-    const {dispatch} = this.props;
-    if(isSaved){
+  componentWillReceiveProps(nextProps){
+     console.log('NextProps', nextProps)
+    // const { isSaved } = this.props
+     const {dispatch} = this.props;
+    if(this.props.isSaved !== nextProps.isSaved){
       this.setState({editEnabled: false})
-      dispatch(savedDone(done))
       this.fetchUser();
+      dispatch(savedDone())
     }
   }
   // componentWillMount() {
-    componentDidMount() {
-
+    componentWillMount() {
     this.fetchUser();
   }
-
   // componentDidUpdate(prevProps, prevState){
   //   this.fetchUser();
   // }
-
   fetchUser() {
     const { dispatch, initialize } = this.props;
     const userId = Cookies.get('userId')
     axios.get(`http://localhost:3000/api/users/${userId}`)
     .then(function (response) {
-      console.log("acct settings user data" , response.data)
+      // console.log("acct settings user data" , response.data)
       initialize({ 
         firstName: response.data.firstName,
         lastName: response.data.lastName,
@@ -60,15 +56,12 @@ class AccountSettings extends Component {
       dispatch(getUserInfo(response.data))  
     })
   }
-
   handleEdit() {
     this.setState({ editEnabled: true });
   }
-
   // handleSave() {
   //   this.setState({ editEnabled: false });
   // }
-
   renderFirstNameField(field){
     const inputBoxError = `form-control mb-2 ${field.meta.touched && field.meta.error ? 'is-invalid':''}`
     return(
@@ -81,7 +74,6 @@ class AccountSettings extends Component {
       </div>
     )
   }
-
   renderLastNameField(field){
     const inputBoxError = `form-control mb-2 ${field.meta.touched && field.meta.error ? 'is-invalid':''}`
     return(
@@ -94,7 +86,6 @@ class AccountSettings extends Component {
       </div>
     )
   }
-
   renderPhoneField(field){
     const inputBoxError = `form-control mb-2 ${field.meta.touched && field.meta.error ? 'is-invalid':''}`
     return(
@@ -107,8 +98,6 @@ class AccountSettings extends Component {
       </div>
     )
   }
-
-
   renderUserInformationField(field){
     const inputBoxError = `form-control mb-2 ${field.meta.touched && field.meta.error ? 'is-invalid':''}`
     return(
@@ -121,7 +110,6 @@ class AccountSettings extends Component {
       </div>
     )
   }
-
   renderWebsiteField(field){
     const inputBoxError = `form-control mb-2 ${field.meta.touched && field.meta.error ? 'is-invalid':''}`
     return(
@@ -134,22 +122,16 @@ class AccountSettings extends Component {
       </div>
     )
   }
-
   onSubmit(values) {
-
     // console.log("onsubmit acct settings console log", values);
     const {dispatch} = this.props;
-    console.log('acct setting onsubmit props!!', this.props)
+    // console.log('acct setting onsubmit props!!', this.props)
     dispatch(changeUserInfo(values));
-
-
   }
-
   render() {
     const {userInformation} = this.props;
     const { handleSubmit } = this.props;
     const {isSaved} = this.props
-
     console.log('acct settings props!!', this.props)
     // console.log('acct settings jsx props', accountSettings);
     if (this.state.editEnabled === true){
@@ -179,7 +161,6 @@ class AccountSettings extends Component {
           </div>;
         </div>; 
     }
-
     return <div>
         <h1>Account Settings</h1>
         <div className="col-md-10">
@@ -194,7 +175,6 @@ class AccountSettings extends Component {
                 <li className="list-group-item">Phone: {userInformation.phone}</li>
                 <li className="list-group-item">User information: {userInformation.info}</li>
                 <li className="list-group-item mb-3">Website: {userInformation.website}</li>
-
               </ul>
                <button onClick={this.handleEdit} className="mb-3 btn btn-primary edit-todo" role="button">
               Edit
@@ -205,7 +185,6 @@ class AccountSettings extends Component {
       </div>;
   }
 };
-
 function validate(values){
   const errors = {};
   if(!values.firstName){
@@ -223,10 +202,8 @@ function validate(values){
   if(!values.website){
     errors.website="Enter user website"
   }
-
   return errors;
 }
-
 export default reduxForm({
   validate: validate,
   form: "AccountSettingsForm"

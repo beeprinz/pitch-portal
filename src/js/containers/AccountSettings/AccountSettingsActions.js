@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from 'cookies-js'
 
 export function getUserInfo(userAccountInfo) { 
-    console.log('account settings actions userinfo', userAccountInfo);
+    // console.log('account settings actions userinfo', userAccountInfo);
   return {
     type: "GET_USER_INFO",
     payload: userAccountInfo  
@@ -12,7 +12,7 @@ export function getUserInfo(userAccountInfo) {
   };
 
   export function changeUserInfo(values) {
-    console.log('values from acct settings actions',values)
+    // console.log('values from acct settings actions',values)
     const userId = Cookies.get('userId') 
       return {
           type: "CHANGE_USER_INFO",
@@ -30,7 +30,7 @@ export function getUserInfo(userAccountInfo) {
       }
 }
 
-export function savedDone(vales) {
+export function savedDone() {
     return {
         type: "CHANGE_STATUS"
     }

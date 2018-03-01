@@ -3,7 +3,6 @@ import AccountSettings from './AccountSettings';
 
 
 function mapStoreToProps(store) {
-    console.log(store)
     return {
         userInformation: store.accountSettings.userInformation,
         isSaved: store.accountSettings.isSaved

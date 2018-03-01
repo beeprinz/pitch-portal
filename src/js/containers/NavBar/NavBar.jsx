@@ -19,6 +19,7 @@ export default class Navbar extends Component {
     const accessToken = Cookies.get('token');
     Cookies.expire('userId');
     Cookies.expire('token');
+    Cookies.expire('projectId')
     authAxios.delete(
       `http://localhost:3000/api/users/${logoutId}/accessTokens`
     );

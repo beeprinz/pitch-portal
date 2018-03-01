@@ -7,6 +7,7 @@ import LoginReducer from './containers/Login/LoginReducer';
 import SignUpReducer from './containers/SignUp/SignUpReducer';
 import CommentsReducer from './containers/Comments/CommentsReducer';
 import AccountSettingsReducer from './containers/AccountSettings/AccountSettingsReducer';
+import PitchDetailReducer from './containers/PitchDetail/PitchDetailReducer';
 
 const rootReducer = combineReducers({
 // add reducers
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
   companyDash: CompanyDashReducer,
   login: LoginReducer,
   comment: CommentsReducer,
-  accountSettings: AccountSettingsReducer
+  accountSettings: AccountSettingsReducer,
+  pitchDetail: PitchDetailReducer
 });
 
 export default rootReducer;

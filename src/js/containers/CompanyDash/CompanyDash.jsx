@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { getDetail, getUsersProjects } from './CompanyDashActions';
+import { getProjectDetail, getUsersProjects } from './CompanyDashActions'
 import axios from 'axios';
 import Cookies from 'cookies-js';
 import Moment from 'react-moment';
@@ -25,12 +25,15 @@ export default class CompanyDash extends Component {
 
   handleDetail(event) {
     const { dispatch } = this.props;
-    const { value } = event.target;
-    axios
-      .patch('http://localhost:3000/api/projects/' + value, {})
-      .then(function(response) {
-        dispatch(getDetail(response.data));
-      });
+    // const { value } = event.target;
+    // axios.get('http://localhost:3000/api/projects/' + value, {
+    // }).then(function (response) {
+    //   console.log(" THIS IS STATUS DATA ", response)
+    //   console.log('response.data.id', response.data.id)
+    //   Cookies.set('projectId', response.data.id);
+      dispatch(getProjectDetail(event.target.value))
+    // })
+   
   }
 
   renderProjectStatus(event) {
@@ -59,14 +62,6 @@ export default class CompanyDash extends Component {
   render() {
     // projectName , time,
     const { projectStatus, projects } = this.props;
-    if (projectStatus == 0) {
-      var status = 'Pending';
-    } else if (projectStatus == 1) {
-      var status = 'Approved';
-    } else if (projectStatus == 2) {
-      var status = 'Denied';
-    }
-
 
     return (
       <div className='container'>
