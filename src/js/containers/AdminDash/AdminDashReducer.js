@@ -21,6 +21,14 @@ export default function AdminDashReducer(state = initialState, action) {
                details: payload, 
             };   
         }
+        
+        case 'DELETE_PROJECT_FULFILLED': {
+            var allProjects = payload.projects.filter((project) => project.id !== payload.id)
+            return {
+                ...state,
+                projects: allProjects
+            }
+        }
         default: {
             return state;
         }  

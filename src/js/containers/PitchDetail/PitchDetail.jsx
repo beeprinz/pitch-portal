@@ -126,6 +126,17 @@ class PitchDetail extends Component {
     dispatch(changeProjectInfo(projectDetail, values));
   }
 
+componentWillMount() {
+    const { dispatch } = this.props;
+    const userId = Cookies.get('userId')
+    console.log(userId, 'PIIIIIITCHDEETAIL')
+    axios.get('http://localhost:3000/fetchprojects/' + userId, {
+    }).then(function (response) {
+      dispatch(projectDetail(response.data))
+    })
+  }
+
+
   render() {
     const{ projectDetail, isEditing } = this.props;
     const { handleSubmit } = this.props;

@@ -8,10 +8,8 @@ var axios = require('axios');
 
 
 var app = (module.exports = loopback());
-
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-
 app.start = function() {
   return app.listen(function() {
     app.emit('started');
@@ -22,6 +20,7 @@ app.start = function() {
   });
 };
 
+//Company Dash get request to projects with userId
 app.get('/fetchprojects/:userId', (req, res) => {
   let Projects = app.models.project;
   console.log(req.params.userId)
@@ -35,6 +34,7 @@ app.get('/fetchprojects/:userId', (req, res) => {
   })
 })
 
+//Admin Dash get request with all projects and second get with all users
 app.get('/allProjects', (req, res) => {
   let Projects = app.models.project;
   let Users = app.models.user;
@@ -53,28 +53,12 @@ app.get('/allProjects', (req, res) => {
   });
 });
 
-
-// app.get('/allProjects', (req, res) => {
-//   let Projects = app.models.project;
-//   let Users = app.models.user;
-//   Projects.find((err, projects) => {
-//     if (err) {
-//       res.send(err);
-//     } else {
-//       authAxios.get('http://localhost:3000/api/users/').then(users => {
-//         return res.send({ users: users.data, projects });
-//       });
-//     }
-//   });
-// });
-
 app.post('/customSignUp', (req, res, next) => {
   let loginInfo = {
     email: req.body.email,
     password: req.body.password
   };
   let User = app.models.User;
-
   User.create(
     {
       email: req.body.email,
@@ -98,7 +82,6 @@ app.post('/customSignUp', (req, res, next) => {
     }
   );
 });
-
 app.post('/login', (req, res) => {
   // User Model Defined
   let User = app.models.User;
@@ -115,6 +98,8 @@ app.post('/login', (req, res) => {
 
 // app.put('/changeUserInfo', (req, res) => {
 
+// app.get('/getprojects/:userId', (req,res)){
+//   let Project = app.models.projects
 app.post('/createproject', (req, res) => {
   // console.log(req.body)
   // Projects Defined Model
@@ -128,12 +113,10 @@ app.post('/createproject', (req, res) => {
     }
   });
 });
-
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
 boot(app, __dirname, function(err) {
-  if (err){} throw err;
-
+  if (err) throw err;
   // start the server if `$ node server.js`
   if (require.main === module) app.start();
 

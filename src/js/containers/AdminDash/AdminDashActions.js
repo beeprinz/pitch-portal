@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export function getDetail(detail){
     return {
         type:'GET_DETAIL_FULFILLED',
@@ -11,6 +13,11 @@ export function getUsersProjects(detail){
         payload: detail,
     }
 }
-
+export function deleteProject(id, projects) {
+    return {
+        type: 'DELETE_PROJECT',
+        payload: axios.delete(`http://localhost:3000/api/projects/${id}`).then(() => { return { id, projects } })
+    }
+}
 
 
