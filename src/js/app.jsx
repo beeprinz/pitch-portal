@@ -9,7 +9,7 @@ import Footer from './containers/Footer/Footer';
 import CompanyDash from './containers/CompanyDash';
 import AdminDash from './containers/AdminDash';
 import PitchForm from './containers/PitchForm';
-import PitchDetail from './containers/PitchDetail/PitchDetail';
+import PitchDetail from './containers/PitchDetail';
 import AccountSettings from './containers/AccountSettings';
 import Comments from './containers/Comments';
 

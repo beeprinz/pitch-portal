@@ -4,7 +4,9 @@ import AccountSettings from './AccountSettings';
 
 function mapStoreToProps(store) {
     return {
-        accountSettings: store.accountSettings.userInformation
+        userInformation: store.accountSettings.userInformation,
+        isSaved: store.accountSettings.isSaved
+
     };
 }
 
