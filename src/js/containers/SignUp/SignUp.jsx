@@ -17,6 +17,7 @@ export default class SignUp extends Component {
   previousPage() {
     this.setState({ page: this.state.page - 1 });
   }
+  
   //This will send user to company dashboard when signup and login is complete.
   componentWillReceiveProps(nextProps) {
     if (nextProps.signup.redirect === true) {

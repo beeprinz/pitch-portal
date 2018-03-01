@@ -1,10 +1,11 @@
 'use strict';
-// import Cookies from 'cookies-js'
-// threw syntax error
+
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 var bodyParser = require('body-parser');
 var axios = require('axios');
+
+
 
 var app = (module.exports = loopback());
 
@@ -12,22 +13,17 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 app.start = function() {
-  // start the web server
   return app.listen(function() {
     app.emit('started');
     var baseUrl = app.get('url').replace(/\/$/, '');
-    console.log('Web server listening at: %s', baseUrl);
     if (app.get('loopback-component-explorer')) {
       var explorerPath = app.get('loopback-component-explorer').mountPath;
-      console.log('Browse your REST API at %s%s', baseUrl, explorerPath);
     }
   });
 };
 
 app.get('/fetchprojects/:userId', (req, res) => {
   let Projects = app.models.project;
-  console.log(req.params.userId);
-
   Projects.find({ where: { userId: req.params.userId } }, function(
     err,
     projects
@@ -40,21 +36,21 @@ app.get('/fetchprojects/:userId', (req, res) => {
   });
 });
 
-app.get('/allProjects', (req, res) => {
-  let Projects = app.models.project;
-  let Users = app.models.user;
-  Projects.find((err, projects) => {
-    if (err) {
-      console.log(err);
-      res.send(err);
-    } else {
-      console.log(projects);
-      axios.get('http://localhost:3000/api/users/').then(users => {
-        return res.send({ users: users.data, projects });
-      });
-    }
-  });
-});
+
+// app.get('/allProjects', (req, res) => {
+//   let Projects = app.models.project;
+//   let Users = app.models.user;
+//   Projects.find((err, projects) => {
+//     if (err) {
+//       res.send(err);
+//     } else {
+//       authAxios.get('http://localhost:3000/api/users/').then(users => {
+//         return res.send({ users: users.data, projects });
+//       });
+//     }
+//   });
+// });
+
 app.post('/customSignUp', (req, res, next) => {
   let loginInfo = {
     email: req.body.email,
@@ -78,7 +74,7 @@ app.post('/customSignUp', (req, res, next) => {
       if (err) {
         console.log('Error in User.create: ', err);
       } else {
-        axios
+        authAxios
           .post('http://localhost:3000/api/users/login', loginInfo)
           .then(response => res.send(response.data));
       }
@@ -102,8 +98,7 @@ app.post('/login', (req, res) => {
   });
 });
 
-// app.get('/getprojects/:userId', (req,res)){
-//   let Project = app.models.projects
+
 
 app.post('/createproject', (req, res) => {
   // console.log(req.body)
@@ -114,7 +109,6 @@ app.post('/createproject', (req, res) => {
     if (err) {
       res.send(err);
     } else {
-      console.log(project);
       res.send(project);
     }
   });

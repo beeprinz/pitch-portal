@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Cookies from 'cookies-js';
 
 const USER = '/customSignUp';
 const ROOT_URL = 'http://localhost:3000';
@@ -35,6 +34,9 @@ export function signUpNewUser(values) {
       // receives access token object and saves it to application state
       .then(response => {
         dispatch(tokenReceived(response.data));
+        //Set authToken and userId into sesh storage
+        sessionStorage.setItem('token', response.data.id);
+        sessionStorage.setItem('userId', response.data.userId);
       })
       .catch(error => {
         dispatch(signupError(error));
