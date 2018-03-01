@@ -41,15 +41,16 @@ class Login extends Component {
     return (
       <div className='container'>
         <div className='row text-center'>
-        {userError ? <div className="alert alert-danger" role="alert">
+        {/* {userError ? <div className="alert alert-danger" role="alert">
           <strong>User Error!</strong> Please select the tag and use the correct account information
         </div> :''}
         {adminError ? <div className="alert alert-danger" role="alert">
           <strong>Admin Error!</strong> Please select the tag and use the correct account information
-        </div> :''}
+        </div> :''} */}
           <form
             className='form-signin col-5'
             onSubmit={handleSubmit(this.onSubmit)}>
+            
             <h1 className='h3 my-3 font-weight-normal text-center'>
               Please sign in
             </h1>
