@@ -14,7 +14,7 @@ console.log('company dash actions projectId param', projectId)
     })
         .catch(err => res.status(500).send('bad response'))
     }
-
+}
 
 export function getUsersProjects(detail) {
     console.log('Actions projectId and projectName', detail)
@@ -31,4 +31,4 @@ export function deleteProject(id, projects) {
         payload: axios.delete(`http://localhost:3000/api/projects/${id}`).then(() => { return { id, projects } })
     }
 }
-}
+

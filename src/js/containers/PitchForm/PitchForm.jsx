@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import axios from 'axios';
-import { createProject } from './PitchFormActions'
+import { createProject, changeStatus } from './PitchFormActions'
 import Cookies from 'cookies-js';
 import { Redirect } from "react-router";
 
@@ -16,62 +16,119 @@ class PitchForm extends Component {
       firstSlide: true,
       lastSlide: false,  
       formValid: true,
+      loading:false,
+      totalSize: 0,
+      fileMsg: '',
+      RestrictedLimit: false,
+      projectRedirect:false
     };
     // Binding Directory
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onChangeDocs = this.onChangeDocs.bind(this);
     this.handleRightSlide = this.handleRightSlide.bind(this);
     this.fileUpload = this.fileUpload.bind(this);
     this.handleLeftSlide = this.handleLeftSlide.bind(this);
+    this.convertToMega = this.convertToMega.bind(this);
+    // this.addArray = this.addArray.bind(this);
   }
-
+  componentWillReceiveProps(nextProps){
+    const {dispatch} = this.props;
+    const { projectSubmitted } = this.props;
+    console.log('nextprops', nextProps)
+    console.log('test', this.props.pitchform.projectSubmitted )
+    if ( this.props.pitchform.projectSubmitted != nextProps.pitchform.projectSubmitted){
+      this.setState({projectRedirect:true})
+      dispatch(changeStatus())
+    }
+  }
 
   // Submission of A Project (Run file upload function, Dispatch to Actions and Submit Form)
   onSubmit(values){
     const { dispatch } = this.props;
+    const files = this.state.files;
+    const fileLength = files.length;
+     if(this.state.totalSize > 250) {
+       this.setState({fileMsg: 'Your file(s) is over 250 MBs, Est. time of 5-10 minutes'})
+    }
+    if(this.state.totalSize < 250) {
+       this.setState({fileMsg: 'Your file(s) is less than 250 MBs, Est. time of 1-5 minutes'})
+    }
     // Retrieving Cookie for Pitch Form in Database & adding date and status
     const dateNow = Date()
-    values.userId = Cookies.get('userId')
+    values.userId = Cookies.get('userId');
     values.date = dateNow;
-  
+    const fileSizeTemp = []
+    const totalsizearray = this.state.totalSize
+ 
+    this.setState({loading:true})
     // File Upload on Submit (Creating Conditional Submission depending if File was uploaded)
-    const files = this.state.files;
-      if(files.length > 0  ) {
+      if(fileLength > 0  ) {
         files.forEach((file) => {
+          const fileAdd = file.size/1000000 
+          fileSizeTemp.push(fileAdd)
+
           this.fileUpload(file)
+
           .then((response) => {
-            const fileLocation =  response.data.result.files.file[0].providerResponse.location
-              this.setState({filesUploaded: [...this.state.filesUploaded, fileLocation], fileSuccess: true}, () => {
-                const fileState = this.state.fileSuccess
+            const fileLocation = response.data.result.files.file[0].providerResponse.location;
+            const fileTempUpload = this.state.filesUploaded.length + 1;
+              if(fileLength == fileTempUpload){
+                this.setState({fileSuccess:true, loading:false});
+              }
+              this.setState({filesUploaded: [...this.state.filesUploaded, fileLocation], timeEstimate: ''}, () => {
+                const fileState = this.state.fileSuccess;
                 if(fileState) {
-                  const fileSystem = this.state.filesUploaded
+                  const fileSystem = this.state.filesUploaded;
                   // Adding Refrence for other containers in Database
-                    values.fileLinks = fileSystem
-                    dispatch(createProject(values))
+                    values.fileLinks = fileSystem;
+                    dispatch(createProject(values));
                 }
               })
           });
         });
       } else {
       // Dispatch that connects to the store.
+      this.setState({loading:false})
       dispatch(createProject(values));
       }
 
   }
+ 
   // File Upload System
 
   // Handles On Change for File Stack
   onChange(e) {
     const fileStack = this.state.files
-      fileStack.push(e.target.files[0])
+    this.setState({totalSize: this.state.totalSize + e.target.files[0].size/1000000})
+    
+        fileStack.push(e.target.files[0])
         this.setState({
           files: fileStack
         });
+      
+  
+     
+  }
+  convertToMega(size, e){
+    return size/1000000;
+  }
+  onChangeDocs(e) {
+    const fileStack = this.state.files
+    this.setState({totalSize: this.state.totalSize + e.target.files[0].size/1000000})
+      // if(this.state.totalSize < 500) {
+        fileStack.push(e.target.files[0])
+        this.setState({
+          files: fileStack
+        });
+      
+    
   }
 
   // File Upload to Amazon AWS (Client => Aws); Using loopback-storage component.
   fileUpload(file){
     const url = 'http://localhost:3000/api/containers/originpitchportal/upload';
+    // console.log( 'file upload' , file.size)
     const formData = new FormData();
       formData.append('file', file);
       const config = {
@@ -79,7 +136,7 @@ class PitchForm extends Component {
           'content-type': 'multipart/form-data'
         }
       };
-    return axios.post(url, formData, config);
+    return axios.post(url, formData, config)                   
   }
 
   // Disables the first control so user cannot go to submission page by accident
@@ -91,11 +148,14 @@ class PitchForm extends Component {
   handleRightSlide(e){
     const { valid } = this.props
     this.setState({formValid: valid})
+    const fileAddition= this.state.files;
     // If statement that doesnt let you progress unless you complete form correctly
     if(valid){
       const slideCountOnRight = this.state.page  + 1
       this.setState({page: slideCountOnRight, formValid: valid})
     }
+    
+
   }
   // Redux Form Renders
   renderTextBox(field) {
@@ -137,18 +197,18 @@ class PitchForm extends Component {
     const firstSlide = this.state.firstSlide
     const { handleSubmit } = this.props;
     const valid = this.state.formValid
+    const loading = this.state.loading
     const redirectionCookie = Cookies.get('token')
     if (!redirectionCookie){
       return <Redirect to='/'/>
     } 
- 
-    // Adding Store to see if redirection is true
-    const { projectSubmitted } = this.props.pitchform;
+    const sizeLimit = this.state.RestrictedLimit
+   const projectRedirect = this.state.projectRedirect
     return (
       <div className='PitchForm'>
           <div className='container'>
           {/* Redirection back to dashboard if submission is cleared by the database */}
-           {projectSubmitted ? <Redirect to='/company/:companyname/dashboard' /> : ''} 
+           {projectRedirect ? <Redirect to='/company/:companyname/dashboard' /> : ''} 
             <h1 className="text-center p-2"> Project Request Form </h1>
               <form onSubmit={ handleSubmit(this.onSubmit) }>
                 <div id="carouselExampleControls"  className="carousel slide"  data-interval="false" data-ride="carousel">
@@ -236,53 +296,60 @@ class PitchForm extends Component {
                               <div className="container">
                               <h1 className ="text-center"> File And Uploading </h1>
                               <hr />
-                              <h4 className = "text-center"> Upload A file (.pptx, .doc, .docx) </h4>
+                              {sizeLimit ? 
+                              <div className="alert alert-danger" role="alert">
+                                File(s) are over the 500 Mb Limit
+                              </div> : ''}
+                              <h4 className = "text-center"> Upload A Video (.mp4, .m4v, .mov) </h4>
                                 <div className = "card p-3">
                                   <div className = "card-body text-center ">
                                     <div className="text-center ">
                                     <div className="custom-file">
-                                      <input type="file" onChange={this.onChange} className="custom-file-input" id="customFile" />
+                                      <input accept="video/mp4,video/x-m4v,video/*" type="file" onChange={this.onChange} className="custom-file-input" id="customFile" />
                                       <label className="custom-file-label" htmlFor="customFile">Choose file</label>
                                     </div>
-                                    <h4 className="p-3" > Files Uploaded </h4>
-                                      <ul className="list-group list-group-flush">
-                                        {
-                                          this.state.files.map(f => <li className="list-group-item" key={f.name}>{f.name} - {f.size} bytes</li>)
-                                        }
-                                      </ul>
                                     </div>
+                                    <h5 className = "pt-3"> Requirments for Video </h5>
+                                    <ul className = "list-group list-group-flush">
+                                      <li className = "list-group-item"> Video(s) can only be a maximum of 5 minutes or 500 Mb. </li>
+                                      <li className= "list-group-item"> Should not contain any inappropriate content. </li>
+                                      <li className= "list-group-item"> Video(s) will not be uploaded till you hit submit on final page.</li>
+                                      <li className= "list-group-item"> Video(s) must have correct file type (.mp4, .m4v, .mov). </li>
+                                      <li className= "list-group-item"> To upload multiple videos just click choose file after you see your first video in staged uploads.</li>
+                                    </ul>
                                   </div>
                                 </div>
                                 <div className="p-3 text-center">
-                                <h4> For Directions on how to upload your video on a third party site click here</h4>
-                                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                  Launch demo modal
-                                </button>
-                                    <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                      <div className="modal-dialog" role="document">
-                                        <div className="modal-content">
-                                          <div className="modal-header">
-                                            <h5 className="modal-title" id="exampleModalLabel">Uploading Directions</h5>
-                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                              <span aria-hidden="true">&times;</span>
-                                            </button>
-                                          </div>
-                                          <div className="modal-body">
-                                            <ul className="list-group list-group-flush">
-                                              <li className="list-group-item">Cras justo odio</li>
-                                              <li className="list-group-item">Dapibus ac facilisis in</li>
-                                              <li className="list-group-item">Morbi leo risus</li>
-                                              <li className="list-group-item">Porta ac consectetur ac</li>
-                                              <li className="list-group-item">Vestibulum at eros</li>
-                                            </ul>
-                                          </div>
-                                          <div className="modal-footer">
-                                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="button" className="btn btn-primary">Save changes</button>
-                                          </div>
-                                        </div>
-                                      </div>
+                                <h4 className = "text-center"> Upload A file (.pptx, .doc, .docx, .pdf) </h4>
+                                <div className = "card p-3">
+                                  <div className = "card-body text-center ">
+                                    <div className="text-center ">
+                                    <div className="custom-file">
+                                      <input type="file" onChange={this.onChangeDocs} className="custom-file-input" id="customFile" />
+                                      <label className="custom-file-label" htmlFor="customFile">Choose file</label>
                                     </div>
+                                    </div>
+                                    <h5 className = "pt-3"> Requirments for Documents </h5>
+                                    <ul className = "list-group list-group-flush">
+                                      <li className = "list-group-item"> Total amount of size of documents should be maximum of 500Mb (Including Video) </li>
+                                      <li className= "list-group-item"> Should not contain any inappropriate content. </li>
+                                      <li className= "list-group-item"> Document(s) will not be uploaded till you hit submit on final page.</li>
+                                      <li className= "list-group-item"> Document(s) must have correct file type (.doc, .docx, .pptx, .pdf). </li>
+                                      <li className= "list-group-item"> To upload multiple documentss just click choose file after you see your first document in staged uploads.</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <h2> Files Staged For Upload </h2>
+                                <div className= "card">
+                                <div className ="card-body">
+                                <ul className="list-group list-group-flush">
+
+                                        {
+                                          this.state.files.map(f => <li className="list-group-item" key={f.name}>{f.name} - {this.convertToMega(f.size)} MegaBytes</li>)
+                                        }
+                                </ul>
+                                </div>
+                                </div>
                                 <Field
                                   name ="urlLink"
                                   label = 'Link to video on youtube or other streaming services'
@@ -309,7 +376,8 @@ class PitchForm extends Component {
                                   rows='3'
                                 />
                                 <div className='text-center'>
-                                  <button type ="submit" className = "btn-lg btn-primary text-center" > Submit </button> 
+   
+                                {loading ?  <div> Uploading Video(s) or Document(s) <hr />({this.state.fileMsg}) <i className="fas fa-spinner fa-pulse"></i> </div> : <button type ="submit" className = "btn-lg btn-primary text-center" > Submit </button>} 
                                 </div>
                               </div>
                             </div>

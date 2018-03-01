@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 export const types = {
-  CREATE_PROJECT: 'CREATE_PROJECT'
+  CREATE_PROJECT: 'CREATE_PROJECT',
+  CHANGE_STATUS: 'CHANGE_STATUS'
 };
 export function createProject(values) {
   return {
@@ -16,4 +17,8 @@ export function createProject(values) {
              })
   };
 }
-
+export function changeStatus() {
+  return {
+    type: types.CHANGE_STATUS,
+  };
+}

@@ -29,10 +29,7 @@ export default function CompanyDashReducer(state = initialState, action) {
                 projects: allProjects
             }
         }
-        default: {
-            return state;
-        }
-    }
+    
     case 'GET_DETAIL_FULFILLED': {
       return {
         ...state,
