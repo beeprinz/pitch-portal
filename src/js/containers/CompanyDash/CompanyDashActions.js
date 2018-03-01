@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export function getDetail(detail) {
+
 
 export function getProjectDetail(projectId) {
 console.log('company dash actions projectId param', projectId)
@@ -14,7 +14,7 @@ console.log('company dash actions projectId param', projectId)
     })
         .catch(err => res.status(500).send('bad response'))
     }
-}
+
 
 export function getUsersProjects(detail) {
     console.log('Actions projectId and projectName', detail)

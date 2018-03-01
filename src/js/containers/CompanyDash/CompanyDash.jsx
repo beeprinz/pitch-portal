@@ -70,7 +70,7 @@ export default class CompanyDash extends Component {
   }
 
   render() {
-    // projectName , time,
+
     const { projectStatus, projects } = this.props;
 
     return (
