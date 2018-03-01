@@ -83,6 +83,7 @@ app.post('/customSignUp', (req, res, next) => {
 });
 app.post('/login', (req, res) => {
   // User Model Defined
+  
   let User = app.models.User;
   let userInfo = req.body;
   User.login({email: userInfo.email, password: userInfo.password}, function (err, token) {
@@ -90,6 +91,11 @@ app.post('/login', (req, res) => {
       res.status(404).send('404')
     } else {
       res.send(token)
+      // Uncommment for admin controle
+      // console.log(token.userId)
+      // axios
+      //   .get('http://localhost:3000/api/users/'+ token.userId)
+      //   .then(response => res.send({userObject: response.data, token: token}))
     }
   });
 });
