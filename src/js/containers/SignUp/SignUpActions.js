@@ -30,6 +30,8 @@ export function signUpNewUser(values, history) {
   const url = `${ROOT_URL}${USER}`;
   //deletes confirmation password from state
   delete values.password2;
+  //sets company name to session storage
+  sessionStorage.setItem('company', (values.company).replace(/\s+/g,""));
   return dispatch => {
     //saves signup data to application state
     axios

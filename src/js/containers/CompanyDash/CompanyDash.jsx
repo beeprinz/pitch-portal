@@ -6,6 +6,7 @@ import Cookies from 'cookies-js';
 import Moment from 'react-moment';
 import { Redirect } from 'react-router';
 
+const company = sessionStorage.getItem('company');
 const token = sessionStorage.getItem('token');
 const authAxios = axios.create({
   headers: { Authorization: token }
@@ -85,7 +86,7 @@ export default class CompanyDash extends Component {
                     <td>{this.renderProjectStatus(project.status)}</td>
                     <td className='text-center'>
                       <Link
-                        to={`/company/:companyname/pitchdetail/${project.id}`}>
+                        to={`/company/${company}/pitchdetail/${project.id}`}>
                         <button
                           type='button'
                           className='btn btn-outline-success'

@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 
 const token = sessionStorage.getItem('token');
 const userId = sessionStorage.getItem('userId');
+const company = sessionStorage.getItem('company');
 
 const authAxios = axios.create({
   headers: { Authorization: token }
