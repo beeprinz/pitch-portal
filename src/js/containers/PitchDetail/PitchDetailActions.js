@@ -18,13 +18,11 @@ export function getProjectById(id) {
 }
 
 export function changeProjectInfo(detail, values) {
-  console.log('values from pitch detail actions',values)
     return {
         type: "CHANGE_PROJECT_INFO",
         payload: axios
         .patch('http://localhost:3000/api/projects/' + detail.id, values)
         .then(response => {
-          console.log("put request pitch detail actions", response)
           return response.data
       })
         .catch(err => {

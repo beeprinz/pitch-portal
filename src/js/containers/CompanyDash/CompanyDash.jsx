@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { getProjectDetail, getUsersProjects } from './CompanyDashActions'
+import { getProjectDetail, getUsersProjects, deleteProject } from './CompanyDashActions'
 import axios from 'axios';
 import Cookies from 'cookies-js';
 import Moment from 'react-moment';
@@ -22,15 +22,8 @@ export default class CompanyDash extends Component {
   }
   handleDetail(event) {
     const { dispatch } = this.props;
-    // const { value } = event.target;
-    // axios.get('http://localhost:3000/api/projects/' + value, {
-    // }).then(function (response) {
-    //   console.log(" THIS IS STATUS DATA ", response)
-    //   console.log('response.data.id', response.data.id)
-    //   Cookies.set('projectId', response.data.id);
       dispatch(getProjectDetail(event.target.value))
-    // })
-   
+  
   }
   renderProjectStatus(event) {
     const { projects } = this.props;
@@ -44,17 +37,14 @@ export default class CompanyDash extends Component {
       return 'Denied';
     }
   }
+
   handleDelete(event) {
-  const { dispatch} = this.props;
-  const { value } = event.target;
-  console.log('value for project', value)
-  axios.delete('http://localhost:3000/api/projects/' + value , {
-  }).then(function (response) {
-    console.log(" THIS IS RESPONSE DATA " , response.data)
-  })
-  }
+    const { dispatch, projects } = this.props;
+    const { value } = event.target;
+    dispatch(deleteProject(value, projects));
+    }
+    
   render() {
-    // projectName , time,
     const { projectStatus, projects } = this.props;
     return (
       <div className='container'>
@@ -115,14 +105,7 @@ export default class CompanyDash extends Component {
         <h1>New Project </h1>
         <hr />
         <p>Click submit for new project</p>
-        <Link to='/company/:companyname/pitchform'>
-          <input
-            className='btn btn-primary'
-            href='/company/:companyname/pitchform'
-            type='submit'
-            value='Submit'
-          />
-        </Link>
+        <a className="btn btn-primary" href="/company/companyname/pitchform" role="button">Create Pitch</a>
       </div>
     );
   }

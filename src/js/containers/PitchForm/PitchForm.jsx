@@ -20,7 +20,8 @@ class PitchForm extends Component {
       totalSize: 0,
       fileMsg: '',
       RestrictedLimit: false,
-      projectRedirect:false
+      projectRedirect:false,
+      companyName: ''
     };
     // Binding Directory
     this.onSubmit = this.onSubmit.bind(this);
@@ -30,13 +31,24 @@ class PitchForm extends Component {
     this.fileUpload = this.fileUpload.bind(this);
     this.handleLeftSlide = this.handleLeftSlide.bind(this);
     this.convertToMega = this.convertToMega.bind(this);
-    // this.addArray = this.addArray.bind(this);
+  }
+  componentWillMount(){
+    const token = sessionStorage.getItem('token')
+    const authAxios = axios.create({
+      headers: { Authorization: token }
+    });
+    const userId = sessionStorage.getItem('userId')
+    authAxios
+    .get(`http://localhost:3000/api/users/${userId}`)
+    .then(response => {
+      console.log(response.data.company)
+      this.setState({companyName: response.data.company})
+    });
   }
   componentWillReceiveProps(nextProps){
     const {dispatch} = this.props;
     const { projectSubmitted } = this.props;
-    console.log('nextprops', nextProps)
-    console.log('test', this.props.pitchform.projectSubmitted )
+   
     if ( this.props.pitchform.projectSubmitted != nextProps.pitchform.projectSubmitted){
       this.setState({projectRedirect:true})
       dispatch(changeStatus())
@@ -56,7 +68,7 @@ class PitchForm extends Component {
     }
     // Retrieving Cookie for Pitch Form in Database & adding date and status
     const dateNow = Date()
-    values.userId = Cookies.get('userId');
+    values.userId = sessionStorage.getItem('userId');
     values.date = dateNow;
     const fileSizeTemp = []
     const totalsizearray = this.state.totalSize
@@ -197,18 +209,19 @@ class PitchForm extends Component {
     const firstSlide = this.state.firstSlide
     const { handleSubmit } = this.props;
     const valid = this.state.formValid
-    // const redirectionCookie = Cookies.get('token')
-    // if (!redirectionCookie){
-    //   return <Redirect to='/'/>
-    // } 
- 
-    // Adding Store to see if redirection is true
-    const { projectSubmitted } = this.props.pitchform;
+    const loading = this.state.loading
+    const company = this.state.companyName
+        const redirectionCookie = sessionStorage.getItem('userId')
+     if (!redirectionCookie){
+       return <Redirect to='/'/>
+     } 
+    const sizeLimit = this.state.RestrictedLimit
+   const projectRedirect = this.state.projectRedirect
     return (
       <div className='PitchForm'>
           <div className='container'>
           {/* Redirection back to dashboard if submission is cleared by the database */}
-           {projectRedirect ? <Redirect to='/company/:companyname/dashboard' /> : ''} 
+           {projectRedirect ? <Redirect to={'/company/'+company+'/dashboard'} /> : ''} 
             <h1 className="text-center p-2"> Project Request Form </h1>
               <form onSubmit={ handleSubmit(this.onSubmit) }>
                 <div id="carouselExampleControls"  className="carousel slide"  data-interval="false" data-ride="carousel">

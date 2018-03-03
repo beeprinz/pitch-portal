@@ -3,7 +3,7 @@ import { signUpNewUser } from './SignUpActions';
 import SignUp from './SignUp';
 
 const mapDispatchToProps = dispatch => ({
-  handleSearchSubmit: values => dispatch(signUpNewUser(values))
+  handleSearchSubmit: (values,history) => dispatch(signUpNewUser(values, history))
 });
 
 function mapStateToProps({ signup }) {

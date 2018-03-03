@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 // import { updateCommentArea, postComment, intitialRender } from "./CommentsActions";
 import Cookies from "cookies-js";
 import axios from "axios";
+import Moment from 'react-moment';
 
 export default class Comments extends Component {
   constructor(props) {
@@ -10,7 +11,8 @@ export default class Comments extends Component {
     this.state = {
       text:'',
       names:'',
-      comment:''
+      comment:'',
+      date:''
     };
 
     this.renderComments = this.renderComments.bind(this);
@@ -20,7 +22,7 @@ export default class Comments extends Component {
 
   renderComments() {
     console.log('render stuff')
-    const projectId = "5a90ffbdb39b2e2954151ee0";
+    const projectId = "5a9a00b2c196dc198837e5b0";
     let data = [];
     axios
       .get(`http://localhost:3000/api/projects/${projectId}/comment`)
@@ -31,9 +33,11 @@ export default class Comments extends Component {
       .then(promises => {
         const names = promises.map(item => item.data.firstName)
         const text = data.map(item => item.text)
+        const date = data.map(item => item.date)
         this.setState({
           text: text.map(item => item),
-          names: names.map(item => item)
+          names: names.map(item => item),
+          date: date.map(item => item)
         });
       })
       .catch(function(err) {
@@ -53,8 +57,8 @@ export default class Comments extends Component {
   handleCommentSubmit(event) {
     const { dispatch } = this.props
     const comment = this.state.comment
-    const projectId = "5a90ffbdb39b2e2954151ee0"
-    const userId = "5a9056aaeebd1a0d455ebad6"
+    const projectId = "5a9a00b2c196dc198837e5b0"
+    const userId = "5a989f3f832c164290401a85"
     let data = [];
 
     axios.post(`http://localhost:3000/api/projects/${projectId}/comment`, {
@@ -115,7 +119,9 @@ export default class Comments extends Component {
                 <div key={index} className="card-body">
                 <blockquote className="blockquote mb-0">
                   <p>{item}</p>
-                  <footer className="blockquote-footer">{this.state.names[index]}</footer>
+                  <footer className="blockquote-footer">{this.state.names[index]}{" "}  
+                  <Moment format="MM/DD/YYYY hh:mm a">{this.state.date[index]}</Moment>
+                  </footer>
                 </blockquote>
                 </div>
                 )

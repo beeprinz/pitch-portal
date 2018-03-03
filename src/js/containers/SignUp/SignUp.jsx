@@ -19,13 +19,14 @@ export default class SignUp extends Component {
   }
   
   //This will send user to company dashboard when signup and login is complete.
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.signup.redirect === true) {
-      this.props.history.push(
-        `/company/${this.props.signup.company}/dashboard`
-      );
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.signup.redirect === true) {
+  //     this.props.history.push(
+  //       `/company/${this.props.signup.company}/dashboard`
+  //       `/company/dsa/dashboard`
+  //     );
+  //   }
+  // }
 
   render() {
     const { page } = this.state;
@@ -43,7 +44,7 @@ export default class SignUp extends Component {
             previousPage={this.previousPage}
             signUpNewUser={signUpNewUser}
             company={this.props.signup.company}
-            onSubmit={values => this.props.handleSearchSubmit(values)}
+            onSubmit={values => this.props.handleSearchSubmit(values,this.props.history)}
           />
         )}
       </div>

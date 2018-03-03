@@ -16,12 +16,77 @@ class PitchDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      editEnabled: false
+      editEnabled: false,
+      text:'',
+      names:'',
+      comment:'',
+      date:''
     }
+    
+    this.renderComments = this.renderComments.bind(this);
+    this.handleCommentInput = this.handleCommentInput.bind(this);
+    this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
     this.renderProjectStatus = this.renderProjectStatus.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.onSubmit = this.onSubmit.bind(this); 
     
+  }
+
+  renderComments() {
+    const { match } = this.props
+    const projectId = match.params.id;
+    let data = [];
+    axios
+      .get(`http://localhost:3000/api/projects/${projectId}/comment`)
+      .then(res => {
+        data = res.data
+        return Promise.all(res.data.reverse().map(item => axios.get(`http://localhost:3000/api/users/${item.userId}`)))
+      })
+      .then(promises => {
+        const names = promises.map(item => item.data.firstName)
+        const text = data.map(item => item.text)
+        const date = data.map(item => item.date)
+        this.setState({
+          text: text.map(item => item),
+          names: names.map(item => item),
+          date: date.map(item => item)
+        });
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+  }
+
+  handleCommentInput(event) {
+    const { dispatch } = this.props;
+    const value = event.target.value;
+    this.setState({
+      comment:value
+    })
+  }
+
+  handleCommentSubmit(event) {
+    const { dispatch, match } = this.props
+    const comment = this.state.comment
+    const projectId = match.params.id
+    const userId = sessionStorage.userId
+    let data = [];
+
+    axios.post(`http://localhost:3000/api/projects/${projectId}/comment`, {
+      "text": comment,
+      "date": new Date(),
+      "projectId": projectId,
+      "userId": userId
+    })
+    .then((response) => {
+      this.renderComments()
+      this.setState({
+        comment:''
+      })
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
   }
 
   componentDidMount() {
@@ -122,13 +187,7 @@ class PitchDetail extends Component {
   }
 
 componentWillMount() {
-    const { dispatch } = this.props;
-    const userId = Cookies.get('userId')
-    console.log(userId, 'PIIIIIITCHDEETAIL')
-    axios.get('http://localhost:3000/fetchprojects/' + userId, {
-    }).then(function (response) {
-      dispatch(projectDetail(response.data))
-    })
+    this.renderComments()
   }
 
 
@@ -136,14 +195,16 @@ componentWillMount() {
     const{ projectDetail, isEditing } = this.props;
     const { handleSubmit } = this.props;
     const {isSaved} = this.props;
+
     if(!projectDetail) return (
-          <div className="text-center" style={{ padding: '20' }}>
+          <div className="text-center" style={{ padding: '20px' }}>
             <p><i className="fa fa-spinner fa-spin fa-2x"></i></p>
             <p>Loading...</p>
           </div>
     );
 
     if(isEditing === false){
+      console.log(projectDetail)
     return (
       <div className="container">
         <h1>Hello World - PitchDetail</h1>
@@ -180,6 +241,15 @@ componentWillMount() {
                 className="mb-3 btn btn-primary edit-todo" role="button">
                   Edit
                 </button>
+                <h6> Uploaded Files </h6>
+                <ul>
+                   {!!projectDetail.fileLinks && projectDetail.fileLinks.map((link) => {
+                    return ( 
+                     <li> <a key ={link} href={link} > <i className="fas fa-link"></i> {link.slice(53)} </a></li>
+                   )
+                   })
+                  } 
+                  </ul>
               </div>
             </div>
           </div>
@@ -187,34 +257,43 @@ componentWillMount() {
           {/* comment card */}
           <div className="col">
             <div className="card">
-              <div className="card-header">Comment</div>
+              <div className="card-header">Project Comments</div>
               <div className="card-body">
                 <div className="form-group">
-                  <label htmlFor="exampleFormControlTextarea1">
-                    Comment:
-                  </label>
-                  <textarea onChange={this.handleCommentInput} value="" className="form-control" id="exampleFormControlTextarea1" rows="3" />
-                  <button onClick={this.handleCommentSubmit} type="button" className="btn btn-primary btn-lg" style={{ marginTop: 10 + "px", marginLeft: 75 + "%" }}>
+                  <label htmlFor="exampleFormControlTextarea1">Comment:</label>
+                  <textarea
+                    onChange={this.handleCommentInput}
+                    value={this.state.comment}
+                    className="form-control"
+                    id="exampleFormControlTextarea1"
+                    rows="3"
+                  />
+                  <button
+                    onClick={this.handleCommentSubmit}
+                    type="button"
+                    className="btn btn-primary btn-lg"
+                    style={{ marginTop: 10 + "px", marginLeft: 75 + "%" }}
+                  >
                     Send
                   </button>
                 </div>
                 <hr />
-                <div className="card-body">
-                  <blockquote className="blockquote mb-0">
-                    <p>
-                    This is not the best project in the world, this is just a tribute.
-                    </p>
-                    <footer className="blockquote-footer">Company</footer>
-                  </blockquote>
+                {
+                !!this.state.text && this.state.text.map((item, index)=>{
+                  if(index <= 3){
+                return (
+                <div key={index} className="card-body">
+                <blockquote className="blockquote mb-0">
+                  <p>{item}</p>
+                  <footer className="blockquote-footer">{this.state.names[index]}{" "}  
+                  <Moment format="MM/DD/YYYY hh:mm a">{this.state.date[index]}</Moment>
+                  </footer>
+                </blockquote>
                 </div>
-                <div className="card-body">
-                  <blockquote className="blockquote mb-0">
-                    <p>
-                    Your project is bad and you should feel bad!
-                    </p>
-                    <footer className="blockquote-footer">Admin</footer>
-                  </blockquote>
-                </div>
+                )
+              }
+              })
+              }
               </div>
             </div>
           </div>
@@ -272,34 +351,43 @@ componentWillMount() {
           {/* comment card */}
           <div className="col">
             <div className="card">
-              <div className="card-header">Comment</div>
+              <div className="card-header">Project Comments</div>
               <div className="card-body">
                 <div className="form-group">
-                  <label htmlFor="exampleFormControlTextarea1">
-                    Comment:
-                  </label>
-                  <textarea onChange={this.handleCommentInput} value="" className="form-control" id="exampleFormControlTextarea1" rows="3" />
-                  <button onClick={this.handleCommentSubmit} type="button" className="btn btn-primary btn-lg" style={{ marginTop: 10 + "px", marginLeft: 75 + "%" }}>
+                  <label htmlFor="exampleFormControlTextarea1">Comment:</label>
+                  <textarea
+                    onChange={this.handleCommentInput}
+                    value={this.state.comment}
+                    className="form-control"
+                    id="exampleFormControlTextarea1"
+                    rows="3"
+                  />
+                  <button
+                    onClick={this.handleCommentSubmit}
+                    type="button"
+                    className="btn btn-primary btn-lg"
+                    style={{ marginTop: 10 + "px", marginLeft: 75 + "%" }}
+                  >
                     Send
                   </button>
                 </div>
                 <hr />
-                <div className="card-body">
-                  <blockquote className="blockquote mb-0">
-                    <p>
-                      This is not the best project in the world, this is just a tribute.
-                    </p>
-                    <footer className="blockquote-footer">Company</footer>
-                  </blockquote>
+                {
+                !!this.state.text && this.state.text.map((item, index)=>{
+                  if(index <= 3){
+                return (
+                <div key={index} className="card-body">
+                <blockquote className="blockquote mb-0">
+                  <p>{item}</p>
+                  <footer className="blockquote-footer">{this.state.names[index]}{" "}  
+                  <Moment format="MM/DD/YYYY hh:mm a">{this.state.date[index]}</Moment>
+                  </footer>
+                </blockquote>
                 </div>
-                <div className="card-body">
-                  <blockquote className="blockquote mb-0">
-                    <p>
-                      Your project is bad and you should feel bad!
-                    </p>
-                    <footer className="blockquote-footer">Admin</footer>
-                  </blockquote>
-                </div>
+                )
+              }
+              })
+              }
               </div>
             </div>
           </div>

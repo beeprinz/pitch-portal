@@ -2,8 +2,8 @@ import { types } from './LoginActions';
 
 const initialState = {
   redirect: false,
-  pending: false,
   loggedIn: false,
+  name: '',
   token: '',
   ttl: '',
   userId: '',
@@ -14,13 +14,11 @@ const initialState = {
 
 export default function LoginReducer(state = initialState, action) {
   const { type, payload } = action;
-
   switch (type) {
     case types.LOG_USER_IN: {
       return {
         ...state,
         loggedIn: true,
-        pending: false,
         token: payload.id,
         ttl: payload.ttl,
         userId: payload.userId,
@@ -36,10 +34,25 @@ export default function LoginReducer(state = initialState, action) {
         }
       };
     }
+    case types.WIPE_STATE: {
+      return {
+        ...state,
+        redirect: false,
+        loggedIn: false,
+        name: '',
+        token: '',
+        ttl: '',
+        userId: '',
+        created: '',
+        errors: '',
+        company: ''
+      };
+    }
     case types.COMPANY_REDIRECT: {
       return {
         ...state,
-        company: payload,
+        company: payload.company,
+        name: payload.firstName,
         redirect: true
       };
     }

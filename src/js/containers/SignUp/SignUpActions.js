@@ -21,24 +21,25 @@ const signupError = error => ({
   payload: error
 });
 
-export function signUpNewUser(values) {
+export function signUpNewUser(values, history) {
   const url = `${ROOT_URL}${USER}`;
   //deletes confirmation password from state
   delete values.password2;
   return dispatch => {
     //saves signup data to application state
-    dispatch(signUpData(values));
     axios
-      //post call to loopback server to signup new user + log them in
       .post(url, values)
-      // receives access token object and saves it to application state
       .then(response => {
-        dispatch(tokenReceived(response.data));
         //Set authToken and userId into sesh storage
         sessionStorage.setItem('token', response.data.id);
         sessionStorage.setItem('userId', response.data.userId);
+        return response
       })
+      .then(res => dispatch(tokenReceived(res.data)))
+      .then(() => dispatch(signUpData(values)))
+      .then(() => history.push(`/company/${values.company}/pitchform`))
       .catch(error => {
+        console.log('err',error)
         dispatch(signupError(error));
       });
   };
