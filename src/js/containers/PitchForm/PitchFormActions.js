@@ -1,4 +1,9 @@
 import axios from 'axios';
+const token = sessionStorage.getItem('token');
+
+const authAxios = axios.create({
+  headers: { Authorization: token }
+});
 
 export const types = {
   CREATE_PROJECT: 'CREATE_PROJECT',
@@ -7,18 +12,18 @@ export const types = {
 export function createProject(values) {
   return {
     type: types.CREATE_PROJECT,
-    payload: axios
-            .post('http://localhost:3000/createproject',values)
-             .then( response => {
-                return response;
-             })
-             .catch( err => {
-                return err;
-             })
+    payload: authAxios
+      .post('http://localhost:3000/createproject', values)
+      .then(response => {
+        return response;
+      })
+      .catch(err => {
+        return err;
+      })
   };
 }
 export function changeStatus() {
   return {
-    type: types.CHANGE_STATUS,
+    type: types.CHANGE_STATUS
   };
 }

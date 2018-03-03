@@ -24,11 +24,17 @@ export default class Comments extends Component {
     console.log('render stuff')
     const projectId = "5a9a00b2c196dc198837e5b0";
     let data = [];
-    axios
+    authAxios
       .get(`http://localhost:3000/api/projects/${projectId}/comment`)
       .then(res => {
-        data = res.data
-        return Promise.all(res.data.reverse().map(item => axios.get(`http://localhost:3000/api/users/${item.userId}`)))
+        data = res.data;
+        return Promise.all(
+          res.data
+            .reverse()
+            .map(item =>
+              authAxios.get(`http://localhost:3000/api/users/${item.userId}`)
+            )
+        );
       })
       .then(promises => {
         const names = promises.map(item => item.data.firstName)
@@ -49,9 +55,8 @@ export default class Comments extends Component {
     const { dispatch } = this.props;
     const value = event.target.value;
     this.setState({
-      comment:value
-    })
-    // dispatch(updateCommentArea(value));
+      comment: value
+    });
   }
 
   handleCommentSubmit(event) {
@@ -61,53 +66,52 @@ export default class Comments extends Component {
     const userId = "5a989f3f832c164290401a85"
     let data = [];
 
-    axios.post(`http://localhost:3000/api/projects/${projectId}/comment`, {
-      "text": comment,
-      "date": new Date(),
-      "projectId": projectId,
-      "userId": userId
-    })
-    .then((response) => {
-      console.log(response)
-      this.renderComments()
-      this.setState({
-        comment:''
+    authAxios
+      .post(`http://localhost:3000/api/projects/${projectId}/comment`, {
+        text: comment,
+        date: new Date(),
+        projectId: projectId,
+        userId: userId
       })
-    })
-    .catch(function (error) {
-      console.log(error);
-    })
-    // dispatch(postComment());
+      .then(response => {
+        console.log(response);
+        this.renderComments();
+        this.setState({
+          comment: ''
+        });
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
-  componentWillMount(){
-    this.renderComments()
+  componentWillMount() {
+    this.renderComments();
   }
 
   render() {
     return (
-      <div className="container">
+      <div className='container'>
         <h1>Hello World - PitchDetail</h1>
-        <div className="row">
-          <div className="col">
-            <div className="card">
-              <div className="card-header">Project Comments</div>
-              <div className="card-body">
-                <div className="form-group">
-                  <label htmlFor="exampleFormControlTextarea1">Comment:</label>
+        <div className='row'>
+          <div className='col'>
+            <div className='card'>
+              <div className='card-header'>Project Comments</div>
+              <div className='card-body'>
+                <div className='form-group'>
+                  <label htmlFor='exampleFormControlTextarea1'>Comment:</label>
                   <textarea
                     onChange={this.handleCommentInput}
                     value={this.state.comment}
-                    className="form-control"
-                    id="exampleFormControlTextarea1"
-                    rows="3"
+                    className='form-control'
+                    id='exampleFormControlTextarea1'
+                    rows='3'
                   />
                   <button
                     onClick={this.handleCommentSubmit}
-                    type="button"
-                    className="btn btn-primary btn-lg"
-                    style={{ marginTop: 10 + "px", marginLeft: 75 + "%" }}
-                  >
+                    type='button'
+                    className='btn btn-primary btn-lg'
+                    style={{ marginTop: 10 + 'px', marginLeft: 75 + '%' }}>
                     Send
                   </button>
                 </div>

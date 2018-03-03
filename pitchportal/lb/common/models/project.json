@@ -1,0 +1,83 @@
+{
+  "name": "project",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "status": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "existingProduct": {
+      "type": "string"
+    },
+    "technologiesUsed": {
+      "type": "string"
+    },
+    "goal": {
+      "type": "string",
+      "required": true
+    },
+    "keyFeatures": {
+      "type": "string",
+      "required": true
+    },
+    "exampleProducts": {
+      "type": "string"
+    },
+    "fileUpload": {
+      "type": "string"
+    },
+    "fileLinks": {
+      "type": "array"
+    },
+    "complete": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    }
+  },
+  "validations": [],
+  "relations": {
+    "user": {
+      "type": "hasOne",
+      "model": "user",
+      "foreignKey": "projectId"
+    },
+    "comment": {
+      "type": "hasMany",
+      "model": "comment",
+      "foreignKey": "projectId"
+    }
+  },
+  "acls": [
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
+    }
+  ],
+  "methods": {}
+}

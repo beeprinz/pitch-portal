@@ -1,0 +1,160 @@
+
+[[
+    {
+        "firstName": "Elon",
+        "lastName": "Musk",
+        "position": "admin",
+        "email": "spaceman@tesla.com",
+        "phone": "1234567890",
+        "website": "tesla.com",
+        "info": "I send rockets and cars into space",
+        "type": 0,
+        "realm": "string",
+        "username": "smartestmanalive",
+        "emailVerified": true
+    },{
+        "firstName": "Michael",
+        "lastName": "Whitchita",
+        "position": "V.P Sales",
+        "email": "whichmike@gmail.com",
+        "phone": "3436235677",
+        "website": "ask.com",
+        "info": "I am the Vice President of Sales with Ask.com",
+        "type": 0,
+        "realm": "string",
+        "username": "whichmichael",
+        "emailVerified": true
+      },{
+        "firstName": "Steve",
+        "lastName": "Aoki",
+        "position": "Super DJ",
+        "email": "aysteve@aol.com",
+        "phone": "4033294029",
+        "website": "mostwantedentertainment.net/artist-steve-aoki",
+        "info": "Meet Steve Aoki. In the documentary I’ll Sleep When I’m Dead, which premiered at the 2016 Tribeca Film Festival, viewers are thrust into the whirlwind lifestyle of a Grammy-nominated electronic dance music superstar who stands as one of pop music’s most tireless multi-hyphenates: founder of the taste-making record label Dim Mak and a chart-topping producer-remixer-DJ with his finger pressed firmly to the pulse of cutting-edge youth culture. ",
+        "type": 0,
+        "realm": "string",
+        "username": "stevieyo",
+        "emailVerified": true
+      },{
+        "firstName": "Akira",
+        "lastName": "Yoshizawa",
+        "position": "Father of Origami Art",
+        "email": "origamithis@live.com",
+        "phone": "3425446678",
+        "website": "https://en.wikipedia.org/wiki/Akira_Yoshizawa",
+        "info": "Akira Yoshizawa (1911–2005) is widely regarded as the father of the modern origami art form. ",
+        "type": 0,
+        "realm": "string",
+        "username": "origamithis",
+        "emailVerified": true
+      },{
+        "firstName": "Caspar",
+        "lastName": "Friedrich",
+        "position": "Lead Artist",
+        "email": "moonrise@yahoo.com",
+        "phone": "3436673478",
+        "website": "google.com/culturalinstitute/beta/asset/mwFGGdzKbfGMkg",
+        "info": "Caspar David Friedrich was the most important German painter and draughtsman of the early Romantic period. He started his artistic training in 1790 when he became a private student of Johann Gottfried Quistorp in Greifswald. In 1794 he entered the Academy of Copenhagen where he formed his style copying antique sculptures.",
+        "type": 0,
+        "realm": "string",
+        "username": "string",
+        "emailVerified": true
+      }
+],[
+    {
+        "name": "Search Engine",
+        "date": "2018-02-10T21:38:56.130Z",
+        "description": "We need to build a search engine that already knows what the user intends to search before the user even know what they want to search",
+        "status": 0,
+        "existingProduct": false,
+        "technologiesUsed": "Dark Matter, Dark Web and Space Rocks",
+        "goal": "Predict the Unpredictable",
+        "keyFeatures": "AutoFill, Location Tracking, Webcam access, audio access",
+        "exampleProducts": "none",
+        "comments": [
+            {}
+        ],
+        "fileUpload": "string",
+        "complete": false
+      },
+      {
+        "name": "FoodSaver",
+        "date": "2018-02-15T22:33:13.744Z",
+        "description": "This able would have users be able to take a picture of their receipts fromt the grocery store and calculate how much food they have. Then be able to make recommend receipese based on the food they have and how much they have left of it.",
+        "status": 1,
+        "existingProduct": false,
+        "technologiesUsed": "GE Refrigerator, iPhone camera",
+        "goal": "Save food from expiring or being unused",
+        "keyFeatures": "World Cook book, notify when running low on food",
+        "exampleProducts": "none",
+        "comments": [
+          {}
+        ],
+        "fileUpload": "string",
+        "complete": false
+      },{
+        "name": "Double Trouble",
+        "date": "2018-02-12T12:54:24.744Z",
+        "description": "Board game app like monopoly",
+        "status": 0,
+        "existingProduct": true,
+        "technologiesUsed": "iphone",
+        "goal": "copy monopoly to make money",
+        "keyFeatures": "trade currency",
+        "exampleProducts": "monopoly board game",
+        "comments": [
+          {}
+        ],
+        "fileUpload": "string",
+        "complete": false
+      },
+      {
+        "name": "HctiwT",
+        "date": "2017-05-10T22:33:13.744Z",
+        "description": "Streaming platform for people that what to show off their hobbies",
+        "status": 3,
+        "existingProduct": true,
+        "technologiesUsed": "camera, streaming hardware, computer",
+        "goal": "Stream live video from face cam or computer and get subscribers to follow you at a premium price",
+        "keyFeatures": "subscribe and pay, stream live",
+        "exampleProducts": "Twitch, Youtube",
+        "comments": [
+          {}
+        ],
+        "fileUpload": "string",
+        "complete": false
+      },
+      {
+        "name": "Coin Coin go Boing Boing",
+        "date": "2018-02-10T22:33:13.744Z",
+        "description": "Newest and hottest more secure Crypotcurrency on the market. Will never fail and you CANNOT Lose money",
+        "status": 0,
+        "existingProduct": false,
+        "technologiesUsed": "Unicorn Horn, Blood of a Virgin, BigFoots Toe Nail and Elon Musks Laptop",
+        "goal": "TO MAKE CHEEDA",
+        "keyFeatures": "Be able to purchase Coin and can never sell coins only trade",
+        "exampleProducts": "none",
+        "comments": [
+          {}
+        ],
+        "fileUpload": "string",
+        "complete": false
+      },
+      {
+        "name": "Who's that painter",
+        "date": "2018-01-10T22:33:13.744Z",
+        "description": "Take a picture of any painting in the world and be able to get all the info regarding that painter, including by not limited to Social Security #, Bank Account #, Passwords",
+        "status": 3,
+        "existingProduct": true,
+        "technologiesUsed": "Google, Yahoo, NSA, FBI",
+        "goal": "Help Children in 3rd world countries and send people to Mars",
+        "keyFeatures": "Donuts",
+        "exampleProducts": "Bopit",
+        "comments": [
+          {}
+        ],
+        "fileUpload": "string",
+        "complete": false
+      }
+]]

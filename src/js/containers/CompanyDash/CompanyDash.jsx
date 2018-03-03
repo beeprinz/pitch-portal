@@ -5,6 +5,12 @@ import axios from 'axios';
 import Cookies from 'cookies-js';
 import Moment from 'react-moment';
 import { Redirect } from 'react-router';
+
+const token = sessionStorage.getItem('token');
+const authAxios = axios.create({
+  headers: { Authorization: token }
+});
+
 export default class CompanyDash extends Component {
   constructor(props) {
     super(props);
@@ -12,19 +18,24 @@ export default class CompanyDash extends Component {
     this.renderProjectStatus = this.renderProjectStatus.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
+  
   componentWillMount() {
     const { dispatch, projects } = this.props;
-    const userId = sessionStorage.getItem('userId')
-    axios.get(`http://localhost:3000/api/users/${userId}/projects` , {
-    }).then(function (response) {
-      dispatch(getUsersProjects(response.data))
-    })
+    const userId = sessionStorage.getItem('userId');
+    authAxios
+      .get(`http://localhost:3000/api/users/${userId}/projects`, {})
+      .then(function(response) {
+        dispatch(getUsersProjects(response.data));
+      });
   }
+
   handleDetail(event) {
     const { dispatch } = this.props;
       dispatch(getProjectDetail(event.target.value))
   
   }
+
+
   renderProjectStatus(event) {
     const { projects } = this.props;
     if (event === 0) {
@@ -62,29 +73,42 @@ export default class CompanyDash extends Component {
             </tr>
           </thead>
           <tbody>
-            {!!projects && projects.map(project => {
-              return (
-                <tr key={project.id} className="text-center">
-                  <th scope="row">{project.id}</th>
-                  <td>{project.name}</td>
-                  <td><Moment format='MM/DD/YYYY'>{project.date}</Moment></td>
-                  <td>{this.renderProjectStatus(project.status)}</td>
-                  <td className="text-center">
-                  <Link to= {`/company/:companyname/pitchdetail/${project.id}`}>
-                    <button 
-                    type="button" 
-                    className="btn btn-outline-success" 
-                    onClick={this.handleDetail} 
-                    value={project.id} >
-                    Detail</button>
-                  </Link>
-                    <button type="button" className="btn btn-outline-danger" style={{ marginLeft: 10 + "px" }} value={project.id} onClick={this.handleDelete}> Delete </button>
-                  </td>
-                </tr>
-              )
-            })}
-            <tr className="text-center">
-              <th scope="row">3</th>
+            {!!projects &&
+              projects.map(project => {
+                return (
+                  <tr key={project.id} className='text-center'>
+                    <th scope='row'>{project.id}</th>
+                    <td>{project.name}</td>
+                    <td>
+                      <Moment format='MM/DD/YYYY'>{project.date}</Moment>
+                    </td>
+                    <td>{this.renderProjectStatus(project.status)}</td>
+                    <td className='text-center'>
+                      <Link
+                        to={`/company/:companyname/pitchdetail/${project.id}`}>
+                        <button
+                          type='button'
+                          className='btn btn-outline-success'
+                          onClick={this.handleDetail}
+                          value={project.id}>
+                          Detail
+                        </button>
+                      </Link>
+                      <button
+                        type='button'
+                        className='btn btn-outline-danger'
+                        style={{ marginLeft: 10 + 'px' }}
+                        value={project.id}
+                        onClick={this.handleDelete}>
+                        {' '}
+                        Delete{' '}
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            <tr className='text-center'>
+              <th scope='row'>3</th>
               <td>Pitch Portal</td>
               <td>Pending</td>
               <td>Pending</td>

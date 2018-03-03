@@ -1,4 +1,9 @@
 import axios from 'axios';
+const token = sessionStorage.getItem('token');
+
+const authAxios = axios.create({
+  headers: { Authorization: token }
+});
 
 const USER = '/customSignUp';
 const ROOT_URL = 'http://localhost:3000';

@@ -1,5 +1,10 @@
 import axios from "axios";
-import Cookies from 'cookies-js'
+const token = sessionStorage.getItem('token');
+const userId = sessionStorage.getItem('userId');
+
+const authAxios = axios.create({
+  headers: { Authorization: token }
+});
 
 export function getProject(detail) { 
   return {
@@ -11,7 +16,7 @@ export function getProject(detail) {
 export function getProjectById(id) {
     return {
         type: 'GET_PROJECT_BY_ID',
-        payload: axios.get('http://localhost:3000/api/projects/' + id)
+        payload: authAxios.get('http://localhost:3000/api/projects/' + id)
             .then(r => r.data)
             .catch(e => console.log(e.message))
     }
@@ -20,7 +25,7 @@ export function getProjectById(id) {
 export function changeProjectInfo(detail, values) {
     return {
         type: "CHANGE_PROJECT_INFO",
-        payload: axios
+        payload: authAxios
         .patch('http://localhost:3000/api/projects/' + detail.id, values)
         .then(response => {
           return response.data
