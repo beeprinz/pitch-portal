@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { wipeState } from '../Login/LoginActions';
-import { Redirect } from 'react-router';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
+import {wipeState} from '../Login/LoginActions';
+import {Redirect} from 'react-router';
 import axios from 'axios';
-import { bindActionCreators } from 'redux';
+import {bindActionCreators} from 'redux';
 
 const token = sessionStorage.getItem('token');
 const authAxios = axios.create({
-  headers: { Authorization: token }
+  headers: {Authorization: token}
 });
 
 class Navbar extends Component {
@@ -17,7 +17,7 @@ class Navbar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     if (
       this.props.login ||
       this.props.signup !== nextprops.login ||
@@ -28,7 +28,7 @@ class Navbar extends Component {
 
   render() {
     const handleLogout = () => {
-      const { dispatch } = this.props;
+      const {dispatch} = this.props;
       authAxios
         .delete(`http://localhost:3000/api/users/${userId}/accessTokens`)
         .then(response => {
@@ -70,12 +70,13 @@ class Navbar extends Component {
           <div className='btn-group'>
             {
               this.props.login.name === '' ? <div /> :
-              <p style={{ paddingRight: 1 + 'rem', margin: 0 }}>
+              <p style={{paddingRight: 1 + 'rem', margin: 0}}>
                 Hello, {this.props.login.name}!
               </p>}
 
             <div>
               <i
+                id='little-man'
                 className='fas fa-user fa-1x'
                 data-toggle='dropdown'
                 aria-haspopup='true'
@@ -99,8 +100,8 @@ class Navbar extends Component {
   }
 }
 
-function mapStateToProps({ signup, login }) {
-  return { signup, login };
+function mapStateToProps({signup, login}) {
+  return {signup, login};
 }
 
 export default connect(mapStateToProps)(Navbar);
