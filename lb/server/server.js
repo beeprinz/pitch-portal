@@ -22,7 +22,6 @@ app.start = function() {
 //Company Dash get request to projects with userId
 app.get('/fetchprojects/:userId', (req, res) => {
   let Projects = app.models.project;
-  console.log(req.params.userId)
 
   Projects.find({where: {userId: req.params.userId}}, function(err, projects) {
     if(err){
@@ -42,7 +41,6 @@ app.get('/allProjects', (req, res) => {
       console.log(err)
       res.send(err)
     }else{
-      console.log(projects);
       axios.get('http://localhost:3000/api/users/')
         .then(users => {
           return res.send({ users: users.data, projects})
