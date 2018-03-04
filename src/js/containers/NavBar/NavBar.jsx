@@ -7,9 +7,6 @@ import axios from 'axios';
 import { bindActionCreators } from 'redux';
 
 const token = sessionStorage.getItem('token');
-const userId = sessionStorage.getItem('userId');
-const company = sessionStorage.getItem('company');
-
 const authAxios = axios.create({
   headers: { Authorization: token }
 });
@@ -49,11 +46,10 @@ class Navbar extends Component {
         <div className='container'>
           <div id='navbarNavAltMarkup'>
             <div className='navbar-nav'>
-              <Link
-                to={`/company/${company}/dashboard`}
-                className='nav-item nav-link inline-block'>
-                Home
-              </Link>
+            { sessionStorage.token!=null
+            ?<Link to={`/company/${company}/dashboard`} className='nav-item nav-link inline-block'> Home </Link>
+            :<Link to={`/`} className='nav-item nav-link inline-block'> Home </Link>
+          }
             </div>
           </div>
           <div className='btn-group'>

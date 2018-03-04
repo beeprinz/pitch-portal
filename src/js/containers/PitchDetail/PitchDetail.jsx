@@ -316,12 +316,6 @@ componentWillMount() {
     return (
       <div className="container">
         <h1>Hello World - PitchDetail</h1>
-
-    if (isEditing === false) {
-      return (
-        <div className='container'>
-          <h1>Hello World - PitchDetail</h1>
-
           <div className='row'>
             <div className='col'>
               <div className='card '>
