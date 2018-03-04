@@ -5,6 +5,7 @@ import { wipeState } from '../Login/LoginActions';
 import { Redirect } from 'react-router';
 import axios from 'axios';
 import { bindActionCreators } from 'redux';
+import { greeting } from './NavBarActions';
 
 const token = sessionStorage.getItem('token');
 const authAxios = axios.create({
@@ -31,15 +32,17 @@ class Navbar extends Component {
       const { dispatch } = this.props;
       authAxios
         .delete(`http://localhost:3000/api/users/${userId}/accessTokens`)
-        .then(response => {
-          sessionStorage.clear();
-          dispatch(wipeState());
-          // dispatch(goodbye())
-        });
+        .then( response => {
+          sessionStorage.clear()
+          dispatch(wipeState())
+        })
+          
+        
     };
     const name = sessionStorage.getItem('name');
     const userId = sessionStorage.getItem('userId');
     const company = sessionStorage.getItem('company');
+    
     return (
       <nav className='navbar navbar-expand-lg navbar-light bg-light'>
         <div className='container'>
@@ -98,6 +101,10 @@ class Navbar extends Component {
     );
   }
 }
+
+
+
+
 
 function mapStateToProps({ signup, login }) {
   return { signup, login };
