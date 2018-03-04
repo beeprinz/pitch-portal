@@ -6,7 +6,8 @@ import PitchForm from './PitchForm';
 function mapStoreToProps(store){
   
     return {
-      pitchform: store.pitchform
+      pitchform: store.pitchform,
+      unauthRequest: store.unAuthRequest
     };
 }
 

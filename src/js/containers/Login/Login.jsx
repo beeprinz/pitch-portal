@@ -1,9 +1,10 @@
-import React, {Component} from 'react';
-import {Field, reduxForm} from 'redux-form';
-import {Link} from 'react-router-dom';
-import {LogUserIn} from './LoginActions';
-import {Redirect} from 'react-router';
-import {renderEmailField, renderPasswordField} from './renderForm';
+import React, { Component } from 'react';
+import { Field, reduxForm } from 'redux-form';
+import { Link } from 'react-router-dom';
+import { LogUserIn } from './LoginActions';
+import { Redirect } from 'react-router';
+import { renderEmailField, renderPasswordField } from './renderForm';
+import Cookies from 'js-cookie'
 import validate from './validate';
 import Cookies from 'js-cookie'
 class Login extends Component {

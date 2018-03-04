@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import { Redirect } from "react-router";
-
+import Cookies from 'js-cookie'
 export default class AdminDash extends Component {
   constructor(props) {
     super(props);
@@ -27,8 +27,16 @@ export default class AdminDash extends Component {
 
   componentWillMount() {
     const { dispatch } = this.props;
-    // const userId = Cookies.get('userId')
-    // console.log(userId)
+
+    const redirectionStorage = sessionStorage.token;
+    if (!redirectionStorage) {
+      this.props.history.push(`/`);
+      var in1Minutes = 1/950;
+      Cookies.set('unAuthRequest', true , {
+          expires: in1Minutes
+      });
+    }  
+
     axios.get('http://localhost:3000/allProjects/', {
     }).then(function (response) {
       dispatch(getUsersProjects(response.data))

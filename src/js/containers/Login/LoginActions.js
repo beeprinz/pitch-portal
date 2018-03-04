@@ -68,6 +68,7 @@ export function LogUserIn(values) {
       //saving userID and accesstoken to sessionStorage
       sessionStorage.setItem('userId', response.data.userId);
       sessionStorage.setItem('token', response.data.id);
+      sessionStorage.removeItem('unauthrequest')
       //Saving loggedin data to application state. Check line 9.
       dispatch(userLoggedIn(response.data));
     });

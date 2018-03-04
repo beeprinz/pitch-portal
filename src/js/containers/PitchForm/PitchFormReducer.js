@@ -2,7 +2,8 @@ import { types } from './PitchFormActions';
 
 const initialState = {
     projectSubmitted: false,
-    responseObj: ''
+    responseObj: '',
+    unAuthRequest:false,
 };
 
 
@@ -22,6 +23,12 @@ export default function PitchFormReducer(state = initialState, action) {
                 ...state,
                 projectSubmitted: false
             };
+        }
+        case types.CHANGE_AUTH_STATUS: {
+            return {
+                ...state,
+                unAuthRequest: true
+            }
         }
         default: {
             return state;

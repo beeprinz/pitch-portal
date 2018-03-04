@@ -3,7 +3,6 @@ import { Redirect } from 'react-router';
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import axios from 'axios';
-import Cookies from 'cookies-js'
 import { 
   getProject, 
   changeProjectInfo, 
@@ -13,6 +12,7 @@ import {
   changeStatus
 } from './PitchDetailActions'
 import Moment from 'react-moment';
+import Cookies from 'js-cookie'
 
 class PitchDetail extends Component {
   constructor(props) {
@@ -193,7 +193,15 @@ class PitchDetail extends Component {
   }
 
 componentWillMount() {
+  const token = sessionStorage.token;
     this.renderComments()
+      if (!token) {
+        this.props.history.push(`/`);
+        var in1Minutes = 1/950;
+        Cookies.set('unAuthRequest', true , {
+            expires: in1Minutes
+        });
+      }  
   }
 
   adminButtons(event){
