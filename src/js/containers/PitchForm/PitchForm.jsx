@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, reset } from 'redux-form';
 import axios from 'axios';
 import { createProject, changeStatus } from './PitchFormActions';
-import Cookies from 'cookies-js';
 import { Redirect } from 'react-router';
 
 class PitchForm extends Component {
@@ -37,14 +36,20 @@ class PitchForm extends Component {
     const authAxios = axios.create({
       headers: { Authorization: token }
     });
-    const userId = sessionStorage.getItem('userId');
-    authAxios
-      .get(`http://localhost:3000/api/users/${userId}`)
-      .then(response => {
-        console.log(response.data.company);
-        this.setState({ companyName: response.data.company });
-      });
+    //REDIRECTION (IF USER IS LOGGED IN REDIRECT BACK TO DASH)
+    const accessToken = sessionStorage.getItem('token');
+    if (accessToken) {
+      return <Redirect to='/company/insertcompanyname/accountsettings&#39;' />;
+    } else {
+      const userId = sessionStorage.getItem('userId');
+      authAxios
+        .get(`http://localhost:3000/api/users/${userId}`)
+        .then(response => {
+          this.setState({ companyName: response.data.company });
+        });
+    }
   }
+
   componentWillReceiveProps(nextProps) {
     const { dispatch } = this.props;
     const { projectSubmitted } = this.props;
@@ -60,7 +65,7 @@ class PitchForm extends Component {
 
   // Submission of A Project (Run file upload function, Dispatch to Actions and Submit Form)
   onSubmit(values) {
-    const { dispatch } = this.props;
+    const { dispatch, clearFields } = this.props;
     const files = this.state.files;
     const fileLength = files.length;
     if (this.state.totalSize > 250) {
@@ -106,6 +111,7 @@ class PitchForm extends Component {
                 // Adding Refrence for other containers in Database
                 values.fileLinks = fileSystem;
                 dispatch(createProject(values));
+                dispatch(reset('PitchForm'));
               }
             }
           );
@@ -114,6 +120,7 @@ class PitchForm extends Component {
     } else {
       // Dispatch that connects to the store.
       this.setState({ loading: false });
+      dispatch(reset('PitchForm'));
       dispatch(createProject(values));
     }
   }
@@ -158,7 +165,7 @@ class PitchForm extends Component {
         'content-type': 'multipart/form-data'
       }
     };
-    return authAxios.post(url, formData, config);
+    return axios.post(url, formData, config);
   }
 
   // Disables the first control so user cannot go to submission page by accident
@@ -185,24 +192,26 @@ class PitchForm extends Component {
       <div>
         <div className='form-group text-center'>
           <label htmlFor='exampleFormControlInput1'>{field.label}</label>
-          {touched && error ? (
-            <input
+          {
+            touched && error ? <input
               {...field.input}
               type='text'
               className='form-control is-invalid'
               id='exampleFormControlInput1'
               placeholder={field.placeholder}
-            />
-          ) : (
+            /> :
             <input
               {...field.input}
               type='text'
               className='form-control'
               id='exampleFormControlInput1'
               placeholder={field.placeholder}
-            />
-          )}
-          <div className='text-danger'>{touched ? error : ''}</div>
+            />}
+          <div className='text-danger'>
+            {
+              touched ? error :
+              ''}
+          </div>
         </div>
       </div>
     );
@@ -216,25 +225,27 @@ class PitchForm extends Component {
       <div>
         <div className='form-group text-center'>
           <label htmlFor='exampleCompany'>{field.label} </label>
-          {touched && error ? (
-            <textarea
+          {
+            touched && error ? <textarea
               {...field.input}
               className='form-control is-invalid'
               id='exampleCompany'
               placeholder={field.placeholder}
               rows={field.rows}
-            />
-          ) : (
+            /> :
             <textarea
               {...field.input}
               className='form-control'
               id='exampleCompany'
               placeholder={field.placeholder}
               rows={field.rows}
-            />
-          )}
+            />}
         </div>
-        <div className='text-danger'>{touched ? error : ''}</div>
+        <div className='text-danger'>
+          {
+            touched ? error :
+            ''}
+        </div>
       </div>
     );
   }
@@ -246,6 +257,7 @@ class PitchForm extends Component {
     const valid = this.state.formValid;
     const loading = this.state.loading;
     const company = this.state.companyName;
+
     const redirectionCookie = sessionStorage.getItem('userId');
     if (!redirectionCookie) {
       return <Redirect to='/' />;
@@ -256,11 +268,11 @@ class PitchForm extends Component {
       <div className='PitchForm'>
         <div className='container'>
           {/* Redirection back to dashboard if submission is cleared by the database */}
-          {projectRedirect ? (
-            <Redirect to={'/company/' + company + '/dashboard'} />
-          ) : (
-            ''
-          )}
+          {
+            projectRedirect ? <Redirect
+              to={'/company/' + company + '/dashboard'}
+            /> :
+            ''}
           <h1 className='text-center p-2'> Project Request Form </h1>
           <form onSubmit={handleSubmit(this.onSubmit)}>
             <div
@@ -268,14 +280,12 @@ class PitchForm extends Component {
               className='carousel slide'
               data-interval='false'
               data-ride='carousel'>
-              {valid ? (
-                ''
-              ) : (
+              {
+                valid ? '' :
                 <div className='alert alert-danger' role='alert'>
                   <strong> Before Progressing </strong> Please fill out the
                   required forms
-                </div>
-              )}
+                </div>}
               <div className='carousel-inner'>
                 {this.state.page == 1 && (
                   <div className='carousel-item active'>
@@ -360,13 +370,13 @@ class PitchForm extends Component {
                       <div className='container'>
                         <h1 className='text-center'> File And Uploading </h1>
                         <hr />
-                        {sizeLimit ? (
-                          <div className='alert alert-danger' role='alert'>
+                        {
+                          sizeLimit ? <div
+                            className='alert alert-danger'
+                            role='alert'>
                             File(s) are over the 500 Mb Limit
-                          </div>
-                        ) : (
-                          ''
-                        )}
+                          </div> :
+                          ''}
                         <h4 className='text-center'>
                           {' '}
                           Upload A Video (.mp4, .m4v, .mov){' '}
@@ -467,9 +477,9 @@ class PitchForm extends Component {
                                 </li>
                                 <li className='list-group-item'>
                                   {' '}
-                                  To upload multiple documentss just click
-                                  choose file after you see your first document
-                                  in staged uploads.
+                                  To upload multiple documents just click choose
+                                  file after you see your first document in
+                                  staged uploads.
                                 </li>
                               </ul>
                             </div>
@@ -513,20 +523,18 @@ class PitchForm extends Component {
                           rows='3'
                         />
                         <div className='text-center'>
-                          {loading ? (
-                            <div>
+                          {
+                            loading ? <div>
                               {' '}
                               Uploading Video(s) or Document(s) <hr />({this.state.fileMsg}){' '}
                               <i className='fas fa-spinner fa-pulse' />{' '}
-                            </div>
-                          ) : (
+                            </div> :
                             <button
                               type='submit'
                               className='btn-lg btn-primary text-center'>
                               {' '}
                               Submit{' '}
-                            </button>
-                          )}
+                            </button>}
                         </div>
                       </div>
                     </div>
