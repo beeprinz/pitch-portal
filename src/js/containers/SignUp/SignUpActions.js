@@ -1,4 +1,9 @@
 import axios from 'axios';
+const token = sessionStorage.getItem('token');
+
+const authAxios = axios.create({
+  headers: { Authorization: token }
+});
 
 const USER = '/customSignUp';
 const ROOT_URL = 'http://localhost:3000';
@@ -21,24 +26,27 @@ const signupError = error => ({
   payload: error
 });
 
-export function signUpNewUser(values) {
+export function signUpNewUser(values, history) {
   const url = `${ROOT_URL}${USER}`;
   //deletes confirmation password from state
   delete values.password2;
+  //sets company name to session storage
+  sessionStorage.setItem('company', (values.company).replace(/\s+/g,""));
   return dispatch => {
     //saves signup data to application state
-    dispatch(signUpData(values));
     axios
-      //post call to loopback server to signup new user + log them in
       .post(url, values)
-      // receives access token object and saves it to application state
       .then(response => {
-        dispatch(tokenReceived(response.data));
         //Set authToken and userId into sesh storage
         sessionStorage.setItem('token', response.data.id);
         sessionStorage.setItem('userId', response.data.userId);
+        return response
       })
+      .then(res => dispatch(tokenReceived(res.data)))
+      .then(() => dispatch(signUpData(values)))
+      .then(() => history.push(`/company/${values.company}/pitchform`))
       .catch(error => {
+        console.log('err',error)
         dispatch(signupError(error));
       });
   };

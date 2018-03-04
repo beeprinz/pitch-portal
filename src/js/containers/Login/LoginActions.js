@@ -3,7 +3,8 @@ import axios from 'axios';
 export const types = {
   LOG_USER_IN: 'LOG_USER_IN',
   COMPANY_REDIRECT: 'COMPANY_REDIRECT',
-  LOG_IN_ERROR: 'LOG_IN_ERROR'
+  LOG_IN_ERROR: 'LOG_IN_ERROR',
+  WIPE_STATE: 'WIPE_STATE'
 };
 
 const userLoggedIn = loginData => ({
@@ -16,9 +17,13 @@ const loginError = error => ({
   payload: error
 });
 
-const goToCompanyDash = company => ({
+export function wipeState() {
+  return {type: types.WIPE_STATE}
+};
+
+const goToCompanyDash = userInfo => ({
   type: types.COMPANY_REDIRECT,
-  payload: company
+  payload: userInfo
 });
 
 function grabCompany(token, userId) {
@@ -33,9 +38,18 @@ function grabCompany(token, userId) {
       // and redirect to the correct dashboard
       .get(`http://localhost:3000/api/users/${userId}`)
       .then(response => {
+        //save company and userName to session storage
+        sessionStorage.setItem(
+          'company',
+          response.data.company.replace(/\s+/g, '')
+        );
+        sessionStorage.setItem(
+          'name',
+          response.data.firstName.replace(/\s+/g, '')
+        );
         // Updates application state to include company name.
         // Check line 19.
-        dispatch(goToCompanyDash(response.data.company));
+        dispatch(goToCompanyDash(response.data));
       });
   };
 }

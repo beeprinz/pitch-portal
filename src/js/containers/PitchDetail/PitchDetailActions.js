@@ -1,13 +1,6 @@
 import axios from "axios";
 import Cookies from 'cookies-js'
 
-export function getProject(detail) { 
-  return {
-    type: "GET_PROJECT",
-    payload: detail  
-    }
-} 
-
 export function getProjectById(id) {
     return {
         type: 'GET_PROJECT_BY_ID',
@@ -43,3 +36,19 @@ export function savedDone() {
       type: "CHANGE_STATUS"
   }
 }
+
+export function changeStatus(detail, value) {
+    console.log('value for put request', value)
+    const statusValue = {
+        status: value
+    }
+    return {
+        type: 'CHANGE_STATUS',
+        payload: axios.patch('http://localhost:3000/api/projects/' + detail.id, statusValue)
+        .then(response => {
+            console.log("put request pitch detail actions FOR STATUS", response)
+            return response.data
+        })
+            .catch(e => console.log(e.message))  
+    }
+ }

@@ -1,4 +1,3 @@
-import axios from 'axios';
 
 export function updateCommentArea(comment){
     return {
@@ -20,7 +19,6 @@ export function intitialRender(){
         payload: ''
     }
 }
-
 
 // export function displayComments(){
 //     const tempUser = '5a8b5f0bb54fb80d00b7cb08'

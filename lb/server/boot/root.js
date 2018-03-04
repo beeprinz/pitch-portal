@@ -6,38 +6,27 @@ module.exports = function(server) {
   router.get('/', server.loopback.status());
   server.use(router);
 
-  // const User = server.loopback.model.User
+  const User = server.models.user;
+  const Role = server.models.Role;
+  const RoleMapping = server.models.RoleMapping;
 
-  // User.create(
-  //   { username: 'ocaAdmin', email: 'oca@pitchportal.com', password: '12345' },
+  //Find or create the admin
+  User.findOrCreate({
+      username: 'ocaAdmin',
+      email: 'oca@pitchportal.com', 
+      password: '12345',
+      firstName: 'Origin',
+      lastName: 'Code Academy'
+    }, { where: { email: 'oca@pitchportal.com' } }, (err, user) => {
+      if (err) throw err;
 
-  //   function(err, user) {
-  //     if (err) return debug('%j', err);
-  //     //...
-  //     // 
-  //     //...
-  //     // 
-  //     Role.create(
-  //       {
-  //         name: 'admin'
-  //       },
-  //       function(err, role) {
-  //         if (err) return debug(err);
-  //         debug(role);
+      //Find or create the admin role
+      Role.findOrCreate({ name: 'admin' }, (err, role) => {
+          if (err) throw err;
 
-  //         // Make Bob an admin
-  //         role.principals.create(
-  //           {
-  //             principalType: RoleMapping.USER,
-  //             principalId: user.id
-  //           },
-  //           function(err, principal) {
-  //             if (err) return debug(err);
-  //             debug(principal);
-  //           }
-  //         );
-  //       }
-  //     );
-  //   }
-  // );
+          // Assign the admin to the admin role
+          role.principals.create({ principalType: RoleMapping.USER, principalId: user.id });
+      });
+    }
+  );
 };

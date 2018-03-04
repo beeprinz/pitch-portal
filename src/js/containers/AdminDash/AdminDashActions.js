@@ -1,4 +1,8 @@
 import axios from 'axios';
+const token = sessionStorage.getItem('token');
+const authAxios = axios.create({
+  headers: { Authorization: token }
+});
 
 export function getDetail(detail){
     return {
@@ -16,7 +20,7 @@ export function getUsersProjects(detail){
 export function deleteProject(id, projects) {
     return {
         type: 'DELETE_PROJECT',
-        payload: axios.delete(`http://localhost:3000/api/projects/${id}`).then(() => { return { id, projects } })
+        payload: authAxios.delete(`http://localhost:3000/api/projects/${id}`).then(() => { return { id, projects } })
     }
 }
 

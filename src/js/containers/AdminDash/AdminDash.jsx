@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { getDetail, getUsersProjects, deleteProject } from './AdminDashActions'
 import axios from 'axios';
-import Cookies from 'cookies-js'
+import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import { Redirect } from "react-router";
 
@@ -88,7 +88,14 @@ export default class AdminDash extends Component {
                   <td><Moment format='MM/DD/YYYY'>{project.date}</Moment></td>
                   <td>{this.renderProjectStatus(project.status)}</td>
                   <td className="text-center">
-                    <button type="button" className="btn btn-outline-success" value={project.id} onClick={this.handleDetail}>Detail</button>
+                  <Link to= {`/company/:companyname/pitchdetail/${project.id}`}>
+                    <button 
+                    type="button" 
+                    className="btn btn-outline-success" 
+                    onClick={this.handleDetail} 
+                    value={project.id} >
+                    Detail</button>
+                  </Link>
                     <button type="button" className="btn btn-outline-danger" style={{ marginLeft: 10 + "px" }} value={project.id} onClick={this.handleDelete}> Delete </button>
                   </td>
                 </tr>
@@ -101,7 +108,7 @@ export default class AdminDash extends Component {
               <td>Pending</td>
               <td>Pending</td>
               <td className="text-center">
-                <button type="button" className="btn btn-outline-success"><a href="#" > Detail </a></button>
+                <button type="button" className="btn btn-outline-success"><a href="/company/:companyname/pitchdetail/:id" > Detail </a></button>
                 <button type="button" className="btn btn-outline-danger" style={{ marginLeft: 10 + "px" }}> <a href="#">Delete</a> </button>
               </td>
             </tr>

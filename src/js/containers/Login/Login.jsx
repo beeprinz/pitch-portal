@@ -14,14 +14,17 @@ class Login extends Component {
 
   onSubmit(values) {
     const { dispatch } = this.props;
-  
+
     dispatch(LogUserIn(values));
   }
 
   // After user is logged in, we make another GET call to receive their company name
   // When that data is available, we push a new URL with that company name to redirect.
   componentWillReceiveProps(nextProps) {
-    if (this.props.login.company !== nextProps.login.company) {
+    if (
+      this.props.login.company !== nextProps.login.company &&
+      sessionStorage.token != null
+    ) {
       this.props.history.push(`/company/${nextProps.login.company}/dashboard`);
     }
   }
@@ -29,29 +32,14 @@ class Login extends Component {
   render() {
     const { handleSubmit } = this.props;
     const { login } = this.props;
-        // Uncomment if you want to enable admin
-    // if(redirectionCookie){
-    //   if(this.state.isAdmin) {
-    //     return <Redirect to='/admin/dashboard' />;
-    //   }
-    //   if (this.state.isUser) {
-    //     return <Redirect to='/company/:companyname/dashboard' />
-    //   }     
-    // }
+
     return (
       <div className='container'>
         <div className='row text-center'>
-        {/* {userError ? <div className="alert alert-danger" role="alert">
-          <strong>User Error!</strong> Please select the tag and use the correct account information
-        </div> :''}
-        {adminError ? <div className="alert alert-danger" role="alert">
-          <strong>Admin Error!</strong> Please select the tag and use the correct account information
-        </div> :''} */}
           <form
-            style={{margin: 'auto'}}
+            style={{ margin: 'auto' }}
             className='form-signin col-5'
             onSubmit={handleSubmit(this.onSubmit)}>
-            
             <h1 className='h3 my-3 font-weight-normal text-center'>
               Please sign in
             </h1>
