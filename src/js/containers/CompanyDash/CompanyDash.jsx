@@ -22,6 +22,14 @@ export default class CompanyDash extends Component {
   
   componentWillMount() {
     const { dispatch, projects } = this.props;
+    // if(!token) {
+    //   console.log(token)
+    //   this.props.history.push(`/`);
+    //   let in1Minutes = 1/950;
+    //   Cookies.set('unAuthRequest', true , {
+    //       expires: in1Minutes
+    //   });
+    // }
     const userId = sessionStorage.getItem('userId');
     dispatch(getUsersProjects(userId));
   }
@@ -60,13 +68,8 @@ export default class CompanyDash extends Component {
         <div><div className="text-center"><span className="fa fa-spin fa-spinner fa-2x"></span></div></div>
       )
     }
-    else if(!token) {
-      return <Redirect to='/' />
-      let in1Minutes = 1/950;
-      Cookies.set('unAuthRequest', true , {
-          expires: in1Minutes
-      });
-    }
+    console.log(token)
+
     return (
       <div className='container'>
         <h1 style={{ marginTop: 50 + 'px', marginBottom: 30 + 'px' }}>

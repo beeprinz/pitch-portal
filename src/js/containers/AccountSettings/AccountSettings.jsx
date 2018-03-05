@@ -7,6 +7,7 @@ import {
   changeUserInfo,
   savedDone
 } from './AccountSettingsActions';
+import Cookies from 'js-cookie'
 
 const token = sessionStorage.getItem('token');
 const authAxios = axios.create({
@@ -35,14 +36,17 @@ class AccountSettings extends Component {
     }
   }
   componentWillMount() {
-    if (!token) {   this.props.history.push(BACKTICKS/BACKTICK);
+  
+    if (!token) {
+      this.props.history.push(`/`);
       var in1Minutes = 1/950;
       Cookies.set('unAuthRequest', true , {
           expires: in1Minutes
       });
-    }
+    }  
     this.fetchUser();
   }
+
   fetchUser() {
     const { dispatch, initialize } = this.props;
     const userId = sessionStorage.getItem('userId');

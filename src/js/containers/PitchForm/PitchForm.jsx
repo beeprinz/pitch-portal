@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Field, reduxForm, reset } from 'redux-form';
 import axios from 'axios';
-import { createProject, changeStatus } from './PitchFormActions';
+import { createProject, changeStatus, unAuth } from './PitchFormActions';
 import { Redirect } from 'react-router';
+import Cookies from 'js-cookie'
 
 class PitchForm extends Component {
   constructor(props) {
@@ -31,11 +32,16 @@ class PitchForm extends Component {
     this.handleLeftSlide = this.handleLeftSlide.bind(this);
     this.convertToMega = this.convertToMega.bind(this);
   }
-  // componentWillMount() {
-    
-
-    
-  // }
+  componentWillMount() {
+    const redirectionStorage = sessionStorage.token;
+    if (!redirectionStorage) {
+      this.props.history.push(`/`);
+      var in1Minutes = 1/950;
+      Cookies.set('unAuthRequest', true , {
+          expires: in1Minutes
+      });
+    }  
+  }
 
   componentWillReceiveProps(nextProps) {
     const { dispatch } = this.props;
@@ -245,10 +251,6 @@ class PitchForm extends Component {
     const loading = this.state.loading;
     const company = sessionStorage.getItem('company');
 
-    const redirectionCookie = sessionStorage.getItem('userId');
-    if (!redirectionCookie) {
-      return <Redirect to='/' />;
-    }
     const sizeLimit = this.state.RestrictedLimit;
     const projectRedirect = this.state.projectRedirect;
     return (
@@ -511,16 +513,14 @@ class PitchForm extends Component {
                         />
                         <div className='text-center'>
                           {
-                            loading ? <div>
-                              {' '}
-                              Uploading Video(s) or Document(s) <hr />({this.state.fileMsg}){' '}
-                              <i className='fas fa-spinner fa-pulse' />{' '}
+                            loading ? <div>               
+                              Uploading Video(s) or Document(s) <hr />({this.state.fileMsg})
+                              <i className='fas fa-spinner fa-pulse' />
                             </div> :
                             <button
                               type='submit'
                               className='btn-lg btn-primary text-center'>
-                              {' '}
-                              Submit{' '}
+                              Submit
                             </button>}
                         </div>
                       </div>

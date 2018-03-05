@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import Cookies from 'js-cookie'
 export const types = {
   LOG_USER_IN: 'LOG_USER_IN',
   COMPANY_REDIRECT: 'COMPANY_REDIRECT',
@@ -51,6 +51,7 @@ function grabCompany(token, userId) {
           'name',
           response.data.firstName.replace(/\s+/g, '')
         );
+        Cookies.remove('unAuthRequest')
         // Updates application state to include company name.
         // Check line 19.
         dispatch(goToCompanyDash(response.data));
@@ -68,6 +69,7 @@ export function LogUserIn(values) {
       //saving userID and accesstoken to sessionStorage
       sessionStorage.setItem('userId', response.data.userId);
       sessionStorage.setItem('token', response.data.id);
+      sessionStorage.removeItem('unauthrequest')
       //Saving loggedin data to application state. Check line 9.
       dispatch(userLoggedIn(response.data));
     });

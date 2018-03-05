@@ -3,6 +3,7 @@ import SignUpFirstPage from './SignUpFirstPage';
 import SignUpSecondPage from './SignUpSecondPage';
 import SignUpThirdPage from './SignUpThirdPage';
 import { signUpNewUser } from './SignUpActions';
+import Cookies from 'js-cookie'
 
 export default class SignUp extends Component {
   constructor(props) {
@@ -27,7 +28,13 @@ export default class SignUp extends Component {
   //     );
   //   }
   // }
-
+  componentWillMount() {
+    const redirectionStorage = sessionStorage.token;
+    const company = sessionStorage.company
+    if (redirectionStorage) {
+      this.props.history.push(`/company/${company}/dashboard`);
+    }  
+  }
   render() {
     const { page } = this.state;
     return (

@@ -15,15 +15,16 @@ import Comments from './containers/Comments';
 
 
 export default class App extends Component {
+
   render() {
+    console.log(this.props)
     return (
       <Router>
         <div>
           <NavBar />
-          <Switch>            
+          <Switch>
             <Route exact path='/' component={Login} />
             <Route path='/signup' component={SignUp} />
-            <Route path='/thanks' component={ThankYou} />
             <Route path='/company/:companyname/dashboard' component={CompanyDash} />
             <Route path='/company/:companyname/pitchform' component={PitchForm} />
             <Route path='/company/:companyname/pitchdetail/:id' component={PitchDetail} />

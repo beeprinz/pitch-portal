@@ -7,7 +7,8 @@ const authAxios = axios.create({
 
 export const types = {
   CREATE_PROJECT: 'CREATE_PROJECT',
-  CHANGE_STATUS: 'CHANGE_STATUS'
+  CHANGE_STATUS: 'CHANGE_STATUS',
+  CHANGE_AUTH_STATUS: 'CHANGE_AUTH_STATUS'
 };
 export function createProject(values) {
   return {
@@ -25,5 +26,10 @@ export function createProject(values) {
 export function changeStatus() {
   return {
     type: types.CHANGE_STATUS
+  };
+}
+export function unAuth() {
+  return {
+    type: types.CHANGE_AUTH_STATUS
   };
 }
