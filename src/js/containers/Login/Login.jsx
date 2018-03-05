@@ -40,7 +40,6 @@ class Login extends Component {
   return (
    <div className='container'>
     <div className='row text-center'>
-
      <form
       style={{margin: 'auto'}}
       className='form-signin col-5'

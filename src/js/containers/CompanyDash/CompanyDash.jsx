@@ -124,7 +124,6 @@ export default class CompanyDash extends Component {
               })}
           </tbody>
         </table>
-        <h1>New Project </h1>
         <hr />
         <p>Click submit for new project</p>
         <Link className="btn btn-primary" to={`/company/${sessionStorage.company}/pitchform`} role="button">Create Pitch</Link>

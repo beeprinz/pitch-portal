@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import { Field, reduxForm } from 'redux-form'
+import { Link } from 'react-router-dom'
 import axios from 'axios';
 import Cookies from 'cookies-js'
 import { 
@@ -220,111 +221,135 @@ componentWillMount() {
     );
 
     // 5a998d543492f83ed831b8f2
-    if(userId === '5a989fb0b69b4e4c0bb65101' && isEditing === false){
-      return (
-      
-      
-<div className="container">
-        <h1>PitchDetail</h1>
+    if(userId === '5a9b5d31b8b4a41f786d14f3' && isEditing === false){
+      return <div className="container">
+          <h1 className="mb-2">PitchDetail</h1>
 
-        <div className="row">
-          <div className="col">
-            <div className="card ">
-              <div className="card-header">Project</div>
+          <Link to="/admin/dashboard">
+            <button type="button" className="btn btn-primary mb-2">
+              Back
+            </button>
+          </Link>
 
-              <div className="card-body">
-                <h4 className="card-title">{projectDetail.name}</h4>
-                <h6>Project Id:</h6>
-                <p className="card-text">{projectDetail.id}</p>
+          <div className="row">
+            <div className="col">
+              <div className="card ">
+                <div className="card-header">Project</div>
 
-                <h6>Date:</h6>
-                <p className="card-text">
-                  <Moment format="MM/DD/YYYY">{projectDetail.date}</Moment>
-                </p>
-                <h6>Status:</h6>
-                <p className="card-text">
-                  {this.renderProjectStatus(projectDetail.status)}
-                </p>
-                <h6>Project Description:</h6>
-                <p className="card-text">{projectDetail.description}</p>
-                <h6>Is this an existing product?:</h6>
-                <p className="card-text">{projectDetail.exampleProducts}</p>
-                <h6>Technologies used:</h6>
-                <p className="card-text">{projectDetail.otherTech}</p>
-                <h6>Goal:</h6>
-                <p className="card-text">{projectDetail.goal}</p>
-                <h6>Key Features:</h6>
-                <p className="card-text">{projectDetail.keyFeatures}</p>
-                <button onClick={this.handleEdit} className="mb-3 btn btn-primary edit-todo" role="button">
-                  Edit
-                </button>
+                <div className="card-body">
+                  <h4 className="card-title">{projectDetail.name}</h4>
+                  <h6>Project Id:</h6>
+                  <p className="card-text">{projectDetail.id}</p>
 
-                <h6> Uploaded Files </h6>
-                <ul>
-                   {!!projectDetail.fileLinks && projectDetail.fileLinks.map((link) => {
-                    return ( 
-                     <li> <a key ={link} href={link} > <i className="fas fa-link"></i> {link.slice(53)} </a></li>
-                   )
-                   })
-                  } 
+                  <h6>Date:</h6>
+                  <p className="card-text">
+                    <Moment format="MM/DD/YYYY">
+                      {projectDetail.date}
+                    </Moment>
+                  </p>
+                  <h6>Status:</h6>
+                  <p className="card-text">
+                    {this.renderProjectStatus(projectDetail.status)}
+                  </p>
+                  <h6>Project Description:</h6>
+                  <p className="card-text">{projectDetail.description}</p>
+                  <h6>Is this an existing product?:</h6>
+                  <p className="card-text">
+                    {projectDetail.exampleProducts}
+                  </p>
+                  <h6>Technologies used:</h6>
+                  <p className="card-text">{projectDetail.otherTech}</p>
+                  <h6>Goal:</h6>
+                  <p className="card-text">{projectDetail.goal}</p>
+                  <h6>Key Features:</h6>
+                  <p className="card-text">{projectDetail.keyFeatures}</p>
+                  <button onClick={this.handleEdit} className="mb-3 btn btn-primary edit-todo" role="button">
+                    Edit
+                  </button>
+
+                  <h6> Uploaded Files </h6>
+                  <ul>
+                    {!!projectDetail.fileLinks && projectDetail.fileLinks.map(
+                        link => {
+                          return (
+                            <li>
+                              {" "}
+                              <a key={link} href={link}>
+                                {" "}
+                                <i className="fas fa-link" />{" "}
+                                {link.slice(53)}{" "}
+                              </a>
+                            </li>
+                          );
+                        }
+                      )}
                   </ul>
 
-                <hr />
-                <button type="button" className="btn btn-success mr-2" value={1} onClick={this.adminButtons}>
-                  Approve
-                </button>
-                <button type="button" className="btn btn-warning mr-2" value={0} onClick={this.adminButtons}>
-                  Still Pending
-                </button>
-                <button type="button" className="btn btn-danger" value={2} onClick={this.adminButtons}>
-                  Denied
-                </button>
-
-              </div>
-            </div>
-          </div>
-
-          {/* comment card */}
-          <div className="col">
-            <div className="card">
-              <div className="card-header">Project Comments</div>
-              <div className="card-body">
-                <div className="form-group">
-                  <label htmlFor="exampleFormControlTextarea1">
-                    Comment:
-                  </label>
-                  <textarea onChange={this.handleCommentInput} value={this.state.comment} className="form-control" id="exampleFormControlTextarea1" rows="3" />
-                  <button onClick={this.handleCommentSubmit} type="button" className="btn btn-primary btn-lg" style={{ marginTop: 10 + "px", marginLeft: 75 + "%" }}>
-                    Send
+                  <hr />
+                  <button type="button" className="btn btn-success mr-2" value={1} onClick={this.adminButtons}>
+                    Approve
+                  </button>
+                  <button type="button" className="btn btn-warning mr-2" value={0} onClick={this.adminButtons}>
+                    Still Pending
+                  </button>
+                  <button type="button" className="btn btn-danger" value={2} onClick={this.adminButtons}>
+                    Denied
                   </button>
                 </div>
-                <hr />
-                {!!this.state.text && this.state.text.map((item, index) => {
-                    if (index <= 3) {
-                      return <div key={index} className="card-body">
-                          <blockquote className="blockquote mb-0">
-                            <p>{item}</p>
-                            <footer className="blockquote-footer">
-                              {this.state.names[index]} <Moment format="MM/DD/YYYY hh:mm a">
-                                {this.state.date[index]}
-                              </Moment>
-                            </footer>
-                          </blockquote>
-                        </div>;
-                    }
-                  })}
+              </div>
+            </div>
+
+            {/* comment card */}
+            <div className="col">
+              <div className="card">
+                <div className="card-header">Project Comments</div>
+                <div className="card-body">
+                  <div className="form-group">
+                    <label htmlFor="exampleFormControlTextarea1">
+                      Comment:
+                    </label>
+                    <textarea onChange={this.handleCommentInput} value={this.state.comment} className="form-control" id="exampleFormControlTextarea1" rows="3" />
+                    <button onClick={this.handleCommentSubmit} type="button" className="btn btn-primary btn-lg" style={{ marginTop: 10 + "px", marginLeft: 75 + "%" }}>
+                      Send
+                    </button>
+                  </div>
+                  <hr />
+                  {!!this.state.text && this.state.text.map(
+                      (item, index) => {
+                        if (index <= 3) {
+                          return (
+                            <div key={index} className="card-body">
+                              <blockquote className="blockquote mb-0">
+                                <p>{item}</p>
+                                <footer className="blockquote-footer">
+                                  {this.state.names[index]}{" "}
+                                  <Moment format="MM/DD/YYYY hh:mm a">
+                                    {this.state.date[index]}
+                                  </Moment>
+                                </footer>
+                              </blockquote>
+                            </div>
+                          );
+                        }
+                      }
+                    )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>  
-      ) 
+        </div>; 
   }
 
     if(isEditing === false){
     return <div className="container">
         <h1>PitchDetail</h1>
 
+        <Link to="/company/:companyname/dashboard">
+          <button type="button" className="btn btn-primary mb-2">
+            Back
+          </button>
+        </Link>
+
         <div className="row">
           <div className="col">
             <div className="card ">
@@ -359,14 +384,20 @@ componentWillMount() {
 
                 <h6> Uploaded Files </h6>
                 <ul>
-                   {!!projectDetail.fileLinks && projectDetail.fileLinks.map((link) => {
-                    return ( 
-                     <li> <a key ={link} href={link} > <i className="fas fa-link"></i> {link.slice(53)} </a></li>
-                   )
-                   })
-                  } 
-                  </ul>
-
+                  {!!projectDetail.fileLinks && projectDetail.fileLinks.map(
+                      link => {
+                        return (
+                          <li>
+                            {" "}
+                            <a key={link} href={link}>
+                              {" "}
+                              <i className="fas fa-link" /> {link.slice(53)}{" "}
+                            </a>
+                          </li>
+                        );
+                      }
+                    )}
+                </ul>
               </div>
             </div>
           </div>
