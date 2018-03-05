@@ -17,7 +17,7 @@ class Navbar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {dispatch} = this.props;
+    const { dispatch } = this.props;
     if (
       this.props.login ||
       this.props.signup !== nextprops.login ||
@@ -70,7 +70,7 @@ class Navbar extends Component {
           <div className='btn-group'>
             {
               this.props.login.name === '' ? <div /> :
-              <p style={{paddingRight: 1 + 'rem', margin: 0}}>
+              <p style={{ paddingRight: 1 + 'rem', margin: 0 }}>
                 Hello, {this.props.login.name}!
               </p>}
 
@@ -100,8 +100,8 @@ class Navbar extends Component {
   }
 }
 
-function mapStateToProps({signup, login}) {
-  return {signup, login};
+function mapStateToProps({ signup, login }) {
+  return { signup, login };
 }
 
 export default connect(mapStateToProps)(Navbar);
