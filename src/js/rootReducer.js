@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
   login: LoginReducer,
   comment: CommentsReducer,
   accountSettings: AccountSettingsReducer,
-  pitchDetail: PitchDetailReducer
+  pitchDetail: PitchDetailReducer,
 });
 
 export default rootReducer;

@@ -28,7 +28,9 @@ export default class App extends Component {
             <Route path='/company/:companyname/pitchform' component={PitchForm} />
             <Route path='/company/:companyname/pitchdetail/:id' component={PitchDetail} />
             <Route path='/company/:companyname/accountsettings' component={AccountSettings} />
-            <Route path='/admin/dashboard' component={AdminDash} />
+            { sessionStorage.userId == '5a989f3f832c164290401a85'
+              ? <Route path='/admin/dashboard' component={AdminDash} />
+              : <Route component={PageNotFound} /> }
             <Route path='/comments' component={Comments} />
             <Route component={PageNotFound} />
           </Switch>

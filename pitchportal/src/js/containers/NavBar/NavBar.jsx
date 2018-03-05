@@ -42,7 +42,7 @@ export default class Navbar extends Component {
           <div className='collapse navbar-collapse' id='navbarNavAltMarkup'>
             <div className='navbar-nav'>
               {/* Recommend Test if logged in to take you to the sign up/log in page or Dashboard page, consider making a News feed pages for clients to read on other projects or student feedbacks */}
-              <Link to='/' className='nav-item nav-link active' href='#'>
+              <Link to='/' className='nav-item nav-link active'>
                 Pitch Portal <span className='sr-only'>(current)</span>
               </Link>
               {/* Test if it is an Admin account or Company account to link to the correct 'Dashboard' */}

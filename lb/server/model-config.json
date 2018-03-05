@@ -26,18 +26,18 @@
   },
   "ACL": {
     "dataSource": "MongoDB",
-    "public": false
+    "public": true
   },
   "RoleMapping": {
     "dataSource": "MongoDB",
-    "public": false,
+    "public": true,
     "options": {
       "strictObjectIDCoercion": true
     }
   },
   "Role": {
     "dataSource": "MongoDB",
-    "public": false
+    "public": true
   },
   "user": {
     "dataSource": "MongoDB",

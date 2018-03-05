@@ -11,22 +11,25 @@ module.exports = function(server) {
   const RoleMapping = server.models.RoleMapping;
 
   //Find or create the admin
-  User.findOrCreate({
-      username: 'ocaAdmin',
-      email: 'oca@pitchportal.com', 
-      password: '12345',
-      firstName: 'Origin',
-      lastName: 'Code Academy'
-    }, { where: { email: 'oca@pitchportal.com' } }, (err, user) => {
-      if (err) throw err;
-
-      //Find or create the admin role
-      Role.findOrCreate({ name: 'admin' }, (err, role) => {
+  User.findOne({where: {email: 'oca@pitchportal.com' } }, (err, user) => {
+    if (!user) {
+      User.create({
+        username: 'ocaAdmin',
+        email: 'oca@pitchportal.com', 
+        password: '12345',
+        company: 'OCA',
+        firstName: 'Tupac',
+        lastName: 'Shakur'
+      }, (err, user) => {
           if (err) throw err;
-
-          // Assign the admin to the admin role
-          role.principals.create({ principalType: RoleMapping.USER, principalId: user.id });
-      });
+          //Find or create the admin role
+          Role.findOrCreate({ name: 'admin' }, (err, role) => {
+              if (err) throw err;
+              // Assign the admin to the admin role
+              role.principals.create({ principalType: RoleMapping.USER, principalId: user.id });
+          });
+        }
+      );
     }
-  );
+  });
 };
