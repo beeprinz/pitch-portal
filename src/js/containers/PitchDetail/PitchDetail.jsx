@@ -231,7 +231,7 @@ componentWillMount() {
 
     // 5a998d543492f83ed831b8f2
     if(userId === '5a9b5d31b8b4a41f786d14f3' && isEditing === false){
-      return <div className="container">
+      return <main><div className="container">
           <h1 className="mb-2">PitchDetail</h1>
 
           <Link to="/admin/dashboard">
@@ -346,11 +346,12 @@ componentWillMount() {
               </div>
             </div>
           </div>
-        </div>; 
-  }
+      </div>; 
+    </main>
+  }    
 
     if(isEditing === false){
-    return <div className="container">
+    return <main><div className="container">
         <h1>{company}</h1>
 
         <Link to="/company/:companyname/dashboard">
@@ -444,10 +445,11 @@ componentWillMount() {
             </div>
           </div>
         </div>
-      </div>;  
+    </div>;  
+      </main>
     }
     return (
-
+      <main>
       <div className="container">
         <h1>PitchDetail</h1>
 
@@ -537,7 +539,8 @@ componentWillMount() {
             </div>
           </div>
         </div>
-      </div>
+        </div>
+      </main>  
     )    
   }
 };

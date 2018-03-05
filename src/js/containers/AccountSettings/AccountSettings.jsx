@@ -176,8 +176,8 @@ class AccountSettings extends Component {
     const { isSaved } = this.props;
     if (this.state.editEnabled === true) {
       return (
-        <div>
-          <div>
+        <main>
+          <div className="container">
             <h1>Account Settings</h1>
             <div className='col-md-10'>
               <div className='card'>
@@ -212,11 +212,12 @@ class AccountSettings extends Component {
               </div>
             </div>
           </div>;
-        </div>
+        </main>
       );
     }
     return (
-      <div>
+      <main>
+        <div className="container">
         <h1>Account Settings</h1>
         <div className='col-md-10'>
           <div className='card'>
@@ -253,8 +254,9 @@ class AccountSettings extends Component {
               </button>
             </div>
           </div>
-        </div>
-      </div>
+          </div>
+          </div>    
+      </main>
     );
   }
 }

@@ -38,45 +38,53 @@ class Login extends Component {
   const {login} = this.props;
   const authError = Cookies.get('unAuthRequest')
   return (
-   <div className='container'>
-    <div className='row text-center'>
-     <form
-      style={{margin: 'auto'}}
-      className='form-signin col-5'
-      onSubmit={handleSubmit(this.onSubmit)}>
-      <h1 className='h3 my-3 font-weight-normal text-center'>
-       Please sign in
-      </h1>
-      {authError ? <div className="alert alert-danger" role="alert">
-      Please log-in to view that page
-      <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div> : ''}
-      <Field name='email' component={renderEmailField} />
-      <Field name='password' component={renderPasswordField} />
+    <main id='login'>
       <div>
-       {this.props.login.errors && (
-        <div className='alert alert-danger mt-3' role='alert'>
-         <p className='alert-heading'>{this.props.login.errors}</p>
+      <div className="container">  
+        <div className='row text-center'>
+        <form
+          style={{margin: 'auto'}}
+          className='form-signin col-6'
+          onSubmit={handleSubmit(this.onSubmit)}>
+          <h1 className='h3'>
+          Please sign in
+          </h1>
+          {authError ? <div className="alert alert-danger" role="alert">
+          Please log-in to view that page
+          <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div> : ''}
+          <div className="input-groups">
+              <Field name='email' component={renderEmailField} />
+            </div>
+          <div className="input-groups">
+              <Field name='password' component={renderPasswordField} />
+              </div>    
+          <div>
+          {this.props.login.errors && (
+            <div className='alert alert-danger mt-3' role='alert'>
+            <p className='alert-heading'>{this.props.login.errors}</p>
+            </div>
+          )}
+          </div>
+          <button
+          onClick={this.handleLogin}
+          className='btn btn-lg btn-primary btn-block mb-4'
+          type='submit'>
+          Sign in
+          </button>
+          <p className='mb-2'>New to pitch portal? Sign up here!</p>
+          <Link to='/signup'>
+          <button type='button' className='btn btn-primary'>
+            Sign Up
+          </button>
+          </Link>
+        </form>
         </div>
-       )}
-      </div>
-      <button
-       onClick={this.handleLogin}
-       className='btn btn-lg btn-primary btn-block mb-4'
-       type='submit'>
-       Sign in
-      </button>
-      <p className='mb-2'>New to pitch portal? Sign up here!</p>
-      <Link to='/signup'>
-       <button type='button' className='btn btn-primary'>
-        Sign Up
-       </button>
-      </Link>
-     </form>
-    </div>
-   </div>
+        </div>   
+        </div>
+    </main>
   );
  }
 }
