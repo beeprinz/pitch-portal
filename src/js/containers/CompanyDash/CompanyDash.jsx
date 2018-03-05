@@ -5,7 +5,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import Moment from 'react-moment';
 import { Redirect } from 'react-router';
-import Cookies from 'js-cookie'
+
 const company = sessionStorage.getItem('company');
 const token = sessionStorage.getItem('token');
 const authAxios = axios.create({
@@ -22,14 +22,6 @@ export default class CompanyDash extends Component {
   
   componentWillMount() {
     const { dispatch, projects } = this.props;
-
-    if (!token) {
-      this.props.history.push(`/`);
-      var in1Minutes = 1/950;
-      Cookies.set('unAuthRequest', true , {
-          expires: in1Minutes
-      });
-    }  
     const userId = sessionStorage.getItem('userId');
     dispatch(getUsersProjects(userId));
   }

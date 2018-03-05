@@ -33,7 +33,6 @@ class PitchForm extends Component {
     this.convertToMega = this.convertToMega.bind(this);
   }
   componentWillMount() {
-
     const redirectionStorage = sessionStorage.token;
     if (!redirectionStorage) {
       this.props.history.push(`/`);
@@ -42,7 +41,6 @@ class PitchForm extends Component {
           expires: in1Minutes
       });
     }  
-   
   }
 
   componentWillReceiveProps(nextProps) {
