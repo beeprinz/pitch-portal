@@ -1,15 +1,23 @@
 const initialState = {
   projectDetails: '',
+  projectsPending: true,
   projects: null
 };
 export default function CompanyDashReducer(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case 'GET_USERS_PROJECTS': {
+    case 'GET_USERS_PROJECTS_PENDING': {
       return {
         ...state,
-        projects: payload
+        projectsPending: true
+      };
+    }
+    case 'GET_USERS_PROJECTS_FULFILLED': {
+      return {
+        ...state,
+        projects: payload,
+        projectsPending: false
       };
     }
     case 'GET_PROJECT_DETAIL_FULFILLED': {

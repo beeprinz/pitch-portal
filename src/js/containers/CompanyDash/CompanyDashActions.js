@@ -16,10 +16,10 @@ export function getProjectDetail(projectId) {
   };
 }
 
-export function getUsersProjects(detail) {
+export function getUsersProjects(userId) {
   return {
     type: 'GET_USERS_PROJECTS',
-    payload: detail
+    payload: authAxios.get(`http://localhost:3000/api/users/${userId}/projects`).then(r => r.data)
   };
 }
 

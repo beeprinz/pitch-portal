@@ -71,11 +71,12 @@ export default class AdminDash extends Component {
         <table className="table table-hover ">
           <thead className="thead-dark">
             <tr className="text-center">
+             <th scope="col"></th>
               <th scope="col">ID#</th>
               <th scope="col">Project</th>
               <th scope="col">Time</th>
               <th scope="col">Status</th>
-              <th scope="col">Buttons</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -83,11 +84,6 @@ export default class AdminDash extends Component {
             {!!projects && projects.map(project => {
               return (
                 <tr key={project.id} className="text-center">
-                  <th scope="row">{project.id}</th>
-                  <td>{project.name}</td>
-                  <td><Moment format='MM/DD/YYYY'>{project.date}</Moment></td>
-                  <td>{this.renderProjectStatus(project.status)}</td>
-                  <td className="text-center">
                   <Link to= {`/company/:companyname/pitchdetail/${project.id}`}>
                     <button 
                     type="button" 
@@ -96,22 +92,17 @@ export default class AdminDash extends Component {
                     value={project.id} >
                     Detail</button>
                   </Link>
+                  <th scope="row">{project.id}</th>
+                  <td>{project.name}</td>
+                  <td><Moment format='MM/DD/YYYY'>{project.date}</Moment></td>
+                  <td>{this.renderProjectStatus(project.status)}</td>
+                  <td className="text-center">
+                
                     <button type="button" className="btn btn-outline-danger" style={{ marginLeft: 10 + "px" }} value={project.id} onClick={this.handleDelete}> Delete </button>
                   </td>
                 </tr>
               )
             })}
-
-            <tr className="text-center">
-              <th scope="row">3</th>
-              <td>Pitch Portal</td>
-              <td>Pending</td>
-              <td>Pending</td>
-              <td className="text-center">
-                <button type="button" className="btn btn-outline-success"><a href="/company/:companyname/pitchdetail/:id" > Detail </a></button>
-                <button type="button" className="btn btn-outline-danger" style={{ marginLeft: 10 + "px" }}> <a href="#">Delete</a> </button>
-              </td>
-            </tr>
           </tbody>
         </table>
 

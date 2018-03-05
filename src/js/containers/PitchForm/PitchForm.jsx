@@ -31,24 +31,11 @@ class PitchForm extends Component {
     this.handleLeftSlide = this.handleLeftSlide.bind(this);
     this.convertToMega = this.convertToMega.bind(this);
   }
-  componentWillMount() {
-    const token = sessionStorage.getItem('token');
-    const authAxios = axios.create({
-      headers: { Authorization: token }
-    });
-    //REDIRECTION (IF USER IS LOGGED IN REDIRECT BACK TO DASH)
-    const accessToken = sessionStorage.getItem('token');
-    if (accessToken) {
-      return <Redirect to='/company/insertcompanyname/accountsettings&#39;' />;
-    } else {
-      const userId = sessionStorage.getItem('userId');
-      authAxios
-        .get(`http://localhost:3000/api/users/${userId}`)
-        .then(response => {
-          this.setState({ companyName: response.data.company });
-        });
-    }
-  }
+  // componentWillMount() {
+    
+
+    
+  // }
 
   componentWillReceiveProps(nextProps) {
     const { dispatch } = this.props;
@@ -78,7 +65,7 @@ class PitchForm extends Component {
         fileMsg: 'Your file(s) is less than 250 MBs, Est. time of 1-5 minutes'
       });
     }
-    // Retrieving Cookie for Pitch Form in Database & adding date and status
+
     const dateNow = Date();
     values.userId = sessionStorage.getItem('userId');
     values.date = dateNow;
@@ -256,7 +243,7 @@ class PitchForm extends Component {
     const { handleSubmit } = this.props;
     const valid = this.state.formValid;
     const loading = this.state.loading;
-    const company = this.state.companyName;
+    const company = sessionStorage.getItem('company');
 
     const redirectionCookie = sessionStorage.getItem('userId');
     if (!redirectionCookie) {
