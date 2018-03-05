@@ -71,8 +71,9 @@ export default class CompanyDash extends Component {
     console.log(token)
 
     return (
-      <div className='container'>
-        <h1 style={{ marginTop: 50 + 'px', marginBottom: 30 + 'px' }}>
+      <main>
+      <div id="content" className='container'>
+        <h1 style={{ marginBottom: 30 + 'px' }}>
          {company}
         </h1>
         <table className='table table-hover '>
@@ -130,7 +131,8 @@ export default class CompanyDash extends Component {
         <hr />
         <p>Click submit for new project</p>
         <Link className="btn btn-primary" to={`/company/${sessionStorage.company}/pitchform`} role="button">Create Pitch</Link>
-      </div>
+        </div>
+      </main>  
     );
   }
 }

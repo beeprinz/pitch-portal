@@ -7,7 +7,7 @@ export function renderEmailField(field) {
     : ''}`;
   return (
     <div>
-      <label htmlFor='inputEmail' className='sr-only'>
+      <label htmlFor='inputEmail'>
         Email address
       </label>
       <input
@@ -31,7 +31,7 @@ export function renderPasswordField(field) {
     : ''}`;
   return (
     <div>
-      <label htmlFor='inputPassword' className='sr-only'>
+      <label htmlFor='inputPassword'>
         Password
       </label>
       <input
