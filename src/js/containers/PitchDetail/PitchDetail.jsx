@@ -210,6 +210,7 @@ componentWillMount() {
     const { handleSubmit } = this.props;
     const {isSaved} = this.props;
     const userId = sessionStorage.getItem('userId') 
+    const company = sessionStorage.getItem('company');
      
     
     // console.log(projectDetail)
@@ -342,7 +343,7 @@ componentWillMount() {
 
     if(isEditing === false){
     return <div className="container">
-        <h1>PitchDetail</h1>
+        <h1>{company}</h1>
 
         <Link to="/company/:companyname/dashboard">
           <button type="button" className="btn btn-primary mb-2">

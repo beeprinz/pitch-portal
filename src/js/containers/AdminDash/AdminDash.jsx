@@ -89,15 +89,14 @@ export default class AdminDash extends Component {
                     type="button" 
                     className="btn btn-outline-success" 
                     onClick={this.handleDetail} 
-                    value={project.id} >
+                    value={project.id} style={{ marginTop: 10 + "px" }}>
                     Detail</button>
                   </Link>
-                  <th scope="row">{project.id}</th>
-                  <td>{project.name}</td>
-                  <td><Moment format='MM/DD/YYYY'>{project.date}</Moment></td>
+                  <th scope="row">{project.name}</th>
                   <td>{this.renderProjectStatus(project.status)}</td>
+                  <td><Moment format='MM/DD/YYYY'>{project.date}</Moment></td>
+                  <th >{project.id}</th>
                   <td className="text-center">
-                
                     <button type="button" className="btn btn-outline-danger" style={{ marginLeft: 10 + "px" }} value={project.id} onClick={this.handleDelete}> Delete </button>
                   </td>
                 </tr>
