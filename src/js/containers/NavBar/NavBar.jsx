@@ -17,6 +17,7 @@ class Navbar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const { dispatch } = this.props;
     if (
       this.props.login ||
       this.props.signup !== nextprops.login ||
@@ -30,13 +31,11 @@ class Navbar extends Component {
       const { dispatch } = this.props;
       authAxios
         .delete(`http://localhost:3000/api/users/${userId}/accessTokens`)
-        .then( response => {
-          console.log('INSIDE WIPESTATE: ',response)
-          sessionStorage.clear()
-          dispatch(wipeState())
-        })
-          
-        
+        .then(response => {
+          sessionStorage.clear();
+          dispatch(wipeState());
+          // dispatch(goodbye())
+        });
     };
     const name = sessionStorage.getItem('name');
     const userId = sessionStorage.getItem('userId');
@@ -46,40 +45,51 @@ class Navbar extends Component {
         <div className='container'>
           <div id='navbarNavAltMarkup'>
             <div className='navbar-nav'>
-            { sessionStorage.token!=null
-            ?<Link to={`/company/${company}/dashboard`} className='nav-item nav-link inline-block'> Home </Link>
-            :<Link to={`/`} className='nav-item nav-link inline-block'> Home </Link>
-          }
+              {
+                sessionStorage.userId == "5a9b5d31b8b4a41f786d14f3"
+                ?<Link
+                  to={`/admin/dashboard`}
+                  className='nav-item nav-link inline-block'>
+                  {' '}
+                  Home{' '}
+                  </Link>:
+                sessionStorage.token != null
+                ? <Link
+                  to={`/company/${company}/dashboard`}
+                  className='nav-item nav-link inline-block'>
+                  {' '}
+                  Home{' '}
+                  </Link>
+                : <Link to={`/`} className='nav-item nav-link inline-block'>
+                  {' '}
+                  Home{' '}
+                  </Link>
+                }
             </div>
           </div>
           <div className='btn-group'>
-            {token === null ? (
-              <div />
-            ) : (
+            {
+              this.props.login.name === '' ? <div /> :
               <p style={{ paddingRight: 1 + 'rem', margin: 0 }}>
-                Hello, {name}!
-              </p>
-            )}
+                Hello, {this.props.login.name}!
+              </p>}
 
             <div>
               <i
-                className='fas fa-bars fa-1x'
+                className='fas fa-user fa-1x'
                 data-toggle='dropdown'
                 aria-haspopup='true'
                 aria-expanded='false'
               />
               <div className='dropdown-menu dropdown-menu-left'>
-                <button className='dropdown-item' type='button'>
-                  Settings
-                </button>
-                <button
+                <Link
                   className='dropdown-item'
-                  type='button'
-                  onClick={handleLogout}>
-                  <Link className='btn btn-danger btn-md' to='/'>
-                    Sign Out
-                  </Link>
-                </button>
+                  to={`/company/` + company + `/accountsettings`}>
+                  User Settings
+                </Link>
+                <Link className='dropdown-item' onClick={handleLogout} to='/'>
+                  Sign Out
+                </Link>
               </div>
             </div>
           </div>
@@ -88,12 +98,6 @@ class Navbar extends Component {
     );
   }
 }
-
-
-
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ wipeState }, dispatch);
-// }
 
 function mapStateToProps({ signup, login }) {
   return { signup, login };

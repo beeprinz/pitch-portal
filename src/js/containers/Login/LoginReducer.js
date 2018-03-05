@@ -16,6 +16,7 @@ export default function LoginReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case types.LOG_USER_IN: {
+      console.log('LOG USER IN REDUCER')
       return {
         ...state,
         loggedIn: true,
@@ -49,6 +50,7 @@ export default function LoginReducer(state = initialState, action) {
       };
     }
     case types.COMPANY_REDIRECT: {
+      console.log('COMPANY REDIRCT REDUCER')
       return {
         ...state,
         company: payload.company,

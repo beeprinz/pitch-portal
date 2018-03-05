@@ -35,6 +35,12 @@ class AccountSettings extends Component {
     }
   }
   componentWillMount() {
+    if (!token) {   this.props.history.push(BACKTICKS/BACKTICK);
+      var in1Minutes = 1/950;
+      Cookies.set('unAuthRequest', true , {
+          expires: in1Minutes
+      });
+    }
     this.fetchUser();
   }
   fetchUser() {

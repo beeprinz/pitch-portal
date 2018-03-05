@@ -18,7 +18,9 @@ const loginError = error => ({
 });
 
 export function wipeState() {
-  return {type: types.WIPE_STATE}
+  return {
+    type: types.WIPE_STATE
+  }
 };
 
 const goToCompanyDash = userInfo => ({
@@ -27,6 +29,7 @@ const goToCompanyDash = userInfo => ({
 });
 
 function grabCompany(token, userId) {
+  console.log('grabCompany')
   // create an axios instance with correct authorization header
   const authAxios = axios.create({
     headers: { Authorization: token }
@@ -38,6 +41,7 @@ function grabCompany(token, userId) {
       // and redirect to the correct dashboard
       .get(`http://localhost:3000/api/users/${userId}`)
       .then(response => {
+        console.log('axios call grabCompany')
         //save company and userName to session storage
         sessionStorage.setItem(
           'company',
@@ -56,9 +60,11 @@ function grabCompany(token, userId) {
 
 //This is the main action
 export function LogUserIn(values) {
+  console.log('LogUserIn')
   // async/await allows data to be there for grabCompany() to work with
   return async dispatch => {
     await axios.post('http://localhost:3000/login', values).then(response => {
+      console.log('axiosPost1')
       //saving userID and accesstoken to sessionStorage
       sessionStorage.setItem('userId', response.data.userId);
       sessionStorage.setItem('token', response.data.id);
